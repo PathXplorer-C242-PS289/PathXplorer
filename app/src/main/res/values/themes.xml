@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.PathXplorer" parent="Theme.MaterialComponents.DayNight">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/blue_700</item>
+        <item name="colorPrimaryVariant">@color/blue_900</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -14,6 +14,10 @@
         <!-- Customize your theme here. -->
         <item name="fontFamily">@font/plus_jakarta_sans</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+    
+    <style name="ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/blue_700_18</item>
     </style>
 
     <style name="BlueAnchor">

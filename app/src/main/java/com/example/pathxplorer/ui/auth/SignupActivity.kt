@@ -12,12 +12,12 @@ class SignupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
+        enableEdgeToEdge()
 
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        supportActionBar?.hide()
+        supportActionBar?.hide()
         setupAction()
     }
 
@@ -34,6 +34,10 @@ class SignupActivity : AppCompatActivity() {
                 create()
                 show()
             }
+        }
+
+        binding.tvDaftar.setOnClickListener {
+            finish()
         }
     }
 }

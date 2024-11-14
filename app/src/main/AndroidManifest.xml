@@ -15,6 +15,9 @@
         android:theme="@style/Theme.PathXplorer"
         tools:targetApi="31">
         <activity
+            android:name=".ui.auth.NewPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.listitem.ListCampusOrMajorActivity"
             android:exported="false" />
         <activity

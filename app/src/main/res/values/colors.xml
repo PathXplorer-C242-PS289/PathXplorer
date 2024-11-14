@@ -15,6 +15,7 @@
     <color name="blue_900">#001C39</color>
 
     <color name="gray_100">#EBEBEB</color>
+    <color name="gray_700">#9E9E9E</color>
 
     <!-- Main Floating Button -->
     <color name="red_500">#FF5656</color>

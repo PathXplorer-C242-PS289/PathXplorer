@@ -22,12 +22,12 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
+        enableEdgeToEdge()
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        supportActionBar?.hide()
+        supportActionBar?.hide()
         setupAction()
     }
 
@@ -47,6 +47,14 @@ class LoginActivity : AppCompatActivity() {
                 create()
                 show()
             }
+        }
+
+        binding.tvDaftar.setOnClickListener {
+            startActivity(Intent(this, SignupActivity::class.java))
+        }
+
+        binding.tvForgotPassword.setOnClickListener {
+            startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
     }
 }

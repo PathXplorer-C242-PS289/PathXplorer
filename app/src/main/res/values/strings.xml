@@ -47,4 +47,5 @@
     <string name="signin_now">Daftar Sekarang</string>
     <string name="filter_content">Filter</string>
     <string name="google_icon">google_icon</string>
+    <string name="masukkan_email_recovery">Masukkan Email Pemulihan</string>
 </resources>
