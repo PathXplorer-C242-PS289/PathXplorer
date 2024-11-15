@@ -13,15 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.pathxplorer.ui.dashboard.DashboardFragment"
+        android:name="com.example.pathxplorer.ui.psikotes.PsikotesFragment"
         android:label="@string/title_psikotes"
-        tools:layout="@layout/fragment_dashboard" />
-
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.pathxplorer.ui.notifications.NotificationsFragment"
-        android:label="@string/title_consultation"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_psikotes" />
 
     <fragment
         android:id="@+id/navigation_account"

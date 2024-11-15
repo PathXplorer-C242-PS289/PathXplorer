@@ -31,7 +31,7 @@
         android:textStyle="bold" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ll_login"
+        android:id="@+id/ll_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -45,7 +45,7 @@
 
 
         <EditText
-            android:id="@+id/edt_email_recovery"
+            android:id="@+id/edt_code_otp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/bg_rounded"
@@ -61,6 +61,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
+        android:id="@+id/btn_send_otp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"

@@ -12,11 +12,6 @@
         android:title="@string/title_psikotes" />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/consultant_icon"
-        android:title="@string/title_consultation" />
-
-    <item
         android:id="@+id/navigation_account"
         android:icon="@drawable/profile_icon"
         android:title="@string/title_account" />
