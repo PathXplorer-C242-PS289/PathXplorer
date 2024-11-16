@@ -34,6 +34,8 @@ class LoginActivity : AppCompatActivity() {
     private fun setupAction() {
         binding.btnLogin.setOnClickListener {
             val email = binding.edtEmail.text.toString()
+            val password = binding.edtPassword.text.toString()
+
             viewModel.saveSession(UserModel(email, email, "token_sample"))
             AlertDialog.Builder(this).apply {
                 setTitle("Yeah!")
