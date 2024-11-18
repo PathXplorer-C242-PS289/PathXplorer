@@ -1,6 +1,7 @@
 package com.example.pathxplorer
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -40,7 +41,8 @@ class MainActivity : AppCompatActivity() {
             userName.text = user.name
         }
 
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFF")))
+        val colorActionBar = if (isDarkModeEnabled()) "#121212" else "#FFFFFF"
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor(colorActionBar)))
         supportActionBar?.elevation = 0f
 
         val navView: BottomNavigationView = binding.navView
@@ -55,5 +57,10 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    private fun isDarkModeEnabled(): Boolean {
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
 }
