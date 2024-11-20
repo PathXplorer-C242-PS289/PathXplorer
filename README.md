@@ -16,8 +16,8 @@ first, you need to connect project to firebase like below:
 4. click on connect to firebase
 5. follow the steps to connect the project to firebase
 6. then when you are done, Add firebase Authentication, it will add some dependencies to build.gradle project level, and app level
-7. then you need to add SHA1 and SHA256 keys to firebase project settings
-8. to get the SHA1 and SHA256 keys, follow the steps below:
+7. then you need to add `SHA1` and `SHA256` keys to firebase project settings
+8. to get the `SHA1` and `SHA256` keys, follow the steps below:
 open the project in android studio
 click on gradle on the right side of the IDE
 click on the project -> Tasks -> android -> signingReport

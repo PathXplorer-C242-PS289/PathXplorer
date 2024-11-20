@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:contentDescription="@string/consultant"
+                android:contentDescription="@string/article"
                 app:tint="@color/white"
                 app:backgroundTint="@color/blue_700"
                 android:src="@drawable/ic_launcher_foreground"
@@ -62,21 +62,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:contentDescription="@string/webinar"
-
-                app:tint="@color/white"
-                app:backgroundTint="@color/purple_300"
-                android:src="@drawable/ic_launcher_foreground"
-                app:elevation="6dp"
-                app:fabSize="normal" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:contentDescription="@string/campus"
                 app:tint="@color/white"
-                app:backgroundTint="@color/green_500"
+                app:backgroundTint="@color/purple_300"
                 android:src="@drawable/ic_launcher_foreground"
                 app:elevation="6dp"
                 app:fabSize="normal" />
