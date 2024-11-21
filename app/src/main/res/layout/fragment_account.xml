@@ -85,9 +85,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_interest"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/blue_700_18"
-                android:layout_marginTop="16dp"/>
+                android:layout_height="120dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/blue_700_18" />
 
             <LinearLayout
                 android:layout_width="match_parent"
