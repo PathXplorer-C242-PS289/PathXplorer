@@ -9,16 +9,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pathxplorer.databinding.FragmentHomeBinding
+import com.example.pathxplorer.ui.details.DetailKampusActivity
 import com.example.pathxplorer.ui.listitem.ListCampusOrMajorActivity
 import com.example.pathxplorer.ui.utils.adapter.CarouselAdapter
 import com.example.pathxplorer.ui.utils.adapter.ListAdapterWebinar
+import com.example.pathxplorer.ui.utils.generateListKampus
+import com.example.pathxplorer.ui.utils.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -26,33 +26,28 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val listKampus = homeViewModel.campus
-        binding.rvRecommendedCampus.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val listHeroAdapter = CarouselAdapter(listKampus)
-        binding.rvRecommendedCampus.adapter = listHeroAdapter
-
-        val listWebinar = homeViewModel.webinar
-        binding.rvWebinar.layoutManager = LinearLayoutManager(context)
-        val listWebinarAdapter = ListAdapterWebinar(listWebinar)
-        binding.rvWebinar.adapter = listWebinarAdapter
-
-        binding.rvRecommendedCampus.setHasFixedSize(true)
-
-        setAction()
-
-        return root
+        return binding.root
     }
 
-    private fun setAction() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val listKampus = generateListKampus()
+        binding.rvRecommendedCampus.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = CarouselAdapter(listKampus) { kampus ->
+                val intent = Intent(requireContext(), DetailKampusActivity::class.java).apply {
+                    putExtra(DetailKampusActivity.EXTRA_KAMPUS_NAME, kampus.name)
+                    putExtra(DetailKampusActivity.EXTRA_KAMPUS_LOCATION, kampus.location)
+                    putExtra(DetailKampusActivity.EXTRA_KAMPUS_IMAGE, kampus.image)
+                }
+                startActivity(intent)
+            }
+        }
+
         binding.tvSeeAllCampus.setOnClickListener {
-            val intent = Intent(context, ListCampusOrMajorActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(context, ListCampusOrMajorActivity::class.java))
         }
     }
 

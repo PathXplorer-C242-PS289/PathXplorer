@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    id ("kotlin-parcelize")
 }
 
 val client_id_auth_firebasse = gradleLocalProperties(rootDir, providers)

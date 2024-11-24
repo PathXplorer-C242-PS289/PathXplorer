@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.pathxplorer.data.repository.UserRepository
-import com.example.pathxplorer.di.Injection
+import com.example.pathxplorer.data.di.Injection
 import com.example.pathxplorer.ui.utils.viewmodel.AuthViewModel
 
 class UserViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {

@@ -35,15 +35,19 @@
             android:name=".ui.auth.LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.details.DetailKampusActivity"
+            android:exported="false"/>
+        <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

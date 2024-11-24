@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pathxplorer.databinding.ActivityDetailBinding
 import com.example.pathxplorer.ui.utils.adapter.GridAdapterCampus
 import com.example.pathxplorer.ui.utils.generateListKampus
-import com.example.pathxplorer.ui.utils.generateListMajor
 
 class ListCampusOrMajorActivity : AppCompatActivity() {
 

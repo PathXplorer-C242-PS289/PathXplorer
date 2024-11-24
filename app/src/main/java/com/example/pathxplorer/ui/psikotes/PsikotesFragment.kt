@@ -8,13 +8,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.pathxplorer.databinding.FragmentPsikotesBinding
+import com.example.pathxplorer.ui.utils.viewmodel.PsikotesViewModel
 
 class PsikotesFragment : Fragment() {
 
     private var _binding: FragmentPsikotesBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(

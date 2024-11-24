@@ -1,13 +1,8 @@
 package com.example.pathxplorer.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.pathxplorer.data.Result
-import com.example.pathxplorer.data.local.UserModel
+import com.example.pathxplorer.data.models.UserModel
 import com.example.pathxplorer.data.local.UserPreference
-import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
-import retrofit2.HttpException
 
 class UserRepository private constructor(
     private val userPreference: UserPreference

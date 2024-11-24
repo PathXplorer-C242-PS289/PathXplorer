@@ -2,7 +2,7 @@ package com.example.pathxplorer.ui.utils.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pathxplorer.data.local.UserModel
+import com.example.pathxplorer.data.models.UserModel
 import com.example.pathxplorer.data.repository.UserRepository
 import kotlinx.coroutines.launch
 
