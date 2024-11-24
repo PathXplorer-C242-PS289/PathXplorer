@@ -7,7 +7,7 @@ plugins {
 }
 
 val client_id_auth_firebasse = gradleLocalProperties(rootDir, providers)
-    .getProperty("FIREBASE_CLIENT_ID") ?: ""
+    .getProperty("FIREBASE_CLIENT_ID") ?: "452839772583-pi86o1u0gl7cs6gu9qamaad8utdnrd8n.apps.googleusercontent.com"
 
 android {
     namespace = "com.example.pathxplorer"
@@ -92,4 +92,8 @@ dependencies {
     implementation("androidx.credentials:credentials:1.2.2")
     implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
+    //Material Design
+    implementation("com.google.android.material:material:1.4.0")
+    
 }
