@@ -1,4 +1,4 @@
-package com.example.pathxplorer.ui.home
+package com.example.pathxplorer.ui.utils.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

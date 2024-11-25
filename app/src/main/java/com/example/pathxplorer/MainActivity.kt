@@ -15,7 +15,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.pathxplorer.databinding.ActivityMainBinding
 import com.example.pathxplorer.ui.auth.LoginActivity
-import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity() {
 

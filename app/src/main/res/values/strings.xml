@@ -88,4 +88,5 @@ By using our app, you consent to the terms of this Privacy Policy.
     <string name="send">Kirim</string>
     <string name="article">Article</string>
     <string name="kebijakan_privasi">Kebijakan Privasi</string>
+    <string name="hidepass">******</string>
 </resources>

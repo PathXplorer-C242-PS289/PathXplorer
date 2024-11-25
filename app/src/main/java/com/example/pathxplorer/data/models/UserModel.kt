@@ -1,4 +1,4 @@
-package com.example.pathxplorer.data.local
+package com.example.pathxplorer.data.models
 
 data class UserModel (
     val email: String,
