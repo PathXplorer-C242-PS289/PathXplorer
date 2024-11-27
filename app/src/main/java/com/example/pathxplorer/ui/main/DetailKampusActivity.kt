@@ -1,10 +1,11 @@
-package com.example.pathxplorer.ui.details
+package com.example.pathxplorer.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pathxplorer.data.models.Kampus
 import com.example.pathxplorer.databinding.ActivityDetailkampusBinding
-import com.example.pathxplorer.ui.utils.adapter.MajorAdapter
+import com.example.pathxplorer.ui.main.adapter.MajorAdapter
 
 class DetailKampusActivity : AppCompatActivity() {
 
@@ -24,15 +25,14 @@ class DetailKampusActivity : AppCompatActivity() {
     }
 
     private fun setupData() {
-        val name = intent.getStringExtra(EXTRA_KAMPUS_NAME)
-        val location = intent.getStringExtra(EXTRA_KAMPUS_LOCATION)
-        val image = intent.getIntExtra(EXTRA_KAMPUS_IMAGE, 0)
+
+        val campus = intent.getParcelableExtra<Kampus>(EXTRA_CAMPUS)
 
         binding.apply {
-            tvCampusName.text = name
-            tvCampusLocation.text = location
-            ivCampus.setImageResource(image)
-            tvCampusWebsite.text = "https://www.$name.ac.id".lowercase().replace(" ", "")
+            tvCampusName.text = campus?.name
+            tvCampusLocation.text = campus?.location
+            ivCampus.setImageResource(campus?.image ?: 0)
+            tvCampusWebsite.text = "https://www.${campus?.name}.ac.id".lowercase().replace(" ", "")
         }
     }
 
@@ -61,6 +61,7 @@ class DetailKampusActivity : AppCompatActivity() {
         const val EXTRA_KAMPUS_NAME = "extra_kampus_name"
         const val EXTRA_KAMPUS_LOCATION = "extra_kampus_location"
         const val EXTRA_KAMPUS_IMAGE = "extra_kampus_image"
+        const val EXTRA_CAMPUS = "extra_campus"
     }
 }
 
