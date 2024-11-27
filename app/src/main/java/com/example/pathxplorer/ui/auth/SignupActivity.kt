@@ -15,10 +15,9 @@ import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.lifecycleScope
 import com.example.pathxplorer.MainActivity
 import com.example.pathxplorer.R
-import com.example.pathxplorer.UserViewModelFactory
+import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.example.pathxplorer.data.models.UserModel
 import com.example.pathxplorer.databinding.ActivitySignupBinding
-import com.example.pathxplorer.ui.utils.viewmodel.AuthViewModel
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -157,7 +156,7 @@ class SignupActivity : AppCompatActivity() {
             val user = UserModel(
                 currentUser.email ?: "",
                 currentUser.displayName ?: "",
-                currentUser.uid,
+                currentUser.getIdToken(false).result?.token ?: "",
                 "google",
             )
             viewModel.saveSession(user)
