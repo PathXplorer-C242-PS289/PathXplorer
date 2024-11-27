@@ -1,10 +1,10 @@
-package com.example.pathxplorer.ui.utils.viewmodel
+package com.example.pathxplorer.ui.quiz
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class PsikotesViewModel : ViewModel() {
+class QuizViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is dashboard Fragment"

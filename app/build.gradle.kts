@@ -8,7 +8,7 @@ plugins {
 }
 
 val client_id_auth_firebasse = gradleLocalProperties(rootDir, providers)
-    .getProperty("FIREBASE_CLIENT_ID") ?: "452839772583-pi86o1u0gl7cs6gu9qamaad8utdnrd8n.apps.googleusercontent.com"
+    .getProperty("FIREBASE_CLIENT_ID") ?: ""
 
 android {
     namespace = "com.example.pathxplorer"

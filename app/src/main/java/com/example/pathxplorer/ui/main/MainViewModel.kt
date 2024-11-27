@@ -1,11 +1,11 @@
-package com.example.pathxplorer
+package com.example.pathxplorer.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.pathxplorer.data.models.UserModel
-import com.example.pathxplorer.data.repository.UserRepository
+import com.example.pathxplorer.data.UserRepository
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: UserRepository): ViewModel() {

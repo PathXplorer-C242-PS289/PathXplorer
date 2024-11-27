@@ -1,9 +1,9 @@
-package com.example.pathxplorer.data.di
+package com.example.pathxplorer.di
 
 import android.content.Context
-import com.example.pathxplorer.data.local.UserPreference
-import com.example.pathxplorer.data.local.dataStore
-import com.example.pathxplorer.data.repository.UserRepository
+import com.example.pathxplorer.data.local.datapreference.UserPreference
+import com.example.pathxplorer.data.local.datapreference.dataStore
+import com.example.pathxplorer.data.UserRepository
 
 object Injection {
     fun provideRepository(context: Context): UserRepository {

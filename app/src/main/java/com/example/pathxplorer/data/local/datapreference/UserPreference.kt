@@ -1,4 +1,4 @@
-package com.example.pathxplorer.data.local
+package com.example.pathxplorer.data.local.datapreference
 
 import android.content.Context
 import androidx.datastore.core.DataStore

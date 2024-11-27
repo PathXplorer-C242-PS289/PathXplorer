@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.pathxplorer.ui.home.HomeFragment"
+        android:name="com.example.pathxplorer.ui.main.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.pathxplorer.ui.psikotes.PsikotesFragment"
+        android:name="com.example.pathxplorer.ui.quiz.QuizFragment"
         android:label="@string/title_psikotes"
         tools:layout="@layout/fragment_psikotes" />
 
     <fragment
         android:id="@+id/navigation_account"
-        android:name="com.example.pathxplorer.ui.account.AccountFragment"
+        android:name="com.example.pathxplorer.ui.main.AccountFragment"
         android:label="@string/title_account"
         tools:layout="@layout/fragment_account" />
 </navigation>

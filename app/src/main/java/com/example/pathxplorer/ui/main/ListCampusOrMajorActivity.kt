@@ -1,4 +1,4 @@
-package com.example.pathxplorer.ui.listitem
+package com.example.pathxplorer.ui.main
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.pathxplorer.databinding.ActivityDetailBinding
-import com.example.pathxplorer.ui.utils.adapter.GridAdapterCampus
+import com.example.pathxplorer.databinding.ActivityListCampusOrMajorBinding
+import com.example.pathxplorer.ui.main.adapter.GridAdapterCampus
 import com.example.pathxplorer.ui.utils.generateListKampus
 
 class ListCampusOrMajorActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityDetailBinding
+    private lateinit var binding: ActivityListCampusOrMajorBinding
 
     companion object {
         const val TYPE_LIST = "type"
@@ -25,7 +25,7 @@ class ListCampusOrMajorActivity : AppCompatActivity() {
         supportActionBar?.elevation = 0f
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        binding = ActivityDetailBinding.inflate(layoutInflater)
+        binding = ActivityListCampusOrMajorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val type = intent.getStringExtra(TYPE_LIST)

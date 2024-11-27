@@ -1,7 +1,7 @@
-package com.example.pathxplorer.data.repository
+package com.example.pathxplorer.data
 
 import com.example.pathxplorer.data.models.UserModel
-import com.example.pathxplorer.data.local.UserPreference
+import com.example.pathxplorer.data.local.datapreference.UserPreference
 import kotlinx.coroutines.flow.Flow
 
 class UserRepository private constructor(

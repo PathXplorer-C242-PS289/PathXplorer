@@ -1,4 +1,4 @@
-package com.example.pathxplorer.ui.psikotes
+package com.example.pathxplorer.ui.quiz
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +8,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.pathxplorer.databinding.FragmentPsikotesBinding
-import com.example.pathxplorer.ui.utils.viewmodel.PsikotesViewModel
 
-class PsikotesFragment : Fragment() {
+class QuizFragment : Fragment() {
 
     private var _binding: FragmentPsikotesBinding? = null
 
@@ -21,14 +20,14 @@ class PsikotesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val psikotesViewModel =
-            ViewModelProvider(this).get(PsikotesViewModel::class.java)
+        val quizViewModel =
+            ViewModelProvider(this).get(QuizViewModel::class.java)
 
         _binding = FragmentPsikotesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textDashboard
-        psikotesViewModel.text.observe(viewLifecycleOwner) {
+        quizViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

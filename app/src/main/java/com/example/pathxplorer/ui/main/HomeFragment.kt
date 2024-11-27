@@ -1,4 +1,4 @@
-package com.example.pathxplorer.ui.home
+package com.example.pathxplorer.ui.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,15 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pathxplorer.data.models.Kampus
 import com.example.pathxplorer.databinding.FragmentHomeBinding
-import com.example.pathxplorer.ui.details.DetailKampusActivity
-import com.example.pathxplorer.ui.listitem.ListCampusOrMajorActivity
-import com.example.pathxplorer.ui.utils.adapter.CarouselAdapter
-import com.example.pathxplorer.ui.utils.adapter.ListAdapterWebinar
+import com.example.pathxplorer.ui.main.adapter.CarouselAdapter
 import com.example.pathxplorer.ui.utils.generateListKampus
-import com.example.pathxplorer.ui.utils.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment() {
 
@@ -37,10 +33,16 @@ class HomeFragment : Fragment() {
         binding.rvRecommendedCampus.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = CarouselAdapter(listKampus) { kampus ->
+
+                val campups = Kampus(
+                    kampus.name,
+                    kampus.location,
+                    kampus.image,
+                    listOf("Arsitektur", "Kedokteran", "Statistika")
+                )
+
                 val intent = Intent(requireContext(), DetailKampusActivity::class.java).apply {
-                    putExtra(DetailKampusActivity.EXTRA_KAMPUS_NAME, kampus.name)
-                    putExtra(DetailKampusActivity.EXTRA_KAMPUS_LOCATION, kampus.location)
-                    putExtra(DetailKampusActivity.EXTRA_KAMPUS_IMAGE, kampus.image)
+                    putExtra(DetailKampusActivity.EXTRA_CAMPUS, campups)
                 }
                 startActivity(intent)
             }
