@@ -34,7 +34,7 @@
                     android:id="@+id/btn_back"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/back_button"
+                    android:background="@drawable/back_button_background"
                     android:contentDescription="back button"
                     android:src="@drawable/ic_back" />
 
