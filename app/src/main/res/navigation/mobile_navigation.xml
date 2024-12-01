@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.pathxplorer.ui.quiz.QuizFragment"
+        android:name="com.example.pathxplorer.ui.quiz.QuizDashboardFragment"
         android:label="@string/title_psikotes"
-        tools:layout="@layout/fragment_psikotes" />
+        tools:layout="@layout/fragment_quiz_dashboard" />
 
     <fragment
         android:id="@+id/navigation_account"

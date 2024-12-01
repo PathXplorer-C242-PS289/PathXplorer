@@ -1,17 +1,17 @@
 package com.example.pathxplorer.ui.quiz
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.pathxplorer.databinding.FragmentPsikotesBinding
+import com.example.pathxplorer.databinding.FragmentQuizDashboardBinding
+import com.example.pathxplorer.ui.quiz.test.QuizActivity
 
-class QuizFragment : Fragment() {
+class QuizDashboardFragment : Fragment() {
 
-    private var _binding: FragmentPsikotesBinding? = null
+    private var _binding: FragmentQuizDashboardBinding? = null
 
     private val binding get() = _binding!!
 
@@ -20,16 +20,15 @@ class QuizFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val quizViewModel =
-            ViewModelProvider(this).get(QuizViewModel::class.java)
 
-        _binding = FragmentPsikotesBinding.inflate(inflater, container, false)
+        _binding = FragmentQuizDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        quizViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        binding.startTestButton.setOnClickListener {
+            val intent = Intent(activity, QuizActivity::class.java)
+            startActivity(intent)
         }
+
         return root
     }
 

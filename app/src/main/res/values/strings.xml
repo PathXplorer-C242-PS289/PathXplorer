@@ -89,4 +89,5 @@ By using our app, you consent to the terms of this Privacy Policy.
     <string name="article">Article</string>
     <string name="kebijakan_privasi">Kebijakan Privasi</string>
     <string name="hidepass">******</string>
+    <string name="index_question">%1$s / %2$s</string>
 </resources>
