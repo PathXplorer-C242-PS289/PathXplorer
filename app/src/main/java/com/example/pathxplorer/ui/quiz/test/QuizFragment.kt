@@ -1,19 +1,25 @@
 package com.example.pathxplorer.ui.quiz.test
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pathxplorer.MainActivity
 import com.example.pathxplorer.R
 import com.example.pathxplorer.data.models.Answer
 import com.example.pathxplorer.data.models.Question
 import com.example.pathxplorer.databinding.FragmentQuizBinding
 import com.example.pathxplorer.ui.quiz.QuizQuestionAdapter
 import com.example.pathxplorer.ui.quiz.QuizViewModel
+import com.example.pathxplorer.ui.utils.CustomDialog
 
 class QuizFragment : Fragment() {
 
@@ -35,6 +41,8 @@ class QuizFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.submitButton.isEnabled = false
+
+//        onBackPressedCallback()
 
         setupQuestion()
     }
@@ -79,17 +87,19 @@ class QuizFragment : Fragment() {
         binding.progressIndicator.progress = ((progress * 100)) / viewModel.questions[viewModel.indexedValue.value!!].size
     }
 
-    private fun setupAction(isEnd:Boolean) {
+    private fun setupAction(isEnd: Boolean) {
         binding.submitButton.text = if (isEnd) "Submit" else "Next"
 
         binding.submitButton.setOnClickListener {
             if (isEnd) {
+                val result = viewModel.resultAnswer()
                 val bundle = Bundle()
-                bundle.putIntegerArrayList(QuizResultFragment.RESULT_VALUE, viewModel.resultAnswer())
-                val fragment = QuizResultFragment()
-                fragment.arguments = bundle
-                it.findNavController().navigate(R.id.action_quizFragment_to_quizResultFragment, bundle)
+                bundle.putIntegerArrayList(QuizResultFragment.RESULT_VALUE, result)
 
+                val fragmentResult = QuizResultFragment()
+                fragmentResult.arguments = bundle
+                val fragmentManager = parentFragmentManager
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragmentResult, QuizResultFragment::class.java.simpleName).commit()
             } else {
                 viewModel.addIndexedValue()
                 binding.submitButton.isEnabled = false
@@ -97,6 +107,23 @@ class QuizFragment : Fragment() {
             }
         }
     }
+
+//    private fun onBackPressedCallback() {
+//        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                CustomDialog().showDialog(requireActivity(), "Exit Quiz", "If you exit, your progress will be lost. Are you sure you want to exit?", "Yes", "No") { positive ->
+//                    if (positive) {
+//                        Log.d("QuizFragment", "Exit the quiz")
+//                    } else {
+//                        Log.e("QuizFragment", "Can't exit the quiz")
+//                    }
+//                }
+//
+////                val intent = Intent(context, MainActivity::class.java)
+////                startActivity(intent)
+//            }
+//        })
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -1,12 +1,15 @@
 package com.example.pathxplorer.ui.quiz.test
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pathxplorer.MainActivity
 import com.example.pathxplorer.databinding.FragmentQuizResultBinding
 import com.example.pathxplorer.ui.quiz.ResultAdapter
 
@@ -36,6 +39,8 @@ class QuizResultFragment : Fragment() {
 
         val result = setResultKey(result_val!!)
 
+//        onBackPressedCallback()
+
         // view
         setupResult(result)
     }
@@ -46,6 +51,15 @@ class QuizResultFragment : Fragment() {
         val adapter = ResultAdapter(list)
         binding.rvResultQuiz.adapter = adapter
     }
+
+//    private fun onBackPressedCallback() {
+//        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                val intent = Intent(context, MainActivity::class.java)
+//                startActivity(intent)
+//            }
+//        })
+//    }
 
     private fun setResultKey(result: ArrayList<Int>): MutableMap<Int, Int> {
         val map = mutableMapOf<Int, Int>()

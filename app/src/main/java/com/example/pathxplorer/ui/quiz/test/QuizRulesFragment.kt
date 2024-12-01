@@ -1,6 +1,7 @@
 package com.example.pathxplorer.ui.quiz.test
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import com.example.pathxplorer.R
 import com.example.pathxplorer.databinding.FragmentQuizRulesBinding
+import com.example.pathxplorer.ui.utils.CustomDialog
 
 class QuizRulesFragment : Fragment() {
 
@@ -27,7 +29,16 @@ class QuizRulesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.startQuizButton.setOnClickListener {
-            it.findNavController().navigate(R.id.action_quizRulesFragment_to_quizFragment)
+            CustomDialog().showDialog(requireActivity(), "Start Quiz", "Are you sure you want to start the quiz?", "Yes", "No") { positive ->
+                if (positive) {
+                    val quizFragment = QuizFragment()
+                    val fragmentManager = parentFragmentManager
+                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, quizFragment, QuizFragment::class.java.simpleName).commit()
+//                    view.findNavController().navigate(R.id.action_quizRulesFragment_to_quizFragment)
+                } else {
+                    Log.d("QuizRulesFragment", "Can't start the quiz")
+                }
+            }
         }
     }
 
