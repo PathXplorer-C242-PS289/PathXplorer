@@ -85,9 +85,21 @@ If you have any questions about our Privacy Policy, please contact us at [email/
 By using our app, you consent to the terms of this Privacy Policy.
 
     </string>
+    <string name="quiz_rules">
+        1. Tes ini terdiri dari 2 bagian : \n
+        \t\t a. Tes mengenali minat (10soal) \n
+        \t\t b. Tes Mengenali kepribadian (10 soal) \n\n
+        2. Pastikan kamu berada dalam lingkungan yang tenang dan kondusif \n\n
+        3. Jawablan setiap Pertanyaan dengan jujur berdasarkan preferensi dan pengalamanmu \n\n
+        4. Pertimbangkan baik-baik jawabanmu dan jangan terburu-buru \n\n
+        5. Hindari menjawab netral untuk mendapatkan hasil yang optimal \n\n
+        6. Ingatlah bahwa tidak ada jawaban yang salah \n\n
+    </string>
     <string name="send">Kirim</string>
     <string name="article">Article</string>
     <string name="kebijakan_privasi">Kebijakan Privasi</string>
     <string name="hidepass">******</string>
     <string name="index_question">%1$s / %2$s</string>
+    <string name="quiz_guidience">Peraturan Tes</string>
+    <string name="start_quiz">Siap, Dimengerti</string>
 </resources>
