@@ -1,6 +1,7 @@
 package com.example.pathxplorer.ui.utils
 
 import com.example.pathxplorer.R
+import com.example.pathxplorer.data.models.Question
 
 // this is nessasary before API from CC is Complete
 
@@ -77,3 +78,20 @@ val filterKampus = listOf(
     "Religious",
     "Foreign"
 )
+
+fun generateDummyQuestionV2(): ArrayList<MutableList<Question>> {
+    val dummyQuestion = ArrayList<MutableList<Question>>()
+    if (dummyQuestion.isNotEmpty()) {
+        return dummyQuestion
+    }
+    var numberQ = 1
+    for (i in 1..3) {
+        val questionList = mutableListOf<Question>()
+        for (j in 1..5) {
+            questionList.add(Question(i, "Question $numberQ", numberQ))
+            numberQ++
+        }
+        dummyQuestion.add(questionList)
+    }
+    return dummyQuestion
+}

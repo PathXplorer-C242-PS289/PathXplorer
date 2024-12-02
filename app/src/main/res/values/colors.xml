@@ -23,4 +23,9 @@
     <color name="purple_300">#8044FF</color>
     <color name="yellow_500">#FFC107</color>
     <color name="blue_700_18">#2F145FBC</color>
+    <color name="blue_700_50">#2F145FBC</color>
+
+    <color name="background_day">#FFFFFF</color>
+    <color name="background_night">#121212</color>
+
 </resources>

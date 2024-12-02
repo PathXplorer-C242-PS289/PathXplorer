@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -17,10 +16,13 @@
         android:theme="@style/Theme.PathXplorer"
         tools:targetApi="31">
         <activity
+            android:name=".ui.quiz.test.QuizActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.auth.NewPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.listitem.ListCampusOrMajorActivity"
+            android:name=".ui.main.ListCampusOrMajorActivity"
             android:exported="false" />
         <activity
             android:name=".ui.auth.ForgotPasswordActivity"
@@ -35,8 +37,8 @@
             android:name=".ui.auth.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.details.DetailKampusActivity"
-            android:exported="false"/>
+            android:name=".ui.main.DetailKampusActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.onboardsplash.SplashActivity"
             android:exported="true">
@@ -47,15 +49,13 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

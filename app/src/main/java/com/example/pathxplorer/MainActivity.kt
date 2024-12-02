@@ -15,12 +15,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.pathxplorer.databinding.ActivityMainBinding
 import com.example.pathxplorer.ui.auth.LoginActivity
+import com.example.pathxplorer.ui.main.MainViewModel
+import com.example.pathxplorer.ui.utils.UserViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel by viewModels<MainViewModel> {
-        UserViewModelFactory.getInstance(this)
-    }
 
     private lateinit var binding: ActivityMainBinding
 
@@ -30,19 +29,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.getSession().observe(this) { user ->
-            if (!user.isLogin) {
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            }
-
-            val userName = findViewById<TextView>(R.id.tv_user_name)
-            userName.text = user.name
-        }
-
         val colorActionBar = if (isDarkModeEnabled()) "#121212" else "#FFFFFF"
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor(colorActionBar)))
         supportActionBar?.elevation = 0f
+
+        val backgroundColor = if (isDarkModeEnabled()) "#121212" else "#FFFFFF"
+        binding.container.setBackgroundColor(Color.parseColor(backgroundColor))
 
         val navView: BottomNavigationView = binding.navView
 

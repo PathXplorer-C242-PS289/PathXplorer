@@ -25,17 +25,18 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_width="60dp"
+                android:gravity="center"
+                android:layout_height="60dp"
                 app:layout_collapseMode="pin">
 
                 <ImageButton
                     android:id="@+id/btn_back"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/bg_rounded"
-                    android:src="@drawable/ic_back"
-                    android:padding="4dp"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/back_button_background"
+                    android:contentDescription="back button"
+                    android:src="@drawable/ic_back" />
 
             </androidx.appcompat.widget.Toolbar>
 

@@ -17,12 +17,12 @@
             android:id="@+id/iv_logo"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:src="@drawable/ic_launcher_foreground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/CircleImageView"/>
+            app:shapeAppearanceOverlay="@style/CircleImageView" />
 
         <TextView
             android:id="@+id/tv_welcome"
@@ -129,34 +129,34 @@
 
         <LinearLayout
             android:id="@+id/btn_login_google"
-            android:padding="6dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="19dp"
             android:layout_marginEnd="32dp"
-            android:orientation="horizontal"
-            android:gravity="center"
             android:background="@color/gray_100"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_or" >
+            app:layout_constraintTop_toBottomOf="@+id/tv_or">
 
             <ImageView
                 android:layout_width="25sp"
                 android:layout_height="25sp"
+                android:layout_marginEnd="8dp"
                 android:contentDescription="@string/google_icon"
-                android:src="@drawable/ic_google"
-                android:layout_marginEnd="8dp"/>
+                android:src="@drawable/ic_google" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textStyle="bold"
+                android:text="@string/signin_with_google"
                 android:textColor="@color/black"
-                android:text="@string/signin_with_google"/>
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -164,17 +164,18 @@
             android:id="@+id/btn_daftar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_login">
 
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dont_have_account"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_daftar"
@@ -183,7 +184,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:text="@string/signin_now"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
