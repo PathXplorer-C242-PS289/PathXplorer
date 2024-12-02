@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pathxplorer.R
 import com.example.pathxplorer.ui.utils.Kampus
 
-
-// this is nessasary before API from CC is Complete
 class CarouselAdapter(
     private val listKampus: ArrayList<Kampus>,
     private val onClick: (Kampus) -> Unit
