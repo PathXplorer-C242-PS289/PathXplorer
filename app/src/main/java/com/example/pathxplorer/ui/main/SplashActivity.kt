@@ -1,4 +1,4 @@
-package com.example.pathxplorer.ui.onboardsplash
+package com.example.pathxplorer.ui.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,7 @@ import com.example.pathxplorer.MainActivity
 import com.example.pathxplorer.R
 import com.example.pathxplorer.data.models.OnboardingItem
 import com.example.pathxplorer.databinding.ActivitySplashBinding
+import com.example.pathxplorer.ui.main.adapter.SplashAdapter
 
 class SplashActivity : AppCompatActivity() {
 

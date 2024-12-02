@@ -1,4 +1,4 @@
-package com.example.pathxplorer.ui.onboardsplash
+package com.example.pathxplorer.ui.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
