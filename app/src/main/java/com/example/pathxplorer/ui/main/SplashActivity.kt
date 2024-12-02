@@ -67,17 +67,17 @@ class SplashActivity : AppCompatActivity() {
             OnboardingItem(
                 title = "Choose Your Path",
                 description = "Amid many options, discover the path that aligns with your true interests and guides you toward your future.",
-                image = R.drawable.splashimg1
+                image = R.drawable.splash_img1
             ),
             OnboardingItem(
                 title = "Find Your True Path",
                 description = "Find a path that suits your interests and potential, and make the right decisions for a brighter future.",
-                image = R.drawable.splashimg2
+                image = R.drawable.splash_img2
             ),
             OnboardingItem(
                 title = "Step Confidence",
                 description = "Follow the path that aligns with your goals, and move forward with certainty towards your dreams.",
-                image = R.drawable.splashimg3
+                image = R.drawable.splash_img3
             )
         )
 
