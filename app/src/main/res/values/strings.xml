@@ -89,4 +89,9 @@ By using our app, you consent to the terms of this Privacy Policy.
     <string name="article">Article</string>
     <string name="kebijakan_privasi">Kebijakan Privasi</string>
     <string name="hidepass">******</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="get_started">Get Started</string>
+    <string name="onboarding_image">Onboarding Image</string>
+    <string name="or">OR</string>
 </resources>
