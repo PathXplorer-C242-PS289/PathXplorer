@@ -1,6 +1,5 @@
 package com.example.pathxplorer.ui.quiz.test
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pathxplorer.MainActivity
 import com.example.pathxplorer.databinding.FragmentQuizResultBinding
 import com.example.pathxplorer.ui.quiz.ResultAdapter
 
@@ -35,11 +33,15 @@ class QuizResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val result_val: ArrayList<Int>? = arguments?.getIntegerArrayList(RESULT_VALUE)
+        binding.toolbar.setNavigationOnClickListener {
+            requireActivity().finish()
+        }
 
-        val result = setResultKey(result_val!!)
+        val resultVal = arguments?.getIntegerArrayList(RESULT_VALUE)
 
-//        onBackPressedCallback()
+        val result = setResultKey(resultVal!!)
+
+        onBackPressedCallback()
 
         // view
         setupResult(result)
@@ -52,13 +54,24 @@ class QuizResultFragment : Fragment() {
         binding.rvResultQuiz.adapter = adapter
     }
 
-//    private fun onBackPressedCallback() {
-//        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                val intent = Intent(context, MainActivity::class.java)
-//                startActivity(intent)
+    private fun onBackPressedCallback() {
+        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        })
+    }
+
+//    override fun onContextItemSelected(item: MenuItem): Boolean {
+//
+//        when (item.itemId) {
+//            android.R.id.home -> {
+//
 //            }
-//        })
+//        }
+//
+//        return super.onContextItemSelected(item)
+//
 //    }
 
     private fun setResultKey(result: ArrayList<Int>): MutableMap<Int, Int> {

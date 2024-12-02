@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import com.example.pathxplorer.R
 import com.example.pathxplorer.databinding.FragmentQuizRulesBinding
 import com.example.pathxplorer.ui.utils.CustomDialog

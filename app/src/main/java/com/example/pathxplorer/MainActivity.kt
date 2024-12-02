@@ -33,6 +33,9 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor(colorActionBar)))
         supportActionBar?.elevation = 0f
 
+        val backgroundColor = if (isDarkModeEnabled()) "#121212" else "#FFFFFF"
+        binding.container.setBackgroundColor(Color.parseColor(backgroundColor))
+
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)

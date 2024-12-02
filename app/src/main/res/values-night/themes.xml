@@ -32,4 +32,9 @@
     <style name="BlueAnchor.Bold">
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="ThemeOverlay.AppCompat.Dark.ActionBar" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:background">@color/black</item>
+    </style>
 </resources>

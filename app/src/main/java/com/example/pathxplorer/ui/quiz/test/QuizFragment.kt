@@ -1,6 +1,5 @@
 package com.example.pathxplorer.ui.quiz.test
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,10 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pathxplorer.MainActivity
 import com.example.pathxplorer.R
 import com.example.pathxplorer.data.models.Answer
 import com.example.pathxplorer.data.models.Question
@@ -42,7 +38,7 @@ class QuizFragment : Fragment() {
 
         binding.submitButton.isEnabled = false
 
-//        onBackPressedCallback()
+        onBackPressedCallback()
 
         setupQuestion()
     }
@@ -108,22 +104,19 @@ class QuizFragment : Fragment() {
         }
     }
 
-//    private fun onBackPressedCallback() {
-//        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                CustomDialog().showDialog(requireActivity(), "Exit Quiz", "If you exit, your progress will be lost. Are you sure you want to exit?", "Yes", "No") { positive ->
-//                    if (positive) {
-//                        Log.d("QuizFragment", "Exit the quiz")
-//                    } else {
-//                        Log.e("QuizFragment", "Can't exit the quiz")
-//                    }
-//                }
-//
-////                val intent = Intent(context, MainActivity::class.java)
-////                startActivity(intent)
-//            }
-//        })
-//    }
+    private fun onBackPressedCallback() {
+        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                CustomDialog().showDialog(requireActivity(), "Exit Quiz", "If you exit, your progress will be lost. Are you sure you want to exit?", "Yes", "No") { positive ->
+                    if (positive) {
+                        requireActivity().finish()
+                    } else {
+                        Log.e("QuizFragment", "Can't exit the quiz")
+                    }
+                }
+            }
+        })
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
