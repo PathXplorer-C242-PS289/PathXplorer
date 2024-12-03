@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pathxplorer.databinding.ActivityListCampusOrMajorBinding
@@ -21,12 +22,20 @@ class ListCampusOrMajorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFF")))
-        supportActionBar?.elevation = 0f
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.hide()
+//        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFF")))
+//        supportActionBar?.elevation = 0f
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding = ActivityListCampusOrMajorBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val actionBar = binding.toolbar
+        actionBar.setBackgroundColor(Color.parseColor("#FFFFFF"))
+        actionBar.elevation = 0f
+        actionBar.setNavigationOnClickListener {
+            finish()
+        }
 
         val type = intent.getStringExtra(TYPE_LIST)
 

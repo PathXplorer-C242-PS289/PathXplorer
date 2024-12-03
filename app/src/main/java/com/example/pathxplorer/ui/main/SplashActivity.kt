@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
@@ -12,17 +13,32 @@ import com.example.pathxplorer.MainActivity
 import com.example.pathxplorer.R
 import com.example.pathxplorer.data.models.OnboardingItem
 import com.example.pathxplorer.databinding.ActivitySplashBinding
+import com.example.pathxplorer.ui.auth.LoginActivity
 import com.example.pathxplorer.ui.main.adapter.SplashAdapter
+import com.example.pathxplorer.ui.utils.UserViewModelFactory
 
 class SplashActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashBinding
     private lateinit var onboardingAdapter: SplashAdapter
 
+    private val viewModel by viewModels<MainViewModel> {
+        UserViewModelFactory.getInstance(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel.getSession().observe(this) { user ->
+            if (user.isLogin) {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+        }
+
+        supportActionBar?.hide()
 
         setupOnboardingItems()
         setupIndicators()
@@ -41,13 +57,13 @@ class SplashActivity : AppCompatActivity() {
             if (binding.SplashViewPager.currentItem + 1 < onboardingAdapter.itemCount) {
                 binding.SplashViewPager.currentItem += 1
             } else {
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
         }
 
         binding.buttonSkip.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
     }
