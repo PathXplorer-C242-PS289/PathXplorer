@@ -57,9 +57,22 @@ class QuizQuestionAdapter: ListAdapter<Question, QuizQuestionAdapter.QuizAdapter
     override fun onBindViewHolder(holder: QuizAdapterViewHolder, position: Int) {
         holder.bind(getItem(position))
 
-        holder.radioGroup.setOnCheckedChangeListener(null)
-        holder.radioGroup.clearCheck()
-        holder.checkedIndicator.setImageResource(R.drawable.ic_unchecked)
+        if (getItem(position).isChecked) {
+            holder.radioGroup.check(
+                when (getItem(position).value) {
+                    1 -> R.id.answer_1
+                    2 -> R.id.answer_2
+                    3 -> R.id.answer_3
+                    4 -> R.id.answer_4
+                    else -> R.id.answer_5
+                }
+            )
+            holder.checkedIndicator.setImageResource(R.drawable.ic_checked)
+        } else {
+            holder.radioGroup.setOnCheckedChangeListener(null)
+            holder.radioGroup.clearCheck()
+            holder.checkedIndicator.setImageResource(R.drawable.ic_unchecked)
+        }
 
         holder.radioGroup.setOnCheckedChangeListener { radioGroup, i ->
             val radioChecked = radioGroup.findViewById<RadioButton>(i)

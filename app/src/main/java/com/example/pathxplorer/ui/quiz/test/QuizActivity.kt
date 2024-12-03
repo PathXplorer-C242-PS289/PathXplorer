@@ -3,6 +3,7 @@ package com.example.pathxplorer.ui.quiz.test
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.FrameLayout
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -17,7 +18,7 @@ class QuizActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
-
+//        enableEdgeToEdge()
         supportActionBar?.hide()
     }
 }

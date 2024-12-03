@@ -1,5 +1,6 @@
 package com.example.pathxplorer.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -45,8 +46,10 @@ class AccountFragment : Fragment() {
             viewModel.getSession().observe(viewLifecycleOwner) { user ->
                 if (user.provider !== "credential") {
                     signOutGoogle()
+//                    startActivity(Intent(requireActivity(), SplashActivity::class.java))
                 } else {
                     viewModel.logout()
+//                    startActivity(Intent(requireActivity(), SplashActivity::class.java))
                 }
             }
         }
