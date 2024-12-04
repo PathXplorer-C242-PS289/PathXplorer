@@ -40,6 +40,11 @@
             android:name=".ui.main.DetailKampusActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.main.ProfileSettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.PathXplorer.NoActionBar"/>
+        <activity
+            android:name=".ui.onboardsplash.SplashActivity"
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
