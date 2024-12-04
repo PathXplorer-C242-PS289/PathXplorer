@@ -18,4 +18,10 @@ class MainViewModel(private val repository: UserRepository): ViewModel() {
             repository.logout()
         }
     }
+
+    fun saveSession(user: UserModel) {
+        viewModelScope.launch {
+            repository.saveSession(user)
+        }
+    }
 }
