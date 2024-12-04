@@ -3,15 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <!-- if enable edgetoedge is enable use 100dp for height bottom nav, if not use 80 dp for height bottom nav -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"
         android:layout_height="80dp"
         app:labelVisibilityMode="labeled"
         android:fadeScrollbars="true"
+        app:backgroundTint="@color/white"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
         app:itemActiveIndicatorStyle="@style/ActiveIndicator"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -24,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
+        android:layout_marginTop="32dp"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -5,6 +5,9 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+
+import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -15,10 +18,15 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.pathxplorer.databinding.ActivityMainBinding
 import com.example.pathxplorer.ui.auth.LoginActivity
 import com.example.pathxplorer.ui.main.MainViewModel
+import com.example.pathxplorer.ui.main.SplashActivity
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 
 
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel by viewModels<MainViewModel> {
+        UserViewModelFactory.getInstance(this)
+    }
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel by viewModels<MainViewModel> {
@@ -28,8 +36,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel.getSession().observe(this) { user ->
+            if (!user.isLogin) {
+                startActivity(Intent(this, SplashActivity::class.java))
+                finish()
+            }
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
@@ -41,9 +57,13 @@ class MainActivity : AppCompatActivity() {
         val colorActionBar = if (isDarkModeEnabled()) "#121212" else "#FFFFFF"
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor(colorActionBar)))
         supportActionBar?.elevation = 0f
+        supportActionBar?.hide()
+        
+//        enableEdgeToEdge()
 
-        val backgroundColor = if (isDarkModeEnabled()) "#121212" else "#FFFFFF"
-        binding.container.setBackgroundColor(Color.parseColor(backgroundColor))
+//        val colorActionBar = if (isDarkModeEnabled()) "#121212" else "#FFFFFF"
+//        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#ffffff")))
+//        supportActionBar?.elevation = 0f
 
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -56,8 +76,8 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    private fun isDarkModeEnabled(): Boolean {
-        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return currentNightMode == Configuration.UI_MODE_NIGHT_YES
-    }
+//    private fun isDarkModeEnabled(): Boolean {
+//        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+//        return currentNightMode == Configuration.UI_MODE_NIGHT_YES
+//    }
 }

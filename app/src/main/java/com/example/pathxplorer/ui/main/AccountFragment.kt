@@ -50,6 +50,15 @@ class AccountFragment : Fragment() {
                 binding.apply {
                     tvUserName.text = user.name
                     tvUserEmail.text = user.email
+
+        binding.btnLogout.setOnClickListener {
+            viewModel.getSession().observe(viewLifecycleOwner) { user ->
+                if (user.provider !== "credential") {
+                    signOutGoogle()
+//                    startActivity(Intent(requireActivity(), SplashActivity::class.java))
+                } else {
+                    viewModel.logout()
+//                    startActivity(Intent(requireActivity(), SplashActivity::class.java))
                 }
             }
         }

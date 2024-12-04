@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pathxplorer.data.models.Kampus
 import com.example.pathxplorer.databinding.FragmentHomeBinding
-import com.example.pathxplorer.ui.auth.LoginActivity
 import com.example.pathxplorer.ui.main.adapter.CarouselAdapter
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.example.pathxplorer.ui.utils.generateListKampus
@@ -37,11 +36,12 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getSession().observe(viewLifecycleOwner) { user ->
-            if (!user.isLogin) {
-                startActivity(Intent(requireContext(), LoginActivity::class.java))
-                requireActivity().finish()
+            val userNameDisplay = if (user.name.split(" ").size > 2) {
+                user.name.split(" ")[0] + " " + user.name.split(" ")[1]
+            } else {
+                user.name
             }
-            binding.tvUserName.text = user.name
+            binding.tvUserName.text = "Welcome, ${userNameDisplay}"
         }
 
         val listKampus = generateListKampus()
