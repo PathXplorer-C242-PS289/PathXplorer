@@ -1,4 +1,4 @@
-package com.example.pathxplorer.di
+package com.example.pathxplorer.service
 
 import android.content.Context
 import com.example.pathxplorer.data.local.datapreference.UserPreference

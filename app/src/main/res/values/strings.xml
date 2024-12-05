@@ -107,5 +107,15 @@ By using our app, you consent to the terms of this Privacy Policy.
     <string name="index_question">%1$s / %2$s</string>
     <string name="quiz_guidience">Peraturan Tes</string>
     <string name="start_quiz">Siap, Dimengerti</string>
+    <string name="unknown_event">Event information unavailable</string>
+    <string name="unknown_owner">Organizer information unavailable</string>
+    <string name="unknown_time">Time not specified</string>
+    <string name="event_link_not_available">Event link is not available</string>
+    <string name="unable_to_open_link">Unable to open link</string>
+    <string name="quota_format">Available slots: %d</string>
+    <string name="welcome_user">Welcome, %1$s</string>
+    <string name="webinar_details">Webinar Details</string>
+    <string name="no_webinars_available">No webinars available at the moment</string>
+    <string name="error_loading_webinars">Failed to load webinars</string>
 
 </resources>
