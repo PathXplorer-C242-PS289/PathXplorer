@@ -1,14 +1,14 @@
 package com.example.pathxplorer.data
 
 import com.example.pathxplorer.data.models.WebinarModel
-import com.example.pathxplorer.service.RetrofitInstance
+import com.example.pathxplorer.service.WebinarRetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class WebinarRepository private constructor() {
     suspend fun getWebinars(): Result<List<WebinarModel>> = withContext(Dispatchers.IO) {
         try {
-            val response = RetrofitInstance.eventService.getActiveEvents()
+            val response = WebinarRetrofitInstance.eventService.getActiveEvents()
             if (response.isSuccessful) {
                 val webinars = response.body()?.listEvents ?: emptyList()
                 Result.Success(webinars)
@@ -22,7 +22,7 @@ class WebinarRepository private constructor() {
 
     suspend fun getWebinarDetail(id: Int): Result<WebinarModel> = withContext(Dispatchers.IO) {
         try {
-            val response = RetrofitInstance.eventService.getEventDetails(id)
+            val response = WebinarRetrofitInstance.eventService.getEventDetails(id)
             if (response.isSuccessful) {
                 val webinar = response.body()?.event
                 if (webinar != null) {

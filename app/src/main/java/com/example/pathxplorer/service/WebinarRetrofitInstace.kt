@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-object RetrofitInstance {
+object WebinarRetrofitInstance {
     private const val BASE_URL = "https://event-api.dicoding.dev/"
 
     private val logging = HttpLoggingInterceptor().apply {
@@ -25,5 +25,5 @@ object RetrofitInstance {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val eventService: ApiService = retrofit.create(ApiService::class.java)
+    val eventService: WebinarApiService = retrofit.create(WebinarApiService::class.java)
 }
