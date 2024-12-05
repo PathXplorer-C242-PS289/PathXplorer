@@ -1,4 +1,4 @@
-package com.example.pathxplorer.service
+package com.example.pathxplorer.service.webinar
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

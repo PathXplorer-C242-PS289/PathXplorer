@@ -1,4 +1,4 @@
-package com.example.pathxplorer.service
+package com.example.pathxplorer.service.webinar
 
 import com.example.pathxplorer.data.models.WebinarDetailResponse
 import com.example.pathxplorer.data.models.WebinarResponse

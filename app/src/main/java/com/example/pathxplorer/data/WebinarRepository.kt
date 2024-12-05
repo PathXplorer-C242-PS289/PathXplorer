@@ -1,7 +1,7 @@
 package com.example.pathxplorer.data
 
 import com.example.pathxplorer.data.models.WebinarModel
-import com.example.pathxplorer.service.WebinarRetrofitInstance
+import com.example.pathxplorer.service.webinar.WebinarRetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

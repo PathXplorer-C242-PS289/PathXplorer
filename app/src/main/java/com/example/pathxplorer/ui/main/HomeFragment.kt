@@ -100,14 +100,14 @@ class HomeFragment : Fragment() {
             when (result) {
                 is Result.Success<List<WebinarModel>> -> {
                     binding.webinarProgressBar.visibility = View.GONE
-                    val webinars = ArrayList(result.data)
-                    if (webinars.isEmpty()) {
+                    val limitedWebinars = ArrayList(result.data.take(3))
+                    if (limitedWebinars.isEmpty()) {
                         binding.rvWebinar.visibility = View.GONE
                         binding.tvNoWebinars.visibility = View.VISIBLE
                     } else {
                         binding.rvWebinar.visibility = View.VISIBLE
                         binding.tvNoWebinars.visibility = View.GONE
-                        webinarAdapter.updateData(webinars)
+                        webinarAdapter.updateData(limitedWebinars)
                     }
                 }
                 is Result.Error -> {
