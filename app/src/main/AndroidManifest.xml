@@ -43,6 +43,10 @@
             android:name=".ui.main.DetailKampusActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.main.DetailWebinarActivity"
+            android:theme="@style/Theme.PathXplorer.NoActionBar"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.ProfileSettingsActivity"
             android:exported="false"
             android:theme="@style/Theme.PathXplorer.NoActionBar" />

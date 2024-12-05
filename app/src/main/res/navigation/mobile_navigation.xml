@@ -5,11 +5,6 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.pathxplorer.ui.main.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -22,4 +17,19 @@
         android:name="com.example.pathxplorer.ui.main.AccountFragment"
         android:label="@string/title_account"
         tools:layout="@layout/fragment_account" />
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.pathxplorer.ui.main.HomeFragment"
+        android:label="@string/title_home">
+
+        <action
+            android:id="@+id/action_navigation_home_to_webinarFragment"
+            app:destination="@id/webinarFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/webinarFragment"
+        android:name="com.example.pathxplorer.ui.main.WebinarFragment"
+        android:label="WebinarFragment" />
 </navigation>
