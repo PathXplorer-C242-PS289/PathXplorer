@@ -1,6 +1,7 @@
 package com.example.pathxplorer.ui.utils
 
 import com.example.pathxplorer.R
+import com.example.pathxplorer.data.models.DailyQuizQuestion
 import com.example.pathxplorer.data.models.Question
 
 // this is nessasary before API from CC is Complete
@@ -94,4 +95,25 @@ fun generateDummyQuestionV2(): ArrayList<MutableList<Question>> {
         dummyQuestion.add(questionList)
     }
     return dummyQuestion
+}
+
+fun generateDummyDailyQuizQuestion(): ArrayList<DailyQuizQuestion> {
+    val dummyDailyQuizQuestion = ArrayList<DailyQuizQuestion>()
+    if (dummyDailyQuizQuestion.isNotEmpty()) {
+        return dummyDailyQuizQuestion
+    }
+    for (i in 1..5) {
+        dummyDailyQuizQuestion.add(
+            DailyQuizQuestion(
+                "Question $i",
+                "Option 1",
+                "Option 2",
+                "Option 3",
+                "Option 4",
+                1,
+                "Description $i"
+            )
+        )
+    }
+    return dummyDailyQuizQuestion
 }

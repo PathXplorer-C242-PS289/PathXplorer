@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:id="@+id/question_item_view"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
@@ -42,31 +40,16 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/answers_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:weightSum="100"
-        android:layout_weight="70"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/question_text_view">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_marginStart="8dp"
-            android:text="Not Agree"
-            android:textSize="12sp" />
 
         <RadioGroup
             android:id="@+id/answers_radio_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical">
 
             <!--                <LinearLayout-->
             <!--                    android:layout_weight="10"-->
@@ -78,7 +61,8 @@
             <RadioButton
                 android:id="@+id/answer_1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Option 1" />
 
             <!--                </LinearLayout>-->
 
@@ -92,7 +76,8 @@
             <RadioButton
                 android:id="@+id/answer_2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Option 2"/>
 
             <!--                </LinearLayout>-->
 
@@ -106,7 +91,8 @@
             <RadioButton
                 android:id="@+id/answer_3"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Option 3"/>
 
             <!--                </LinearLayout>-->
 
@@ -120,7 +106,8 @@
             <RadioButton
                 android:id="@+id/answer_4"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Option 4"/>
 
             <!--                </LinearLayout>-->
 
@@ -134,20 +121,11 @@
             <RadioButton
                 android:id="@+id/answer_5"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Option 5"/>
 
             <!--                </LinearLayout>-->
 
         </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_marginEnd="8dp"
-            android:text="Agree"
-            android:textSize="12sp" />
-
-    </LinearLayout>
 
 </LinearLayout>

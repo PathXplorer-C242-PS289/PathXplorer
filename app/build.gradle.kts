@@ -88,6 +88,9 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
 
+    // async http
+    implementation("com.loopj.android:android-async-http:1.4.11")
+
     // firebase auth
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("androidx.credentials:credentials:1.2.2")
