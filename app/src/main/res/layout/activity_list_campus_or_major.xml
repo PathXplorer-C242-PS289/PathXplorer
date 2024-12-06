@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".ui.main.ListCampusOrMajorActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,10 +24,9 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/white"
+                style="@style/navColor"
                 app:navigationIcon="@drawable/ic_back"
-                app:title="Quiz Result"
-                app:titleTextColor="@color/black" />
+                app:title="Quiz Result" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

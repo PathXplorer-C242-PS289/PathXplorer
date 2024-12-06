@@ -37,9 +37,6 @@ class QuizResultFragment : Fragment() {
             requireActivity().finish()
         }
 
-        binding.toolbar.setBackgroundColor(resources.getColor(android.R.color.white))
-        binding.toolbar.setTitleTextColor(resources.getColor(android.R.color.black))
-
         val resultVal = arguments?.getIntegerArrayList(RESULT_VALUE)
 
         val result = setResultKey(resultVal!!)

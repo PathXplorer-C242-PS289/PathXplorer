@@ -8,12 +8,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
             app:navigationIcon="@drawable/ic_back"
+            style="@style/navColor"
             app:title="Profile Settings"
             app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"/>
 

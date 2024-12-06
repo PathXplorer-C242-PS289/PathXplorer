@@ -31,8 +31,6 @@ class ListCampusOrMajorActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val actionBar = binding.toolbar
-        actionBar.setBackgroundColor(Color.parseColor("#FFFFFF"))
-        actionBar.elevation = 0f
         actionBar.setNavigationOnClickListener {
             finish()
         }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/daily_quest_navigation"
+    app:startDestination="@id/dailyDashboardFragment">
+
+    <fragment
+        android:id="@+id/dailyDashboardFragment"
+        android:name="com.example.pathxplorer.ui.quiz.dailyquest.DailyDashboardFragment"
+        android:label="fragment_daily_dashboard"
+        tools:layout="@layout/fragment_daily_dashboard" />
+    <fragment
+        android:id="@+id/dailyQuizFragment"
+        android:name="com.example.pathxplorer.ui.quiz.dailyquest.DailyQuizFragment"
+        android:label="fragment_daily_quiz"
+        tools:layout="@layout/fragment_daily_quiz" />
+    <fragment
+        android:id="@+id/dailyResultFragment"
+        android:name="com.example.pathxplorer.ui.quiz.dailyquest.DailyResultFragment"
+        android:label="fragment_daily_result"
+        tools:layout="@layout/fragment_daily_result" />
+</navigation>

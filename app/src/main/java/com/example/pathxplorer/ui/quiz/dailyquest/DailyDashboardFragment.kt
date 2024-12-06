@@ -25,6 +25,10 @@ class DailyDashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        binding.startButton.setOnClickListener {
+            val dailyQuizFragment = DailyQuizFragment()
+            val fragmentManager = parentFragmentManager
+            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, dailyQuizFragment, DailyQuizFragment::class.java.simpleName).commit()
+        }
     }
 }

@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".ui.auth.OTPVerificationActivity"
     android:orientation="vertical">
 
@@ -49,7 +48,7 @@
         <EditText
             android:id="@+id/edt_code_otp"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
             android:background="@drawable/bg_rounded"
             android:gravity="center"
             android:hint="@string/hidepass"
@@ -76,6 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_marginTop="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp">
 
