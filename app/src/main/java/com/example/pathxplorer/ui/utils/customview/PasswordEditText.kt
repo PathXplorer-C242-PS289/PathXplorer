@@ -31,6 +31,12 @@ class PasswordEditText : TextInputEditText {
                 if (!s.isNullOrEmpty() && s.length < 8) {
                     error = "Password must be at least 8 characters"
                 }
+                if (!s.isNullOrEmpty() && (s.length < 8
+                            || !s.any { it.isUpperCase() }
+                            || !s.any { !it.isLetterOrDigit() }
+                            || !s.any { it.isDigit() })) {
+                    error = "Password must be at least 8 characters, contain at least one uppercase letter, one digit, and one special character"
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {}

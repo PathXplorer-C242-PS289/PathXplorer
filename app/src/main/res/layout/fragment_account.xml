@@ -49,6 +49,7 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/iv_profile"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:background="@color/white"
@@ -81,6 +82,7 @@
                         </LinearLayout>
 
                         <ImageButton
+                            android:id="@+id/btn_edit_profile"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
@@ -89,11 +91,13 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/stats_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
                         android:orientation="horizontal">
 
+                        <!-- Level Stats -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -109,6 +113,7 @@
                                 android:alpha="0.8"/>
 
                             <TextView
+                                android:id="@+id/level_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -118,6 +123,7 @@
                                 android:textStyle="bold"/>
                         </LinearLayout>
 
+                        <!-- Tests Stats -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -133,14 +139,17 @@
                                 android:alpha="0.8"/>
 
                             <TextView
+                                android:id="@+id/tests_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="3"
+                                android:text="0"
                                 android:textColor="@color/white"
                                 android:textSize="16sp"
                                 android:textStyle="bold"/>
                         </LinearLayout>
+
+                        <!-- Daily Quest Stats -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -156,15 +165,17 @@
                                 android:alpha="0.8"/>
 
                             <TextView
+                                android:id="@+id/daily_quest_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="3"
+                                android:text="0"
                                 android:textColor="@color/white"
                                 android:textSize="16sp"
                                 android:textStyle="bold"/>
                         </LinearLayout>
 
+                        <!-- Score Stats -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -180,10 +191,11 @@
                                 android:alpha="0.8"/>
 
                             <TextView
+                                android:id="@+id/score_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="85"
+                                android:text="0"
                                 android:textColor="@color/white"
                                 android:textSize="16sp"
                                 android:textStyle="bold"/>
@@ -285,6 +297,7 @@
                             android:layout_height="24dp"
                             android:src="@drawable/ic_arrow_right" />
                     </LinearLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"

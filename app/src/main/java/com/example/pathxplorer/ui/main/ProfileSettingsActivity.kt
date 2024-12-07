@@ -1,11 +1,15 @@
 package com.example.pathxplorer.ui.main
 
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pathxplorer.data.models.UserModel
 import com.example.pathxplorer.databinding.ActivityProfileSettingsBinding
+import com.example.pathxplorer.ui.utils.UserProfileWidget
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
@@ -33,9 +37,6 @@ class ProfileSettingsActivity : AppCompatActivity() {
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.toolbar.setNavigationOnClickListener {
-            finish()
-        }
         binding.toolbar.apply {
             setNavigationOnClickListener { finish() }
             title = "Profile Settings"
@@ -89,17 +90,35 @@ class ProfileSettingsActivity : AppCompatActivity() {
                                         name = name,
                                         token = user.uid,
                                         provider = currentUser.provider,
-                                        isLogin = true
+                                        isLogin = true,
+                                        testCount = currentUser.testCount,
+                                        dailyQuestCount = currentUser.dailyQuestCount,
+                                        score = currentUser.score
                                     )
                                 )
+                                updateWidget()
                                 showSuccessDialog()
                             }
                         } else {
-                            showError("Failed to update profile")
+                            showError("Profile update failed. Please try again.")
                         }
                         binding.btnSave.isEnabled = true
                     }
             }
+        }
+    }
+
+    private fun updateWidget() {
+        try {
+            val intent = Intent(this, UserProfileWidget::class.java).apply {
+                action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            }
+            val ids = AppWidgetManager.getInstance(application)
+                .getAppWidgetIds(ComponentName(application, UserProfileWidget::class.java))
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+            sendBroadcast(intent)
+        } catch (e: Exception) {
+            // Handle widget update failure silently
         }
     }
 

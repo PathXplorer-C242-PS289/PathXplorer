@@ -6,11 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.children
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.pathxplorer.R
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.example.pathxplorer.databinding.FragmentAccountBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -46,10 +50,57 @@ class AccountFragment : Fragment() {
 
     private fun setupUserInfo() {
         viewModel.getSession().observe(viewLifecycleOwner) { user ->
-            if (user.isLogin) {
-                binding.apply {
-                    tvUserName.text = user.name
-                    tvUserEmail.text = user.email
+            binding.apply {
+                // Update user basic info
+                tvUserName.text = user.name
+                tvUserEmail.text = user.email
+
+                // Calculate level based on score
+                val level = when (user.score) {
+                    null, 0 -> "Pemula"
+                    in 1..30 -> "Junior"
+                    in 31..60 -> "Intermediate"
+                    in 61..90 -> "Advanced"
+                    else -> "Expert"
+                }
+
+                val statsLayout = userProfileCard.findViewById<LinearLayout>(
+                    LinearLayout(requireContext()).apply {
+                        orientation = LinearLayout.HORIZONTAL
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            setMargins(0, 16, 0, 0)
+                        }
+                    }.id
+                )
+
+                // Update statistics
+                statsLayout?.let { layout ->
+                    // Level
+                    layout.getChildAt(0)?.findViewById<TextView>(R.id.level_value)?.text = level
+
+                    // Tests count
+                    layout.getChildAt(1)?.findViewById<TextView>(R.id.tests_value)?.text =
+                        (user.testCount ?: 0).toString()
+
+                    // Daily Quest count
+                    layout.getChildAt(2)?.findViewById<TextView>(R.id.daily_quest_value)?.text =
+                        (user.dailyQuestCount ?: 0).toString()
+
+                    // Score
+                    layout.getChildAt(3)?.findViewById<TextView>(R.id.score_value)?.text =
+                        (user.score ?: 0).toString()
+
+                    // Add animation for updates
+                    layout.children.forEach { view ->
+                        view.alpha = 0f
+                        view.animate()
+                            .alpha(1f)
+                            .setDuration(500)
+                            .start()
+                    }
                 }
             }
         }
@@ -62,19 +113,19 @@ class AccountFragment : Fragment() {
             }
 
             tentangAplikasiLayout.setOnClickListener {
-                navigateToAboutApp()
+                showAboutApp()
             }
 
             syaratKetentuanLayout.setOnClickListener {
-                navigateToTerms()
+                showTermsAndConditions()
             }
 
             kebijakanPrivasiLayout.setOnClickListener {
-                navigateToPrivacyPolicy()
+                showPrivacyPolicy()
             }
 
             settingLayout.setOnClickListener {
-                navigateToSettings()
+                showToast("Settings - Coming Soon")
             }
 
             btnLogout.setOnClickListener {
@@ -83,11 +134,7 @@ class AccountFragment : Fragment() {
         }
     }
 
-    private fun navigateToProfileSettings() {
-        startActivity(Intent(requireContext(), ProfileSettingsActivity::class.java))
-    }
-
-    private fun navigateToAboutApp() {
+    private fun showAboutApp() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Tentang Aplikasi")
             .setMessage("""
@@ -99,13 +146,11 @@ class AccountFragment : Fragment() {
                 Versi: 1.0.0
                 Dikembangkan oleh: Tim C242-PS289
             """.trimIndent())
-            .setPositiveButton("Tutup") { dialog, _ ->
-                dialog.dismiss()
-            }
+            .setPositiveButton("Tutup") { dialog, _ -> dialog.dismiss() }
             .show()
     }
 
-    private fun navigateToTerms() {
+    private fun showTermsAndConditions() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Syarat dan Ketentuan")
             .setMessage("""
@@ -134,13 +179,11 @@ class AccountFragment : Fragment() {
                 - Pengguna akan diberitahu
                 - Penggunaan berkelanjutan berarti menyetujui perubahan
             """.trimIndent())
-            .setPositiveButton("Saya Mengerti") { dialog, _ ->
-                dialog.dismiss()
-            }
+            .setPositiveButton("Saya Mengerti") { dialog, _ -> dialog.dismiss() }
             .show()
     }
 
-    private fun navigateToPrivacyPolicy() {
+    private fun showPrivacyPolicy() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Kebijakan Privasi")
             .setMessage("""
@@ -173,32 +216,26 @@ class AccountFragment : Fragment() {
                 Pertanyaan tentang privasi:
                 privacy@pathxplorer.com
             """.trimIndent())
-            .setPositiveButton("Tutup") { dialog, _ ->
-                dialog.dismiss()
-            }
+            .setPositiveButton("Tutup") { dialog, _ -> dialog.dismiss() }
             .show()
     }
 
-    private fun navigateToSettings() {
-        showToast("Settings - Coming Soon")
+    private fun navigateToProfileSettings() {
+        startActivity(Intent(requireContext(), ProfileSettingsActivity::class.java))
     }
 
     private fun showLogoutConfirmation() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Logout")
             .setMessage("Apakah Anda yakin ingin keluar?")
-            .setNegativeButton("Batal") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setPositiveButton("Keluar") { _, _ ->
-                logout()
-            }
+            .setNegativeButton("Batal") { dialog, _ -> dialog.dismiss() }
+            .setPositiveButton("Keluar") { _, _ -> logout() }
             .show()
     }
 
     private fun logout() {
         viewModel.getSession().observe(viewLifecycleOwner) { user ->
-            if (user.provider != "credential") {
+            if (user.provider != "credentials") {
                 signOutGoogle()
             } else {
                 viewModel.logout()
@@ -213,6 +250,20 @@ class AccountFragment : Fragment() {
             credentialManager.clearCredentialState(ClearCredentialStateRequest())
             viewModel.logout()
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.apply {
+            if (isLoading) {
+                userProfileCard.alpha = 0.5f
+            } else {
+                userProfileCard.alpha = 1.0f
+            }
+        }
+    }
+
+    private fun showError(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun showToast(message: String) {
