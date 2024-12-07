@@ -18,12 +18,18 @@ import com.example.pathxplorer.data.models.WebinarModel
 import com.example.pathxplorer.databinding.FragmentHomeBinding
 import com.example.pathxplorer.ui.main.adapter.CarouselAdapter
 import com.example.pathxplorer.ui.main.adapter.ListAdapterWebinar
+import com.example.pathxplorer.ui.quiz.dailyquest.DailyQuestActivity
+import com.example.pathxplorer.ui.quiz.dailyquest.DailyQuizFragment
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.example.pathxplorer.ui.utils.generateListKampus
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private lateinit var db: FirebaseDatabase
 
     private val mainViewModel by viewModels<MainViewModel> {
         UserViewModelFactory.getInstance(requireContext())
@@ -46,6 +52,23 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        db = Firebase.database
+
+        val messageRef = db.reference.child("messages")
+
+        binding.btnPsikotes.setOnClickListener {
+            val friendlyMessage = "Test"
+            messageRef.push().setValue(friendlyMessage) { error, _ ->
+                if (error != null) {
+                    Toast.makeText(requireActivity(), "error" + error.message, Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireActivity(), "succes", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
         setupUserInfo()
         setupRecommendedCampus()
         setupWebinars()

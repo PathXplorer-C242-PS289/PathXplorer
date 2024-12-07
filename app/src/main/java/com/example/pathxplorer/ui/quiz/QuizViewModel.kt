@@ -60,6 +60,8 @@ class QuizViewModel : ViewModel() {
         }
     }
 
+    val resultRiasec = MutableLiveData<String>()
+
 //    fun submitAnswer() {
 //        val result = resultAnswer().joinToString(",")
 //        val calendar = Calendar.getInstance()

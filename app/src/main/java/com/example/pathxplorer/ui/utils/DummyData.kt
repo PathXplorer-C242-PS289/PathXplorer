@@ -86,9 +86,9 @@ fun generateDummyQuestionV2(): ArrayList<MutableList<Question>> {
         return dummyQuestion
     }
     var numberQ = 1
-    for (i in 1..3) {
+    for (i in 1..6) {
         val questionList = mutableListOf<Question>()
-        for (j in 1..5) {
+        for (j in 1..8) {
             questionList.add(Question(i, "Question $numberQ", numberQ))
             numberQ++
         }

@@ -9,15 +9,18 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pathxplorer.databinding.FragmentQuizResultBinding
+import com.example.pathxplorer.service.riasec.RiasecHelper
 import com.example.pathxplorer.ui.quiz.ResultAdapter
 
 class QuizResultFragment : Fragment() {
 
     private var _binding: FragmentQuizResultBinding? = null
     private val binding get() = _binding!!
+    private lateinit var riasecHelper: RiasecHelper
 
     companion object {
         const val RESULT_VALUE = "result_value"
+        const val RIASEC_CODE = "riasec_code"
     }
 
     override fun onCreateView(
@@ -37,7 +40,25 @@ class QuizResultFragment : Fragment() {
             requireActivity().finish()
         }
 
+//        riasecHelper = RiasecHelper(
+//            context = requireActivity(),
+//            onResult = { resultPredict ->
+//                Log.d("RiasecHelper", resultPredict)
+//                binding.tvResult.text = resultPredict
+//            },
+//            onError = { error ->
+//                Log.e("RiasecHelper", error)
+//            }
+//        )
+
         val resultVal = arguments?.getIntegerArrayList(RESULT_VALUE)
+        val riasecCode = arguments?.getString(RIASEC_CODE)
+
+        binding.tvResult.setOnClickListener {
+//            riasecHelper.predict(riasecCode!!)
+        }
+
+        binding.tvResult.text = riasecCode
 
         val result = setResultKey(resultVal!!)
 

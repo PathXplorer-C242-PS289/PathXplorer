@@ -13,6 +13,7 @@ import com.example.pathxplorer.R
 import com.example.pathxplorer.data.models.Answer
 import com.example.pathxplorer.data.models.Question
 import com.example.pathxplorer.databinding.FragmentQuizBinding
+import com.example.pathxplorer.service.riasec.RiasecHelper
 import com.example.pathxplorer.ui.quiz.QuizQuestionAdapter
 import com.example.pathxplorer.ui.quiz.QuizViewModel
 import com.example.pathxplorer.ui.utils.CustomDialog
@@ -21,6 +22,7 @@ class QuizFragment : Fragment() {
 
     private var _binding: FragmentQuizBinding? = null
     private val binding get() = _binding!!
+    private lateinit var riasecHelper: RiasecHelper
 
     private val viewModel by viewModels<QuizViewModel>()
 
@@ -39,6 +41,24 @@ class QuizFragment : Fragment() {
         binding.submitButton.isEnabled = false
 
         onBackPressedCallback()
+
+        riasecHelper = RiasecHelper(
+            context = requireActivity(),
+            onResult = { resultPredict ->
+                val result = viewModel.resultAnswer()
+                val bundle = Bundle()
+                bundle.putIntegerArrayList(QuizResultFragment.RESULT_VALUE, result)
+                bundle.putString(QuizResultFragment.RIASEC_CODE, resultPredict)
+
+                val fragmentResult = QuizResultFragment()
+                fragmentResult.arguments = bundle
+                val fragmentManager = parentFragmentManager
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragmentResult, QuizResultFragment::class.java.simpleName).commit()
+            },
+            onError = { error ->
+                Log.e("RiasecHelper", error)
+            }
+        )
 
         setupQuestion()
     }
@@ -89,13 +109,16 @@ class QuizFragment : Fragment() {
         binding.submitButton.setOnClickListener {
             if (isEnd) {
                 val result = viewModel.resultAnswer()
-                val bundle = Bundle()
-                bundle.putIntegerArrayList(QuizResultFragment.RESULT_VALUE, result)
+//                val bundle = Bundle()
+//                bundle.putIntegerArrayList(QuizResultFragment.RESULT_VALUE, result)
+//                bundle.putString(QuizResultFragment.RIASEC_CODE, result.joinToString(","))
 
-                val fragmentResult = QuizResultFragment()
-                fragmentResult.arguments = bundle
-                val fragmentManager = parentFragmentManager
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragmentResult, QuizResultFragment::class.java.simpleName).commit()
+                Log.d("QuizFragment", result.joinToString(","))
+                riasecHelper.predict(result.joinToString(","))
+//                val fragmentResult = QuizResultFragment()
+//                fragmentResult.arguments = bundle
+//                val fragmentManager = parentFragmentManager
+//                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragmentResult, QuizResultFragment::class.java.simpleName).commit()
             } else {
                 viewModel.addIndexedValue()
                 binding.submitButton.isEnabled = false
