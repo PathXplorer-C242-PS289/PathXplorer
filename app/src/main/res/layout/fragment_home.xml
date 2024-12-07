@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.HomeFragment"
-    android:paddingBottom="20dp">
+    tools:context=".ui.main.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
@@ -36,49 +35,49 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_user_name">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:contentDescription="@string/psikotes"
-                app:tint="@color/white"
-                app:backgroundTint="@color/yellow_500"
-                android:src="@drawable/ic_launcher_foreground"
-                app:elevation="6dp"
-                app:fabSize="normal" />
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="10dp"-->
+<!--                android:contentDescription="@string/psikotes"-->
+<!--                app:tint="@color/white"-->
+<!--                app:backgroundTint="@color/yellow_500"-->
+<!--                android:src="@drawable/ic_launcher_foreground"-->
+<!--                app:elevation="6dp"-->
+<!--                app:fabSize="normal" />-->
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:contentDescription="@string/article"
-                app:tint="@color/white"
-                app:backgroundTint="@color/blue_700"
-                android:src="@drawable/ic_launcher_foreground"
-                app:elevation="6dp"
-                app:fabSize="normal" />
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="10dp"-->
+<!--                android:contentDescription="@string/article"-->
+<!--                app:tint="@color/white"-->
+<!--                app:backgroundTint="@color/blue_700"-->
+<!--                android:src="@drawable/ic_launcher_foreground"-->
+<!--                app:elevation="6dp"-->
+<!--                app:fabSize="normal" />-->
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:contentDescription="@string/campus"
-                app:tint="@color/white"
-                app:backgroundTint="@color/purple_300"
-                android:src="@drawable/ic_launcher_foreground"
-                app:elevation="6dp"
-                app:fabSize="normal" />
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="10dp"-->
+<!--                android:contentDescription="@string/campus"-->
+<!--                app:tint="@color/white"-->
+<!--                app:backgroundTint="@color/purple_300"-->
+<!--                android:src="@drawable/ic_launcher_foreground"-->
+<!--                app:elevation="6dp"-->
+<!--                app:fabSize="normal" />-->
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:contentDescription="@string/major"
-                app:tint="@color/white"
-                app:backgroundTint="@color/red_500"
-                android:src="@drawable/ic_launcher_foreground"
-                app:elevation="6dp"
-                app:fabSize="normal" />
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="10dp"-->
+<!--                android:contentDescription="@string/major"-->
+<!--                app:tint="@color/white"-->
+<!--                app:backgroundTint="@color/red_500"-->
+<!--                android:src="@drawable/ic_launcher_foreground"-->
+<!--                app:elevation="6dp"-->
+<!--                app:fabSize="normal" />-->
 
         </LinearLayout>
 

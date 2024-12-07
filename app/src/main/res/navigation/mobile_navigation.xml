@@ -21,6 +21,7 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.pathxplorer.ui.main.HomeFragment"
+        tools:layout="@layout/fragment_home"
         android:label="@string/title_home">
 
         <action
