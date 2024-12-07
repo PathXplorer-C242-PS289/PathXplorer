@@ -64,6 +64,15 @@
             android:name=".MainActivity"
             android:exported="false"
             android:theme="@style/Theme.PathXplorer.NoActionBar" />
+        <receiver android:name=".ui.utils.UserProfileWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/user_profile_widget" />
+        </receiver>
     </application>
 
 </manifest>
