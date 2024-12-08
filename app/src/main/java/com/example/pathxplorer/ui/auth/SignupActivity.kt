@@ -3,6 +3,7 @@ package com.example.pathxplorer.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -15,9 +16,11 @@ import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.lifecycleScope
 import com.example.pathxplorer.MainActivity
 import com.example.pathxplorer.R
+import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.example.pathxplorer.data.models.UserModel
 import com.example.pathxplorer.databinding.ActivitySignupBinding
+import com.example.pathxplorer.ui.utils.AuthViewModelFactory
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -35,7 +38,7 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
     private val viewModel by viewModels<AuthViewModel> {
-        UserViewModelFactory.getInstance(this)
+        AuthViewModelFactory.getInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,20 +55,39 @@ class SignupActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.btnSignup.setOnClickListener {
-            val email = binding.edtName.text.toString()
-//
-//            AlertDialog.Builder(this).apply {
-//                setTitle("Yeah!")
-//                setMessage("Akun dengan $email sudah jadi nih. Yuk, login dan belajar coding.")
-//                setPositiveButton("Lanjut") { _, _ ->
-//                    finish()
-//                }
-//                create()
-//                show()
-//            }
-            val intent = Intent(this, OTPVerificationActivity::class.java)
-            intent.putExtra(OTPVerificationActivity.EXTRA_EMAIL, email)
-            startActivity(intent)
+            val email = binding.edtEmail.text.toString()
+            val password = binding.edtPassword.text.toString()
+
+            isLoading(true)
+
+            lifecycleScope.launch {
+                viewModel.register(email, password).observe(this@SignupActivity) { result ->
+                    isLoading(false)
+                    when (result) {
+                        is Result.Loading -> {
+                            isLoading(true)
+                        }
+                        is Result.Success -> {
+                            val intent = Intent(this@SignupActivity, OTPVerificationActivity::class.java)
+                            intent.putExtra(OTPVerificationActivity.EXTRA_EMAIL, email)
+                            startActivity(intent)
+                        }
+                        is Result.Error -> {
+                            AlertDialog.Builder(this@SignupActivity).apply {
+                                setTitle("Oops!")
+                                setMessage("${result.error} $email $password")
+                                setPositiveButton("OK") { dialog, _ ->
+                                    dialog.dismiss()
+                                }
+                                create()
+                                show()
+                            }
+                        }
+                    }
+                }
+            }
+
+
         }
 
         binding.tvDaftar.setOnClickListener {
@@ -170,6 +192,14 @@ class SignupActivity : AppCompatActivity() {
         super.onStart()
         val currentUser = auth.currentUser
         updateUI(currentUser)
+    }
+
+    private fun isLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
     }
 
     companion object {

@@ -12,6 +12,14 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progress_bar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_logo"
             android:layout_width="120dp"

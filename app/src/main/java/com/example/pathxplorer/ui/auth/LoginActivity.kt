@@ -3,6 +3,7 @@ package com.example.pathxplorer.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -15,9 +16,11 @@ import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.lifecycleScope
 import com.example.pathxplorer.MainActivity
 import com.example.pathxplorer.R
+import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.example.pathxplorer.data.models.UserModel
 import com.example.pathxplorer.databinding.ActivityLoginBinding
+import com.example.pathxplorer.ui.utils.AuthViewModelFactory
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -35,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth : FirebaseAuth
 
     private val viewModel by viewModels<AuthViewModel> {
-        UserViewModelFactory.getInstance(this)
+        AuthViewModelFactory.getInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,19 +59,55 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.edtEmail.text.toString()
             val password = binding.edtPassword.text.toString()
 
-            viewModel.saveSession(UserModel(email, email, "token_sample"))
-            AlertDialog.Builder(this).apply {
-                setTitle("Yeah!")
-                setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
-                setPositiveButton("Lanjut") { _, _ ->
-                    val intent = Intent(context, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                    finish()
-                }
-                create()
-                show()
+            isLoading(true)
+            if (email.isEmpty() || password.isEmpty()) {
+                showModal(
+                    "Oops!",
+                    "Email dan password tidak boleh kosong."
+                )
+            } else if (password.length < 8) {
+                showModal("Oops!", "Password minimal 8 karakter.")
             }
+
+            viewModel.login(email, password).observe(this) { result ->
+                isLoading(false)
+                when (result) {
+                    is Result.Loading -> {
+                        isLoading(true)
+                    }
+                    is Result.Success -> {
+                        AlertDialog.Builder(this).apply {
+                            setTitle("Yeah!")
+                            setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
+                            setPositiveButton("Lanjut") { _, _ ->
+                                val intent = Intent(context, MainActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                startActivity(intent)
+                                finish()
+                            }
+                            create()
+                            show()
+                        }
+                    }
+                    is Result.Error -> {
+                        showModal("Oops!", result.error!!)
+                    }
+                }
+            }
+
+//            viewModel.saveSession(UserModel(email, email, "token_sample"))
+//            AlertDialog.Builder(this).apply {
+//                setTitle("Yeah!")
+//                setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
+//                setPositiveButton("Lanjut") { _, _ ->
+//                    val intent = Intent(context, MainActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//                    startActivity(intent)
+//                    finish()
+//                }
+//                create()
+//                show()
+//            }
         }
 
         binding.tvDaftar.setOnClickListener {
@@ -159,6 +198,26 @@ class LoginActivity : AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             finish()
+        }
+    }
+
+    private fun isLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun showModal(title: String, message: String) {
+        AlertDialog.Builder(this).apply {
+            setTitle(title)
+            setMessage(message)
+            setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            create()
+            show()
         }
     }
 
