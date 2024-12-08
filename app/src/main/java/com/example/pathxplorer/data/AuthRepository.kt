@@ -19,12 +19,7 @@ import java.net.SocketTimeoutException
 class AuthRepository private constructor(
     private val apiService: ApiService,
     private val userPreference: UserPreference
-){
-
-    private val registerResult = MutableLiveData<Result<RegisterWithCredentialResponse>>()
-    private val loginResult = MutableLiveData<Result<LoginWithCredentialResponse>>()
-    private val otpVerifyResult = MutableLiveData<Result<VerifyOtpResponse>>()
-
+) {
     private var _error = MutableLiveData<Boolean>()
     val error: LiveData<Boolean> = _error
 
@@ -32,91 +27,80 @@ class AuthRepository private constructor(
         userPreference.saveSession(user)
     }
 
-    suspend fun register(email: String, password: String) : LiveData<Result<RegisterWithCredentialResponse>> {
-        registerResult.value = Result.Loading
+    fun registerUser(email: String, password: String) = liveData(Dispatchers.IO) {
+        emit(Result.Loading)
         try {
-            val response = apiService.register(email, password)
-            registerResult.value = Result.Success(response)
-            _error.value = false
-            registerResult.postValue(Result.Success(response))
-        } catch (e: HttpException) {
-            registerResult.value = Result.Error(e.message)
-            _error.value = true
+            val request = ApiService.RegisterRequest(email, password)
+            val response = apiService.register(request)
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            _error.postValue(true)
+            when (e) {
+                is HttpException -> {
+                    Log.d(TAG, "registerUser: ${e.message}")
+                    emit(Result.Error(e.message()))
+                }
+                is SocketTimeoutException -> emit(Result.Error("Connection timed out"))
+                is IOException -> emit(Result.Error("Network error occurred"))
+                else -> emit(Result.Error("An unexpected error occurred"))
+            }
         }
-
-        return registerResult
-    }
-
-    suspend fun sendOtp(email: String, otp: String) : LiveData<Result<VerifyOtpResponse>> {
-        otpVerifyResult.value = Result.Loading
-        try {
-            apiService.verifyOtp(email, otp)
-            otpVerifyResult.value = Result.Success(VerifyOtpResponse("Success"))
-            _error.value = false
-        } catch (e: HttpException) {
-            val jsonString = e.response()?.errorBody()?.string()
-            val errorBody = Gson().fromJson(jsonString, VerifyOtpResponse::class.java)
-            otpVerifyResult.value = Result.Error(errorBody.message)
-            _error.value = true
-        }
-
-        return otpVerifyResult
     }
 
     fun loginUser(email: String, password: String) = liveData(Dispatchers.IO) {
         emit(Result.Loading)
         try {
             val response = apiService.login(email, password)
-            emit(Result.Success(response))
             val user = UserModel(
                 email = email,
                 name = response.user.email,
                 token = response.token
             )
             saveSession(user)
-        } catch (e: HttpException) {
-            emit(Result.Error(e.message.toString()))
-        } catch (e: SocketTimeoutException) {
-            emit(Result.Error(e.message.toString()))
-        } catch (e: IOException) {
-            emit(Result.Error(e.message.toString()))
+            _error.postValue(false)
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            _error.postValue(true)
+            when (e) {
+                is HttpException -> emit(Result.Error(e.message()))
+                is SocketTimeoutException -> emit(Result.Error("Connection timed out"))
+                is IOException -> emit(Result.Error("Network error occurred"))
+                else -> emit(Result.Error("An unexpected error occurred"))
+            }
         }
     }
 
-    fun registerUser(email: String, password: String) = liveData(Dispatchers.IO) {
+    fun sendOtp(email: String, otp: String) = liveData(Dispatchers.IO) {
         emit(Result.Loading)
         try {
-            val response = apiService.register(email, password)
-            emit(Result.Success(response))
-        } catch (e: HttpException) {
-            Log.d("AuthRepository", "registerUser: ${e.message}")
-            emit(Result.Error(e.message.toString()))
-        } catch (e: SocketTimeoutException) {
-            emit(Result.Error(e.message.toString()))
-        } catch (e: IOException) {
-            emit(Result.Error(e.message.toString()))
+            apiService.verifyOtp(email, otp)
+            _error.postValue(false)
+            emit(Result.Success(VerifyOtpResponse("Success")))
+        } catch (e: Exception) {
+            _error.postValue(true)
+            when (e) {
+                is HttpException -> {
+                    val errorBody = try {
+                        val jsonString = e.response()?.errorBody()?.string()
+                        Gson().fromJson(jsonString, VerifyOtpResponse::class.java)
+                    } catch (e: Exception) {
+                        null
+                    }
+                    emit(Result.Error(errorBody?.message ?: "Verification failed"))
+                }
+                is SocketTimeoutException -> emit(Result.Error("Connection timed out"))
+                is IOException -> emit(Result.Error("Network error occurred"))
+                else -> emit(Result.Error("An unexpected error occurred"))
+            }
         }
     }
 
-//    fun sendOtp(email: String, otp: String) = liveData(Dispatchers.IO) {
-//        emit(Result.Loading)
-//        try {
-//            apiService.verifyOtp(email, otp)
-//            emit(Result.Success(VerifyOtpResponse("Success")))
-//        } catch (e: HttpException) {
-//            emit(Result.Error(e.message.toString()))
-//        } catch (e: SocketTimeoutException) {
-//            emit(Result.Error(e.message.toString()))
-//        } catch (e: IOException) {
-//            emit(Result.Error(e.message.toString()))
-//        }
-//    }
-
     companion object {
+        private const val TAG = "AuthRepository"
+
         fun getInstance(
             apiService: ApiService,
             userPreference: UserPreference
         ): AuthRepository = AuthRepository(apiService, userPreference)
     }
-
 }

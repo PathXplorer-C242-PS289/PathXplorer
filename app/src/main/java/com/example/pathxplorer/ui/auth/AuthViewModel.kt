@@ -17,12 +17,11 @@ class AuthViewModel(private val repository: AuthRepository): ViewModel() {
             repository.saveSession(user)
         }
     }
-
-    suspend fun register(email: String, password: String) = repository.register(email, password)
-
-    suspend fun sendOtp(email: String, otp: String) = repository.sendOtp(email, otp)
+    fun register(email: String, password: String) = repository.registerUser(email, password)
 
     fun login(email: String, password: String) = repository.loginUser(email, password)
+
+    fun verifyOtp(email: String, otp: String) = repository.sendOtp(email, otp)
 
     fun logout() {
         auth.signOut()

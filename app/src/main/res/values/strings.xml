@@ -117,5 +117,10 @@ By using our app, you consent to the terms of this Privacy Policy.
     <string name="webinar_details">Webinar Details</string>
     <string name="no_webinars_available">No webinars available at the moment</string>
     <string name="error_loading_webinars">Failed to load webinars</string>
-
+    <string name="email_not_found">Email address not found</string>
+    <string name="invalid_otp_length">OTP code must be 6 digits</string>
+    <string name="error_title">Error</string>
+    <string name="ok">OK</string>
+    <string name="otp_verification_success">OTP verification successful</string>
+    <string name="otp_verification_failed">OTP verification failed</string>
 </resources>

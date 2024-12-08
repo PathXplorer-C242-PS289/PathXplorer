@@ -2,83 +2,96 @@ package com.example.pathxplorer.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
 import com.example.pathxplorer.R
 import com.example.pathxplorer.data.Result
-import com.example.pathxplorer.databinding.ActivityNewPasswordBinding
 import com.example.pathxplorer.databinding.ActivityOtpverificationBinding
 import com.example.pathxplorer.ui.utils.AuthViewModelFactory
-import kotlinx.coroutines.launch
 
 class OTPVerificationActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityOtpverificationBinding
 
     private val viewModel by viewModels<AuthViewModel> {
         AuthViewModelFactory.getInstance(this)
     }
 
-    companion object {
-        const val EXTRA_EMAIL = "extra_email"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-
         binding = ActivityOtpverificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar?.hide()
 
-        val email = intent.getStringExtra(EXTRA_EMAIL)
+        val email = intent.getStringExtra(EXTRA_EMAIL) ?: run {
+            showError(getString(R.string.email_not_found))
+            finish()
+            return
+        }
 
-        setupAction(email!!)
+        setupVerificationButton(email)
     }
 
-    private fun setupAction(email: String) {
+    private fun setupVerificationButton(email: String) {
         binding.btnSendOtp.setOnClickListener {
             val otp = binding.edtCodeOtp.text.toString()
 
-            if (otp.length != 6) {
-                AlertDialog.Builder(this).apply {
-                    setTitle("Oops!")
-                    setMessage("OTP code must be 6 digits")
-                    setPositiveButton("OK") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    create()
-                    show()
-                }
+            if (!isValidOtp(otp)) {
+                showError(getString(R.string.invalid_otp_length))
+                return@setOnClickListener
             }
 
-            lifecycleScope.launch {
-                viewModel.sendOtp(email, otp).observe(this@OTPVerificationActivity) { result ->
-                    when (result) {
-                        is Result.Loading -> {
-                            Toast.makeText(this@OTPVerificationActivity, "Loading...", Toast.LENGTH_SHORT).show()
-                        }
-                        is Result.Success -> {
-                            Toast.makeText(this@OTPVerificationActivity, "OTP code is correct", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this@OTPVerificationActivity, LoginActivity::class.java))
-                        }
-                        is Result.Error -> {
-                            Toast.makeText(this@OTPVerificationActivity, "OTP code is incorrect", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-            }
-
-//            Toast.makeText(this, "OTP code is correct", Toast.LENGTH_SHORT).show()
-//
-//            startActivity(Intent(this, LoginActivity::class.java))
+            verifyOtp(email, otp)
         }
+    }
+
+    private fun verifyOtp(email: String, otp: String) {
+        viewModel.verifyOtp(email, otp).observe(this) { result ->
+            when (result) {
+                is Result.Loading -> showLoading(true)
+                is Result.Success -> handleSuccessfulVerification()
+                is Result.Error -> handleFailedVerification(result.error)
+            }
+        }
+    }
+
+    private fun isValidOtp(otp: String): Boolean = otp.length == 6
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.apply {
+            btnSendOtp.isEnabled = !isLoading
+            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun handleSuccessfulVerification() {
+        showLoading(false)
+        Toast.makeText(this, getString(R.string.otp_verification_success), Toast.LENGTH_SHORT).show()
+        navigateToLogin()
+    }
+
+    private fun handleFailedVerification(error: String?) {
+        showLoading(false)
+        showError(error ?: getString(R.string.otp_verification_failed))
+    }
+
+    private fun showError(message: String) {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.error_title))
+            .setMessage(message)
+            .setPositiveButton(getString(R.string.ok)) { dialog, _ -> dialog.dismiss() }
+            .show()
+    }
+
+    private fun navigateToLogin() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
+    }
+
+    companion object {
+        const val EXTRA_EMAIL = "extra_email"
     }
 }

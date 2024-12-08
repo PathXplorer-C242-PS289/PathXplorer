@@ -1,5 +1,6 @@
 package com.example.pathxplorer.ui.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
@@ -26,17 +27,24 @@ class SplashActivity : AppCompatActivity() {
         UserViewModelFactory.getInstance(this)
     }
 
+    companion object {
+        private const val PREFS_NAME = "PathXplorerPrefs"
+        private const val FIRST_TIME_LAUNCH = "isFirstTimeLaunch"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val isFirstTimeLaunch = sharedPreferences.getBoolean(FIRST_TIME_LAUNCH, true)
+
+        if (!isFirstTimeLaunch) {
+            proceedToNextScreen()
+            return
+        }
+
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel.getSession().observe(this) { user ->
-            if (user.isLogin) {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
-        }
 
         supportActionBar?.hide()
 
@@ -57,15 +65,33 @@ class SplashActivity : AppCompatActivity() {
             if (binding.SplashViewPager.currentItem + 1 < onboardingAdapter.itemCount) {
                 binding.SplashViewPager.currentItem += 1
             } else {
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
+                completeOnboarding()
             }
         }
 
         binding.buttonSkip.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
+            completeOnboarding()
+        }
+    }
+
+    private fun proceedToNextScreen() {
+        viewModel.getSession().observe(this) { user ->
+            if (user.isLogin) {
+                startActivity(Intent(this, MainActivity::class.java))
+            } else {
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
             finish()
         }
+    }
+
+    private fun completeOnboarding() {
+        getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(FIRST_TIME_LAUNCH, false)
+            .apply()
+
+        proceedToNextScreen()
     }
 
     private fun updateButtonsVisibility(position: Int) {

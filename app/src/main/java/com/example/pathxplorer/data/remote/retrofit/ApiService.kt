@@ -3,19 +3,27 @@ package com.example.pathxplorer.data.remote.retrofit
 import com.example.pathxplorer.data.remote.response.LoginWithCredentialResponse
 import com.example.pathxplorer.data.remote.response.RecommendationRiasecResponse
 import com.example.pathxplorer.data.remote.response.RegisterWithCredentialResponse
+import com.google.android.gms.fido.u2f.api.common.RegisterRequest
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ApiService {
-    @FormUrlEncoded
     @POST("api/auth/register")
+    @Headers("Content-Type: application/json")
     suspend fun register(
-        @Field("email") email: String,
-        @Field("password") password: String
+        @Body request: RegisterRequest
     ): RegisterWithCredentialResponse
+
+    data class RegisterRequest(
+        val email: String,
+        val password: String
+    )
 
     @FormUrlEncoded
     @POST("api/auth/login")

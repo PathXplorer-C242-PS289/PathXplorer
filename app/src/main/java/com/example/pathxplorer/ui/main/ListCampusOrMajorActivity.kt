@@ -23,9 +23,9 @@ class ListCampusOrMajorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         supportActionBar?.hide()
-//        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFF")))
-//        supportActionBar?.elevation = 0f
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFF")))
+        supportActionBar?.elevation = 0f
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding = ActivityListCampusOrMajorBinding.inflate(layoutInflater)
         setContentView(binding.root)
