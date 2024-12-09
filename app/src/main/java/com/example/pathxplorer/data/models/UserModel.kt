@@ -4,6 +4,7 @@ data class UserModel (
     val email: String,
     val name: String,
     val token: String, // Token yang digunakan untuk mengakses API
+    val userId: Int,
     val provider: String = "credentials",
     val isLogin: Boolean = false,
     val testCount: Int? = 0, // Setiap Test Psikotes diambil akan bertambah 1 kepada user

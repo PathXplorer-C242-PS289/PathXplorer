@@ -7,6 +7,7 @@ data class LoginWithGoogleResponse(
 
 data class UserGoogle(
 	val providerType: String,
+	val id: Int,
 	val email: String
 )
 

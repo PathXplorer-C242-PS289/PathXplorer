@@ -191,6 +191,7 @@ class LoginActivity : AppCompatActivity() {
                 currentUser.email ?: "",
                 currentUser.displayName ?: "",
                 currentUser.getIdToken(false).result?.token ?: "",
+                1,
                 "google",
             )
 

@@ -51,7 +51,7 @@ class QuizResultFragment : Fragment() {
         }
 
         val resultVal = arguments?.getIntegerArrayList(RESULT_VALUE)
-        val riasecCode = arguments?.getString(RIASEC_CODE)
+        val riasecCode =  arguments?.getString(RIASEC_CODE)
 
         lifecycleScope.launch {
             viewModel.getRecommendation(riasecCode!!).observe(viewLifecycleOwner) { result ->

@@ -179,6 +179,7 @@ class SignupActivity : AppCompatActivity() {
                 currentUser.email ?: "",
                 currentUser.displayName ?: "",
                 currentUser.getIdToken(false).result?.token ?: "",
+                1,
                 "google",
             )
             viewModel.saveSession(user)

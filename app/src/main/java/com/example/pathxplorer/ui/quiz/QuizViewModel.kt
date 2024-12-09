@@ -3,12 +3,15 @@ package com.example.pathxplorer.ui.quiz
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.example.pathxplorer.data.UserRepository
 import com.example.pathxplorer.data.models.Answer
 import com.example.pathxplorer.data.models.Question
 import com.example.pathxplorer.data.models.ResultQuiz
+import com.example.pathxplorer.data.models.UserModel
 import com.example.pathxplorer.data.remote.response.RecommendationRiasecResponse
 import com.example.pathxplorer.ui.utils.generateDummyQuestionV2
+import com.google.firebase.Timestamp
 
 class QuizViewModel(private val repository: UserRepository) : ViewModel() {
     private var _indexedValue = MutableLiveData<Int>().apply { value = 0 }
@@ -62,44 +65,6 @@ class QuizViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    val resultRiasec = MutableLiveData<String>()
-
-//    fun submitAnswer() {
-//        val result = resultAnswer().joinToString(",")
-//        val calendar = Calendar.getInstance()
-//        val idQuiz = calendar.timeInMillis
-//        val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
-//        val date = dateFormat.format(Date())
-//        val quizEntity = QuizEntity(
-//            idQuiz.toString(),
-//            result,
-//            date
-//        )
-//
-//        try {
-//            viewModelScope.launch {
-//                repository.submitQuizAnswer(quizEntity)
-//            }
-//        } catch (e: Exception) {
-//            Log.e("QuizV2Activity", "Error: ${e.message}")
-//        }
-//
-//        questions.clear()
-//        answers.clear()
-//    }
-
-//    private val _quizResult = MutableLiveData<List<QuizEntity>>()
-//    val quizResult: LiveData<List<QuizEntity>> = _quizResult
-
-//    suspend fun getAllQuizResult() {
-//        _quizResult.value = repository.getAnswers()
-//    }
-//
-//    suspend fun deleteAllQuizResult() {
-//        repository.deleteAllAnswers()
-//        _quizResult.value = emptyList()
-//    }
-
     private fun sortAnswer(): MutableList<MutableList<Answer>> {
         val sortedAnswer = mutableListOf<MutableList<Answer>>()
         for (i in 0 until questions.size) {
@@ -136,5 +101,13 @@ class QuizViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
+    fun getSession(): LiveData<UserModel> {
+        return repository.getSession().asLiveData()
+    }
+
     suspend fun getRecommendation(code: String) = repository.getRecommendation(code)
+
+    suspend fun saveTest(testId: Int, userId: Int, category: String) = repository.saveTest(testId, userId, category)
+
+    suspend fun getTestResults() = repository.getTestResults()
 }

@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class UserProfileWidget : AppWidgetProvider() {
 
@@ -51,9 +52,9 @@ class UserProfileWidget : AppWidgetProvider() {
         // Use coroutine to fetch user data
         CoroutineScope(Dispatchers.IO).launch {
             val userPreference = UserPreference.getInstance(context.dataStore)
-            val apiService = ApiConfig.getApiService()
+            val user = userPreference.getSession().first()
+            val apiService = ApiConfig.getApiService(user.token)
             val userRepository = UserRepository.getInstance(apiService, userPreference)
-            val user = userRepository.getSession().first()
 
             views.apply {
                 setImageViewResource(R.id.widget_avatar, R.drawable.profile_icon)

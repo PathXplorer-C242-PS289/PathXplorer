@@ -88,7 +88,8 @@ class ProfileSettingsActivity : AppCompatActivity() {
                                     UserModel(
                                         email = email,
                                         name = name,
-                                        token = user.uid,
+                                        token = user.getIdToken(false).result?.token ?: "",
+                                        userId = user.uid.toInt(),
                                         provider = currentUser.provider,
                                         isLogin = true,
                                         testCount = currentUser.testCount,

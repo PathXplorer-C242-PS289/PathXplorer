@@ -50,11 +50,13 @@ class AuthRepository private constructor(
     fun loginUser(email: String, password: String) = liveData(Dispatchers.IO) {
         emit(Result.Loading)
         try {
-            val response = apiService.login(email, password)
+            val body = ApiService.LoginRequest(email, password)
+            val response = apiService.login(body)
             val user = UserModel(
                 email = email,
                 name = response.user.email,
-                token = response.token
+                token = response.token,
+                userId = response.user.id
             )
             saveSession(user)
             _error.postValue(false)
@@ -73,7 +75,8 @@ class AuthRepository private constructor(
     fun sendOtp(email: String, otp: String) = liveData(Dispatchers.IO) {
         emit(Result.Loading)
         try {
-            apiService.verifyOtp(email, otp)
+            val body = ApiService.VerifyRequest(email, otp)
+            apiService.verifyOtp(body)
             _error.postValue(false)
             emit(Result.Success(VerifyOtpResponse("Success")))
         } catch (e: Exception) {

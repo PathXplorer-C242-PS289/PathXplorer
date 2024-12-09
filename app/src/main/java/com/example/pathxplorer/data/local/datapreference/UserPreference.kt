@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.pathxplorer.data.models.UserModel
@@ -20,6 +21,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             preference[EMAIL_KEY] = user.email
             preference[NAME_KEY] = user.name
             preference[TOKEN_KEY] = user.token
+            preference[USER_ID_KEY] = user.userId
             preference[PROVIDER_KEY] = user.provider
             preference[IS_LOGIN_KEY] = true
         }
@@ -31,6 +33,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
                 preference[EMAIL_KEY] ?: "",
                 preference[NAME_KEY] ?: "",
                 preference[TOKEN_KEY] ?: "",
+                preference[USER_ID_KEY] ?: 0,
                 preference[PROVIDER_KEY] ?: "",
                 preference[IS_LOGIN_KEY] ?: false
             )
@@ -50,6 +53,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         private val EMAIL_KEY = stringPreferencesKey("email")
         private val NAME_KEY = stringPreferencesKey("name")
         private val TOKEN_KEY = stringPreferencesKey("token")
+        private val USER_ID_KEY = intPreferencesKey("userId")
         private val PROVIDER_KEY = stringPreferencesKey("provider")
         private val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")
 
