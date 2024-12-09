@@ -6,18 +6,21 @@ import com.example.pathxplorer.data.local.datapreference.UserPreference
 import com.example.pathxplorer.data.local.datapreference.dataStore
 import com.example.pathxplorer.data.UserRepository
 import com.example.pathxplorer.data.remote.retrofit.ApiConfig
-import com.example.pathxplorer.data.remote.retrofit.ApiService
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 object Injection {
     fun provideRepository(context: Context): UserRepository {
-        val apiService = ApiConfig.getApiService()
         val pref = UserPreference.getInstance(context.dataStore)
+        val user = runBlocking { pref.getSession().first() }
+        val apiService = ApiConfig.getApiService(user.token)
         return UserRepository.getInstance(apiService, pref)
     }
 
     fun provideAuthRepository(context: Context): AuthRepository {
-        val apiService = ApiConfig.getApiService()
         val pref = UserPreference.getInstance(context.dataStore)
+        val user = runBlocking { pref.getSession().first() }
+        val apiService = ApiConfig.getApiService(user.token)
         return AuthRepository.getInstance(apiService, pref)
     }
 }
