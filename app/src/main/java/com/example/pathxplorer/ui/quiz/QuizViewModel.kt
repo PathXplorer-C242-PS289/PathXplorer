@@ -3,12 +3,14 @@ package com.example.pathxplorer.ui.quiz
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.pathxplorer.data.UserRepository
 import com.example.pathxplorer.data.models.Answer
 import com.example.pathxplorer.data.models.Question
 import com.example.pathxplorer.data.models.ResultQuiz
+import com.example.pathxplorer.data.remote.response.RecommendationRiasecResponse
 import com.example.pathxplorer.ui.utils.generateDummyQuestionV2
 
-class QuizViewModel : ViewModel() {
+class QuizViewModel(private val repository: UserRepository) : ViewModel() {
     private var _indexedValue = MutableLiveData<Int>().apply { value = 0 }
     val indexedValue: LiveData<Int> = _indexedValue
 
@@ -133,4 +135,6 @@ class QuizViewModel : ViewModel() {
             questions[_indexedValue.value!!].size
         }
     }
+
+    suspend fun getRecommendation(code: String) = repository.getRecommendation(code)
 }

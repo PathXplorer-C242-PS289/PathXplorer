@@ -11,6 +11,7 @@ import com.example.pathxplorer.R
 import com.example.pathxplorer.data.UserRepository
 import com.example.pathxplorer.data.local.datapreference.UserPreference
 import com.example.pathxplorer.data.local.datapreference.dataStore
+import com.example.pathxplorer.data.remote.retrofit.ApiConfig
 import com.example.pathxplorer.ui.main.ProfileSettingsActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +51,8 @@ class UserProfileWidget : AppWidgetProvider() {
         // Use coroutine to fetch user data
         CoroutineScope(Dispatchers.IO).launch {
             val userPreference = UserPreference.getInstance(context.dataStore)
-            val userRepository = UserRepository.getInstance(userPreference)
+            val apiService = ApiConfig.getApiService()
+            val userRepository = UserRepository.getInstance(apiService, userPreference)
             val user = userRepository.getSession().first()
 
             views.apply {

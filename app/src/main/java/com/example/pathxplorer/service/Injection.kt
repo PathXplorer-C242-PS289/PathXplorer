@@ -10,8 +10,9 @@ import com.example.pathxplorer.data.remote.retrofit.ApiService
 
 object Injection {
     fun provideRepository(context: Context): UserRepository {
+        val apiService = ApiConfig.getApiService()
         val pref = UserPreference.getInstance(context.dataStore)
-        return UserRepository.getInstance(pref)
+        return UserRepository.getInstance(apiService, pref)
     }
 
     fun provideAuthRepository(context: Context): AuthRepository {

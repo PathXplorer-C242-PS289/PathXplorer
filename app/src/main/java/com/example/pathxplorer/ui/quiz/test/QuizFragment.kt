@@ -17,6 +17,7 @@ import com.example.pathxplorer.service.riasec.RiasecHelper
 import com.example.pathxplorer.ui.quiz.QuizQuestionAdapter
 import com.example.pathxplorer.ui.quiz.QuizViewModel
 import com.example.pathxplorer.ui.utils.CustomDialog
+import com.example.pathxplorer.ui.utils.UserViewModelFactory
 
 class QuizFragment : Fragment() {
 
@@ -24,7 +25,9 @@ class QuizFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var riasecHelper: RiasecHelper
 
-    private val viewModel by viewModels<QuizViewModel>()
+    private val viewModel by viewModels<QuizViewModel> {
+        UserViewModelFactory.getInstance(requireActivity())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

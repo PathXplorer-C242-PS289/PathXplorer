@@ -7,16 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pathxplorer.data.Result
+import com.example.pathxplorer.data.remote.response.RecommendationRiasecResponse
 import com.example.pathxplorer.databinding.FragmentQuizResultBinding
 import com.example.pathxplorer.service.riasec.RiasecHelper
+import com.example.pathxplorer.ui.quiz.QuizViewModel
 import com.example.pathxplorer.ui.quiz.ResultAdapter
+import com.example.pathxplorer.ui.utils.UserViewModelFactory
+import kotlinx.coroutines.launch
 
 class QuizResultFragment : Fragment() {
 
     private var _binding: FragmentQuizResultBinding? = null
     private val binding get() = _binding!!
-    private lateinit var riasecHelper: RiasecHelper
+
+    private val viewModel by viewModels<QuizViewModel> {
+        UserViewModelFactory.getInstance(requireActivity())
+    }
 
     companion object {
         const val RESULT_VALUE = "result_value"
@@ -40,40 +50,51 @@ class QuizResultFragment : Fragment() {
             requireActivity().finish()
         }
 
-//        riasecHelper = RiasecHelper(
-//            context = requireActivity(),
-//            onResult = { resultPredict ->
-//                Log.d("RiasecHelper", resultPredict)
-//                binding.tvResult.text = resultPredict
-//            },
-//            onError = { error ->
-//                Log.e("RiasecHelper", error)
-//            }
-//        )
-
         val resultVal = arguments?.getIntegerArrayList(RESULT_VALUE)
         val riasecCode = arguments?.getString(RIASEC_CODE)
 
-        binding.tvResult.setOnClickListener {
-//            riasecHelper.predict(riasecCode!!)
-        }
+        lifecycleScope.launch {
+            viewModel.getRecommendation(riasecCode!!).observe(viewLifecycleOwner) { result ->
+                        Log.d("Result", result.toString())
+                        when (result) {
+                            is Result.Loading -> {
+                                Log.d("Result", "Loading")
+                            }
+                            is Result.Success -> {
+                                Log.d("Result Test", "${result.data}")
 
-        binding.tvResult.text = riasecCode
+                                setupResult(result.data)
+                            }
+                            is Result.Error -> {
+                                Log.d("Result Error", result.error.toString())
+                            }
+                        }
+                    }
+        }
 
         val result = setResultKey(resultVal!!)
 
         onBackPressedCallback()
 
         // view
-        setupResult(result)
+//        setupResult(result)
     }
 
-    private fun setupResult(list: MutableMap<Int, Int>) {
-        binding.rvResultQuiz.layoutManager = LinearLayoutManager(requireActivity())
-        binding.rvResultQuiz.setHasFixedSize(true)
-        val adapter = ResultAdapter(list)
-        binding.rvResultQuiz.adapter = adapter
+    private fun setupResult(resultTest: RecommendationRiasecResponse) {
+        with(binding) {
+            tvTitle.text = "Your type is ${resultTest.riasecType}"
+            tvDescription.text = "*What is meanns of your type* \n ${resultTest.interestDescription}"
+            tvKeySkill.text = "*Your key skills :* ${resultTest.keySkills}"
+            tvExampleCareer.text = "*What you can be :* ${resultTest.exampleCareers}"
+        }
     }
+
+//    private fun setupResult(list: MutableMap<Int, Int>) {
+//        binding.rvResultQuiz.layoutManager = LinearLayoutManager(requireActivity())
+//        binding.rvResultQuiz.setHasFixedSize(true)
+//        val adapter = ResultAdapter(list)
+//        binding.rvResultQuiz.adapter = adapter
+//    }
 
     private fun onBackPressedCallback() {
         requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
@@ -82,18 +103,6 @@ class QuizResultFragment : Fragment() {
             }
         })
     }
-
-//    override fun onContextItemSelected(item: MenuItem): Boolean {
-//
-//        when (item.itemId) {
-//            android.R.id.home -> {
-//
-//            }
-//        }
-//
-//        return super.onContextItemSelected(item)
-//
-//    }
 
     private fun setResultKey(result: ArrayList<Int>): MutableMap<Int, Int> {
         val map = mutableMapOf<Int, Int>()
