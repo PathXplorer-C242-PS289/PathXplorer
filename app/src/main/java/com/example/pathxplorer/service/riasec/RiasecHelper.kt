@@ -113,7 +113,7 @@ class RiasecHelper(
                 result[i] = outputArray[0][i]
             }
             val binaryArray = convertToBinaryArray(result)
-            val resultString = convertToCode(binaryArray)
+            val resultString = if (convertToCode(binaryArray).length == 1) convertToCode(binaryArray) else convertToCode(binaryArray).substring(0, 1)
 //            val resultString = binaryArray.joinToString(separator = ",")
             onResult(resultString)
             Log.d(TAG, "Prediction result: $resultString")
