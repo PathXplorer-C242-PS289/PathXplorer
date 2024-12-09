@@ -2,6 +2,7 @@ package com.example.pathxplorer.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -14,6 +15,7 @@ import com.example.pathxplorer.ui.utils.AuthViewModelFactory
 
 class OTPVerificationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOtpverificationBinding
+
 
     private val viewModel by viewModels<AuthViewModel> {
         AuthViewModelFactory.getInstance(this)
@@ -32,10 +34,18 @@ class OTPVerificationActivity : AppCompatActivity() {
             return
         }
 
-        setupVerificationButton(email)
+        val type = intent.getStringExtra(TYPE_OTP) ?: run {
+            showError(getString(R.string.not_found_type_key))
+            finish()
+            return
+        }
+
+        binding.emailDestination.text = getString(R.string.email_destination, email)
+
+        setupVerificationButton(email, type)
     }
 
-    private fun setupVerificationButton(email: String) {
+    private fun setupVerificationButton(email: String, type: String) {
         binding.btnSendOtp.setOnClickListener {
             val otp = binding.edtCodeOtp.text.toString()
 
@@ -44,16 +54,36 @@ class OTPVerificationActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            verifyOtp(email, otp)
+            verifyOtp(email, otp, type)
+        }
+
+        binding.tvResend.setOnClickListener {
+            viewModel.resendOtp(email).observe(this) { result ->
+                when (result) {
+                    is Result.Loading -> showLoading(true)
+                    is Result.Success -> Toast.makeText(this, "OTP Sukses Terkirim", Toast.LENGTH_SHORT).show()
+                    is Result.Error -> handleFailedVerification(result.error)
+                }
+            }
         }
     }
 
-    private fun verifyOtp(email: String, otp: String) {
-        viewModel.verifyOtp(email, otp).observe(this) { result ->
-            when (result) {
-                is Result.Loading -> showLoading(true)
-                is Result.Success -> handleSuccessfulVerification()
-                is Result.Error -> handleFailedVerification(result.error)
+    private fun verifyOtp(email: String, otp: String, type: String) {
+        if (type == "RegisterAccount") {
+            viewModel.verifyOtp(email, otp).observe(this) { result ->
+                when (result) {
+                    is Result.Loading -> showLoading(true)
+                    is Result.Success -> handleSuccessfulVerification(type, email, otp)
+                    is Result.Error -> handleFailedVerification(result.error)
+                }
+            }
+        } else if (type == "ForgotPassword") {
+            viewModel.verifyOtpForgotPassword(email, otp).observe(this) { result ->
+                when (result) {
+                    is Result.Loading -> showLoading(true)
+                    is Result.Success -> handleSuccessfulVerification(type, email, otp)
+                    is Result.Error -> handleFailedVerification(result.error)
+                }
             }
         }
     }
@@ -67,10 +97,15 @@ class OTPVerificationActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleSuccessfulVerification() {
+    private fun handleSuccessfulVerification(type: String, email: String, otp: String) {
         showLoading(false)
         Toast.makeText(this, getString(R.string.otp_verification_success), Toast.LENGTH_SHORT).show()
-        navigateToLogin()
+        Log.d("OTPVerificationActivity", "type: $type")
+        if (type == "RegisterAccount") {
+            navigateToLogin()
+        } else if (type == "ForgotPassword") {
+            navigateToNewPassword(email, otp)
+        }
     }
 
     private fun handleFailedVerification(error: String?) {
@@ -86,6 +121,13 @@ class OTPVerificationActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun navigateToNewPassword(email: String, otp: String) {
+        startActivity(Intent(this, NewPasswordActivity::class.java)
+            .putExtra(NewPasswordActivity.EXTRA_EMAIL, email)
+            .putExtra(NewPasswordActivity.EXTRA_OTP, otp))
+        finish()
+    }
+
     private fun navigateToLogin() {
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
@@ -93,5 +135,6 @@ class OTPVerificationActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_EMAIL = "extra_email"
+        const val TYPE_OTP = "otp"
     }
 }

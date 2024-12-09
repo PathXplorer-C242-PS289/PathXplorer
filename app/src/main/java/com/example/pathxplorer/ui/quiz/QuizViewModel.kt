@@ -9,9 +9,7 @@ import com.example.pathxplorer.data.models.Answer
 import com.example.pathxplorer.data.models.Question
 import com.example.pathxplorer.data.models.ResultQuiz
 import com.example.pathxplorer.data.models.UserModel
-import com.example.pathxplorer.data.remote.response.RecommendationRiasecResponse
-import com.example.pathxplorer.ui.utils.generateDummyQuestionV2
-import com.google.firebase.Timestamp
+import com.example.pathxplorer.ui.utils.getQuestion
 
 class QuizViewModel(private val repository: UserRepository) : ViewModel() {
     private var _indexedValue = MutableLiveData<Int>().apply { value = 0 }
@@ -35,7 +33,7 @@ class QuizViewModel(private val repository: UserRepository) : ViewModel() {
 
     init {
         if (questions.isEmpty()) {
-            questions.addAll(generateDummyQuestionV2())
+            questions.addAll(getQuestion())
         }
     }
 

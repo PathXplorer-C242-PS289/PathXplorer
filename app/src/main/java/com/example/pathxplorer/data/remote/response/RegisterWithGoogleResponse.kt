@@ -8,6 +8,7 @@ data class RegisterWithGoogleResponse(
 data class User(
 	val providerType: String,
 	val id: Int,
-	val email: String
+	val email: String,
+	val username: String
 )
 

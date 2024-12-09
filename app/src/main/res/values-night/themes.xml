@@ -20,7 +20,7 @@
     </style>
 
     <style name="BlueAnchor">
-        <item name="android:textColor">@color/blue_700</item>
+        <item name="android:textColor">@color/blue_200</item>
     </style>
 
     <style name="BlueAnchor.Small">

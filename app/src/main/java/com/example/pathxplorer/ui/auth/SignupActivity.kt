@@ -13,6 +13,7 @@ import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import androidx.credentials.exceptions.GetCredentialException
+import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import androidx.lifecycle.lifecycleScope
 import com.example.pathxplorer.MainActivity
 import com.example.pathxplorer.R
@@ -55,13 +56,14 @@ class SignupActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.btnSignup.setOnClickListener {
+            val userName = binding.edtName.text.toString()
             val email = binding.edtEmail.text.toString()
             val password = binding.edtPassword.text.toString()
 
             isLoading(true)
 
             lifecycleScope.launch {
-                viewModel.register(email, password).observe(this@SignupActivity) { result ->
+                viewModel.register(userName, email, password).observe(this@SignupActivity) { result ->
                     isLoading(false)
                     when (result) {
                         is Result.Loading -> {
@@ -70,6 +72,7 @@ class SignupActivity : AppCompatActivity() {
                         is Result.Success -> {
                             val intent = Intent(this@SignupActivity, OTPVerificationActivity::class.java)
                             intent.putExtra(OTPVerificationActivity.EXTRA_EMAIL, email)
+                            intent.putExtra(OTPVerificationActivity.TYPE_OTP, "RegisterAccount")
                             startActivity(intent)
                         }
                         is Result.Error -> {
@@ -174,18 +177,41 @@ class SignupActivity : AppCompatActivity() {
 
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null) {
-            val intent = Intent(this@SignupActivity, MainActivity::class.java)
-            val user = UserModel(
-                currentUser.email ?: "",
-                currentUser.displayName ?: "",
-                currentUser.getIdToken(false).result?.token ?: "",
-                1,
-                "google",
-            )
-            viewModel.saveSession(user)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            finish()
+            val token = currentUser.getIdToken(false).result?.token ?: ""
+            viewModel.registerWithGoogle(token).observe(this) { result ->
+                Log.d(TAG, "updateUI: $token")
+                when (result) {
+                    is Result.Loading -> {
+                        isLoading(true)
+                    }
+                    is Result.Error -> {
+                        isLoading(false)
+                        AlertDialog.Builder(this@SignupActivity).apply {
+                            setTitle("Oops!")
+                            setMessage(result.error)
+                            setPositiveButton("OK") { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            create()
+                            show()
+                        }
+                    }
+                    is Result.Success -> {
+                        val intent = Intent(this@SignupActivity, MainActivity::class.java)
+                        val user = UserModel(
+                            email = result.data.user.email,
+                            name = result.data.user.username,
+                            token = currentUser.getIdToken(false).result?.token ?: "",
+                            userId = result.data.user.id,
+                            provider = "google",
+                        )
+                        viewModel.saveSession(user)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+            }
         }
     }
 
@@ -204,6 +230,6 @@ class SignupActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "LoginActivity"
+        private const val TAG = "SignupActivity"
     }
 }

@@ -94,20 +94,6 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             }
-
-//            viewModel.saveSession(UserModel(email, email, "token_sample"))
-//            AlertDialog.Builder(this).apply {
-//                setTitle("Yeah!")
-//                setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
-//                setPositiveButton("Lanjut") { _, _ ->
-//                    val intent = Intent(context, MainActivity::class.java)
-//                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-//                    startActivity(intent)
-//                    finish()
-//                }
-//                create()
-//                show()
-//            }
         }
 
         binding.tvDaftar.setOnClickListener {
@@ -186,19 +172,40 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null) {
-            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-            val user = UserModel(
-                currentUser.email ?: "",
-                currentUser.displayName ?: "",
-                currentUser.getIdToken(false).result?.token ?: "",
-                1,
-                "google",
-            )
+            val token = currentUser.getIdToken(false).result?.token ?: ""
 
-            viewModel.saveSession(user)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            finish()
+            viewModel.loginWithGoogle(token).observe(this) { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        isLoading(true)
+                    }
+                    is Result.Success -> {
+                        val user = UserModel(
+                            email = result.data.user.email,
+                            name = result.data.user.username,
+                            token = currentUser.getIdToken(false).result?.token ?: "",
+                            userId = result.data.user.id,
+                            provider = "google",
+                        )
+                        viewModel.saveSession(user)
+                        AlertDialog.Builder(this).apply {
+                            setTitle("Yeah!")
+                            setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
+                            setPositiveButton("Lanjut") { _, _ ->
+                                val intent = Intent(context, MainActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                startActivity(intent)
+                                finish()
+                            }
+                            create()
+                            show()
+                        }
+                    }
+                    is Result.Error -> {
+                        showModal("Oops!", result.error!!)
+                    }
+                }
+            }
         }
     }
 
