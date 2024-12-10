@@ -1,126 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
-    tools:context=".ui.quiz.QuizDashboardFragment">
+    tools:context=".ui.quiz.QuizDashboardFragment"
+    android:orientation="vertical">
 
-    <!-- Loading Indicator -->
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progress_indicator"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:visibility="gone"
-        app:indicatorColor="?attr/colorPrimary"
-        app:trackColor="?attr/colorSurface"
+        app:indicatorColor="@color/blue_700"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:trackColor="@color/white" />
 
-    <!-- Title -->
     <TextView
         android:id="@+id/welcome_text"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="24dp"
-        android:text="Quiz Dashboard"
-        android:textColor="?attr/colorOnSurface"
+        android:text="Ready to looking your potential?"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- NestedScrollView to allow scrolling of card content -->
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scroll_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <LinearLayout
+        android:id="@+id/quiz_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/welcome_text"
-        app:layout_constraintBottom_toTopOf="@id/start_test_button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_quiz_results"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_results"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/cardview_light_background"
-            android:animateLayoutChanges="true"
-            android:padding="16dp">
+            android:layout_marginBottom="24dp"
+            tools:listitem="@layout/tests_item"
+            android:layout_gravity="center" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/empty_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:contentDescription="No quiz results"
+                android:src="@drawable/ic_no_quiz" />
+
+            <TextView
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="You have not taken any quiz yet"
+                android:textStyle="normal"
+                android:textSize="18sp"/>
 
-                <!-- RecyclerView untuk hasil quiz -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_results"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:visibility="gone"
-                    tools:listitem="@layout/tests_item" />
 
-                <!-- Layout kosong jika belum ada hasil quiz -->
-                <LinearLayout
-                    android:id="@+id/empty_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:paddingTop="32dp"
-                    android:paddingBottom="32dp"
-                    android:visibility="gone">
+        </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:contentDescription="no_quiz_results"
-                        android:src="@drawable/ic_no_quiz"
-                        android:layout_marginBottom="16dp"/>
+    </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="No quiz result"
-                        android:textSize="16sp"
-                        android:textColor="?attr/colorOnSurface"
-                        android:gravity="center"
-                        android:layout_marginBottom="8dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Take your Quiz now"
-                        android:textSize="14sp"
-                        android:textColor="?attr/colorOnSurface"
-                        android:gravity="center"/>
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-    </androidx.core.widget.NestedScrollView>
-
-    <!-- FloatingActionButton -->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/start_test_button"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:text="TAKE QUIZ"
-        android:textColor="@android:color/white"
-        app:iconTint="@android:color/white"
-        app:backgroundTint="?attr/colorPrimary"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:text="Take Quiz"
+        app:backgroundTint="@color/blue_700"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
