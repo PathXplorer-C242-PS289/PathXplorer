@@ -6,11 +6,8 @@ import com.example.pathxplorer.data.local.datapreference.UserPreference
 import com.example.pathxplorer.data.remote.response.ProfileWithTestResponse
 import com.example.pathxplorer.data.remote.response.RecommendationRiasecResponse
 import com.example.pathxplorer.data.remote.response.SaveRiasecTestResponse
-import com.example.pathxplorer.data.remote.response.TestResultsItem
 import com.example.pathxplorer.data.remote.retrofit.ApiService
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 
 class UserRepository private constructor(
     private val apiService: ApiService,
@@ -30,19 +27,13 @@ class UserRepository private constructor(
 
     private val recommendationResult = MutableLiveData<Result<RecommendationRiasecResponse>>()
 
-    suspend fun getRecommendation(code: String): MutableLiveData<Result<RecommendationRiasecResponse>> {
-        withContext(Dispatchers.Main) {
-            recommendationResult.value = Result.Loading
-        }
+    suspend fun getRecommendation(code: String) : MutableLiveData<Result<RecommendationRiasecResponse>> {
+        recommendationResult.value = Result.Loading
         try {
             val response = apiService.getRecommendation(code)
-            withContext(Dispatchers.Main) {
-                recommendationResult.value = Result.Success(response)
-            }
+            recommendationResult.value = Result.Success(response)
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                recommendationResult.value = Result.Error(e.message ?: "An error occurred")
-            }
+            recommendationResult.value = Result.Error(e.message ?: "An error occurred")
         }
         return recommendationResult
     }
@@ -50,19 +41,13 @@ class UserRepository private constructor(
     private val saveTestResult = MutableLiveData<Result<SaveRiasecTestResponse>>()
 
     suspend fun saveTest(testId: Int, userId: Int, category: String): MutableLiveData<Result<SaveRiasecTestResponse>> {
-        withContext(Dispatchers.Main) {
-            saveTestResult.value = Result.Loading
-        }
+        saveTestResult.value = Result.Loading
         try {
             val body = ApiService.SaveTestRequest(testId, userId, category)
             val response = apiService.saveResultTest(body)
-            withContext(Dispatchers.Main) {
-                saveTestResult.value = Result.Success(response)
-            }
+            saveTestResult.value = Result.Success(response)
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                saveTestResult.value = Result.Error(e.message ?: "An error occurred")
-            }
+            saveTestResult.value = Result.Error(e.message ?: "An error occurred")
         }
         return saveTestResult
     }
@@ -70,34 +55,25 @@ class UserRepository private constructor(
     private val getTestResults = MutableLiveData<Result<ProfileWithTestResponse>>()
 
     suspend fun getTestResults(): MutableLiveData<Result<ProfileWithTestResponse>> {
-        withContext(Dispatchers.Main) {
-            getTestResults.value = Result.Loading
-        }
+        getTestResults.value = Result.Loading
         try {
             val response = apiService.getProfile()
-            withContext(Dispatchers.Main) {
-                getTestResults.value = Result.Success(response)
-            }
+            getTestResults.value = Result.Success(response)
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                getTestResults.value = Result.Error(e.message ?: "An error occurred")
-            }
+            getTestResults.value = Result.Error(e.message ?: "An error occurred")
         }
         return getTestResults
     }
 
-    suspend fun findTestResultById(testId: Int): TestResultsItem? {
-        return try {
-            val response = apiService.getProfile()
-            response.data.testResults.find { it.testId == testId }
-        } catch (e: Exception) {
-            null
-        }
-    }
-
     companion object {
-        fun getInstance(apiService: ApiService, userPreference: UserPreference): UserRepository {
-            return UserRepository(apiService, userPreference)
-        }
+        @Volatile
+        private var instance: UserRepository? = null
+        fun getInstance(
+            apiService: ApiService,
+            userPreference: UserPreference
+        ): UserRepository =
+            instance ?: synchronized(this) {
+                instance ?: UserRepository(apiService, userPreference)
+            }.also { instance = it }
     }
 }

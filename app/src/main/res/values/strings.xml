@@ -138,6 +138,4 @@ By using our app, you consent to the terms of this Privacy Policy.
     <string name="result_type">Your type is %1$s</string>
     <string name="result_skill"><strong>Your key skills :</strong> %1$s</string>
     <string name="result_career"><strong>What you can be :</strong> %1$s</string>
-    <string name="error_loading_test_results">Error loading test results</string>
-    <string name="let_s_start">Let\'s Start</string>
 </resources>

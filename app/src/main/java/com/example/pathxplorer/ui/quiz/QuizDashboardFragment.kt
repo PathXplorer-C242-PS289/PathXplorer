@@ -2,6 +2,7 @@ package com.example.pathxplorer.ui.quiz
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,6 +61,11 @@ class QuizDashboardFragment : Fragment() {
 
     private fun loadTestResults() {
         // Use viewLifecycleOwner for observing LiveData
+        viewModel.getSession().observe(viewLifecycleOwner) { session ->
+            if (session != null) {
+                Log.d("QuizDashboardFragment", "Session: ${session.token}")
+            }
+        }
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 viewModel.getTestResults().observe(viewLifecycleOwner) { result ->
@@ -111,6 +117,11 @@ class QuizDashboardFragment : Fragment() {
         if (isAdded && context != null) {
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadTestResults()
     }
 
     override fun onDestroyView() {
