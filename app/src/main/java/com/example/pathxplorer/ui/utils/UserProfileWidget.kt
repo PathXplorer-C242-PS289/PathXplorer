@@ -5,21 +5,24 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import android.widget.RemoteViews
-import androidx.core.content.ContextCompat
 import com.example.pathxplorer.R
-import com.example.pathxplorer.data.UserRepository
 import com.example.pathxplorer.data.local.datapreference.UserPreference
 import com.example.pathxplorer.data.local.datapreference.dataStore
-import com.example.pathxplorer.data.remote.retrofit.ApiConfig
 import com.example.pathxplorer.ui.main.ProfileSettingsActivity
+import com.example.pathxplorer.ui.quiz.test.QuizActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class UserProfileWidget : AppWidgetProvider() {
+
+    private val job = SupervisorJob()
+    private val scope = CoroutineScope(Dispatchers.IO + job)
 
     override fun onUpdate(
         context: Context,
@@ -38,53 +41,101 @@ class UserProfileWidget : AppWidgetProvider() {
     ) {
         val views = RemoteViews(context.packageName, R.layout.widget_utils)
 
+        // Set initial loading state
+        views.setViewVisibility(R.id.widget_content, View.GONE)
+        views.setViewVisibility(R.id.widget_loading, View.VISIBLE)
+        appWidgetManager.updateAppWidget(appWidgetId, views)
+
+        // Setup click listeners
+        setupClickListeners(context, views, appWidgetId)
+
+        scope.launch {
+            try {
+                val userPreference = UserPreference.getInstance(context.dataStore)
+                val user = userPreference.getSession().first()
+
+                val level = when (user.score) {
+                    null, 0 -> "Pemula"
+                    in 1..30 -> "Junior"
+                    in 31..60 -> "Intermediate"
+                    in 61..90 -> "Advanced"
+                    else -> "Expert"
+                }
+
+                views.apply {
+                    // Update user info
+                    setTextViewText(R.id.widget_name, user.name)
+                    setTextViewText(R.id.widget_email, user.email)
+
+                    // Update stats
+                    setTextViewText(R.id.widget_level_label, "Level")
+                    setTextViewText(R.id.widget_level, level)
+
+                    setTextViewText(R.id.widget_tests_label, "Tests")
+                    setTextViewText(R.id.widget_tests, user.testCount?.toString() ?: "0")
+
+                    setTextViewText(R.id.widget_daily_quest_label, "Daily Quest")
+                    setTextViewText(R.id.widget_daily_quest, user.dailyQuestCount?.toString() ?: "0")
+
+                    setTextViewText(R.id.widget_score_label, "Score")
+                    setTextViewText(R.id.widget_score, user.score?.toString() ?: "0")
+
+                    setViewVisibility(R.id.widget_loading, View.GONE)
+                    setViewVisibility(R.id.widget_content, View.VISIBLE)
+                }
+
+                appWidgetManager.updateAppWidget(appWidgetId, views)
+            } catch (e: Exception) {
+                views.apply {
+                    setViewVisibility(R.id.widget_loading, View.GONE)
+                    setViewVisibility(R.id.widget_content, View.VISIBLE)
+                }
+                appWidgetManager.updateAppWidget(appWidgetId, views)
+            }
+        }
+    }
+
+    private fun setupClickListeners(context: Context, views: RemoteViews, appWidgetId: Int) {
+        // Profile edit click
         val editIntent = Intent(context, ProfileSettingsActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
         val editPendingIntent = PendingIntent.getActivity(
             context,
-            0,
+            appWidgetId,
             editIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         views.setOnClickPendingIntent(R.id.widget_edit, editPendingIntent)
 
-        // Use coroutine to fetch user data
-        CoroutineScope(Dispatchers.IO).launch {
-            val userPreference = UserPreference.getInstance(context.dataStore)
-            val user = userPreference.getSession().first()
-            val apiService = ApiConfig.getApiService(user.token)
-            val userRepository = UserRepository.getInstance(apiService, userPreference)
-
-            views.apply {
-                setImageViewResource(R.id.widget_avatar, R.drawable.profile_icon)
-
-                setTextViewText(R.id.widget_level, "Pemula")
-                setTextViewText(R.id.widget_tests, user.testCount?.toString() ?: "0")
-                setTextViewText(R.id.widget_daily_quest, user.dailyQuestCount?.toString() ?: "0")
-                setTextViewText(R.id.widget_score, user.score?.toString() ?: "0")
-
-                setInt(R.id.widget_background, "setBackgroundResource", R.drawable.widget_background)
-                setTextColor(R.id.widget_level, ContextCompat.getColor(context, R.color.white))
-                setTextColor(R.id.widget_tests, ContextCompat.getColor(context, R.color.white))
-                setTextColor(R.id.widget_daily_quest, ContextCompat.getColor(context, R.color.white))
-                setTextColor(R.id.widget_score, ContextCompat.getColor(context, R.color.white))
-            }
-
-            appWidgetManager.updateAppWidget(appWidgetId, views)
+        // Refresh click
+        val refreshIntent = Intent(context, UserProfileWidget::class.java).apply {
+            action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
         }
+        val refreshPendingIntent = PendingIntent.getBroadcast(
+            context,
+            appWidgetId + 100,
+            refreshIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        views.setOnClickPendingIntent(R.id.widget_refresh, refreshPendingIntent)
+
+        // Take Test button click
+        val testIntent = Intent(context, QuizActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        val testPendingIntent = PendingIntent.getActivity(
+            context,
+            appWidgetId + 200,
+            testIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        views.setOnClickPendingIntent(R.id.widget_take_test_button, testPendingIntent)
     }
 
-    override fun onReceive(context: Context?, intent: Intent?) {
-        super.onReceive(context, intent)
-
-        if (intent?.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
-            val appWidgetManager = AppWidgetManager.getInstance(context)
-            val appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)
-
-            if (appWidgetIds != null && context != null) {
-                onUpdate(context, appWidgetManager, appWidgetIds)
-            }
-        }
+    override fun onDisabled(context: Context?) {
+        super.onDisabled(context)
+        scope.cancel()
     }
 }

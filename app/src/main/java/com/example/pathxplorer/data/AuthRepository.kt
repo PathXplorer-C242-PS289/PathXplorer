@@ -69,7 +69,7 @@ class AuthRepository private constructor(
             val response = apiService.login(body)
             val user = UserModel(
                 email = response.user.email,
-                name = response.user.username,
+                name = response.user.username ?: response.user.email.substringBefore('@'),
                 token = response.token,
                 userId = response.user.id
             )
