@@ -5,10 +5,8 @@ import com.example.pathxplorer.data.models.UserModel
 import com.example.pathxplorer.data.local.datapreference.UserPreference
 import com.example.pathxplorer.data.remote.response.ProfileWithTestResponse
 import com.example.pathxplorer.data.remote.response.RecommendationRiasecResponse
-import com.example.pathxplorer.data.remote.response.ResultTestResponse
 import com.example.pathxplorer.data.remote.response.SaveRiasecTestResponse
 import com.example.pathxplorer.data.remote.retrofit.ApiService
-import com.google.firebase.Timestamp
 import kotlinx.coroutines.flow.Flow
 
 class UserRepository private constructor(
@@ -45,7 +43,7 @@ class UserRepository private constructor(
     suspend fun saveTest(testId: Int, userId: Int, category: String): MutableLiveData<Result<SaveRiasecTestResponse>> {
         saveTestResult.value = Result.Loading
         try {
-            val body = ApiService.saveTestRequest(testId, userId, category)
+            val body = ApiService.SaveTestRequest(testId, userId, category)
             val response = apiService.saveResultTest(body)
             saveTestResult.value = Result.Success(response)
         } catch (e: Exception) {

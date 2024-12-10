@@ -108,4 +108,6 @@ dependencies {
     implementation ("com.google.android.gms:play-services-tflite-gpu:16.2.0")
     implementation("org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.4")
     implementation("com.google.android.gms:play-services-tflite-java:16.3.0")
+
+    implementation("com.google.android.material:material:1.12.0")
 }

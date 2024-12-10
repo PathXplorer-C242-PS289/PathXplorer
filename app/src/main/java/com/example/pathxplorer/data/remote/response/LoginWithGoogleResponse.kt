@@ -2,7 +2,8 @@ package com.example.pathxplorer.data.remote.response
 
 data class LoginWithGoogleResponse(
 	val message: String,
-	val user: UserGoogle
+	val user: User,
+	val token: String
 )
 
 data class UserGoogle(

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pathxplorer.R
 import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.data.remote.response.RecommendationRiasecResponse
 import com.example.pathxplorer.databinding.FragmentQuizResultBinding
@@ -82,10 +83,11 @@ class QuizResultFragment : Fragment() {
 
     private fun setupResult(resultTest: RecommendationRiasecResponse) {
         with(binding) {
-            tvTitle.text = "Your type is ${resultTest.riasecType}"
-            tvDescription.text = "*What is meanns of your type* \n ${resultTest.interestDescription}"
-            tvKeySkill.text = "*Your key skills :* ${resultTest.keySkills}"
-            tvExampleCareer.text = "*What you can be :* ${resultTest.exampleCareers}"
+            tvTitle.text = getString(R.string.result_type, resultTest.riasecType)
+            tvDescription.text =
+                getString(R.string.result_description, resultTest.interestDescription)
+            tvKeySkill.text = getString(R.string.result_skill, resultTest.keySkills)
+            tvExampleCareer.text = getString(R.string.result_career, resultTest.exampleCareers)
         }
     }
 
