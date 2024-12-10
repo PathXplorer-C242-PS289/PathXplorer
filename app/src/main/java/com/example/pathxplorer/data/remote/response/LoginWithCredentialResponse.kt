@@ -10,6 +10,6 @@ data class UserCredential(
 	val providerType: String,
 	val id: Int,
 	val email: String,
-	val username: String
+	val username: String?
 )
 
