@@ -5,8 +5,6 @@ import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.data.UserRepository
 import com.example.pathxplorer.data.models.*
 import com.example.pathxplorer.ui.utils.getQuestion
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 class QuizViewModel(private val repository: UserRepository) : ViewModel() {
     private var _indexedValue = MutableLiveData<Int>().apply { value = 0 }
@@ -73,13 +71,6 @@ class QuizViewModel(private val repository: UserRepository) : ViewModel() {
     }
 
     fun getSession(): LiveData<UserModel> = repository.getSession().asLiveData()
-
-    fun logout() {
-        viewModelScope.launch {
-            repository.logout()
-        }
-    }
-
 
     fun getRecommendation(code: String) = liveData {
         emit(Result.Loading)
