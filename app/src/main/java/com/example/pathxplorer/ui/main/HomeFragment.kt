@@ -6,11 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.credentials.ClearCredentialStateRequest
-import androidx.credentials.CredentialManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pathxplorer.R
@@ -21,20 +18,13 @@ import com.example.pathxplorer.data.models.WebinarModel
 import com.example.pathxplorer.databinding.FragmentHomeBinding
 import com.example.pathxplorer.ui.main.adapter.CarouselAdapter
 import com.example.pathxplorer.ui.main.adapter.ListAdapterWebinar
-import com.example.pathxplorer.ui.quiz.dailyquest.DailyQuestActivity
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.example.pathxplorer.ui.utils.generateListKampus
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var auth: FirebaseAuth
 
     private val mainViewModel by viewModels<MainViewModel> {
         UserViewModelFactory.getInstance(requireContext())
@@ -58,9 +48,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        auth = Firebase.auth
-
-        binding.buttonStartTest.setOnClickListener {
+        binding.button.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Confirmation")
                 .setMessage("Are you sure?")
@@ -88,39 +76,6 @@ class HomeFragment : Fragment() {
                 user.name
             }
             binding.tvUserName.text = getString(R.string.welcome_user, userNameDisplay)
-        }
-
-        lifecycleScope.launch {
-            mainViewModel.getTestResults().observe(viewLifecycleOwner) { result ->
-                when (result) {
-                    is Result.Success -> {
-                        if (result.data.data.testResults.isEmpty()) {
-                            binding.reminderContainer.visibility = View.VISIBLE
-                        }
-                    }
-                    is Result.Error -> {
-                        Toast.makeText(
-                            context,
-                            result.error ?: getString(R.string.error_loading_test_results),
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        if (result.error!!.contains("HTTP 401")) {
-                            MaterialAlertDialogBuilder(requireContext())
-                                .setTitle("Session Expired")
-                                .setMessage("Your session has expired. Please login again for security reasons.")
-                                .setPositiveButton("OK") { dialog, which ->
-                                    logout()
-                                }
-                                .setCancelable(false)
-                                .show()
-                        }
-                    }
-                    is Result.Loading -> {
-                        // Handle loading
-                    }
-                }
-            }
         }
     }
 
@@ -203,29 +158,6 @@ class HomeFragment : Fragment() {
         binding.tvSeeAllWebinar.setOnClickListener {
             // Use Navigation component to navigate
             findNavController().navigate(R.id.action_navigation_home_to_webinarFragment)
-        }
-
-        binding.btnToDailyQuest.setOnClickListener {
-            startActivity(Intent(context, DailyQuestActivity::class.java))
-        }
-    }
-
-    private fun logout() {
-        mainViewModel.getSession().observe(viewLifecycleOwner) { user ->
-            if (user.provider != "credentials") {
-                signOutGoogle()
-            } else {
-                mainViewModel.logout()
-            }
-        }
-    }
-
-    private fun signOutGoogle() {
-        lifecycleScope.launch {
-            val credentialManager = CredentialManager.create(requireActivity())
-            auth.signOut()
-            credentialManager.clearCredentialState(ClearCredentialStateRequest())
-            mainViewModel.logout()
         }
     }
 

@@ -110,7 +110,4 @@ dependencies {
     implementation("com.google.android.gms:play-services-tflite-java:16.3.0")
 
     implementation("com.google.android.material:material:1.12.0")
-
-    // Room
-    implementation("androidx.room:room-runtime:2.6.1")
 }
