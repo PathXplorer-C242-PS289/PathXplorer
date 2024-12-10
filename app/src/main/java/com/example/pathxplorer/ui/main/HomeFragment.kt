@@ -20,6 +20,7 @@ import com.example.pathxplorer.ui.main.adapter.CarouselAdapter
 import com.example.pathxplorer.ui.main.adapter.ListAdapterWebinar
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.example.pathxplorer.ui.utils.generateListKampus
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -46,6 +47,19 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.button.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Confirmation")
+                .setMessage("Are you sure?")
+                .setPositiveButton("Yes") { dialog, which ->
+                    Toast.makeText(requireContext(), "Yes", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("No") { dialog, which ->
+                    Toast.makeText(requireContext(), "No", Toast.LENGTH_SHORT).show()
+                }
+                .show()
+        }
 
         setupUserInfo()
         setupRecommendedCampus()

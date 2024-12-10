@@ -2,7 +2,8 @@ package com.example.pathxplorer.data.remote.response
 
 data class RegisterWithGoogleResponse(
 	val message: String,
-	val user: User
+	val user: User,
+	val token: String
 )
 
 data class User(

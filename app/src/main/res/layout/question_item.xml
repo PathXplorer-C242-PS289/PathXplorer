@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:paddingTop="24dp"
+    android:paddingBottom="24dp"
     android:id="@+id/question_item_view"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
@@ -22,7 +24,8 @@
             android:layout_weight="1.9"
             android:layout_margin="16dp"
             android:text="@string/question"
-            android:textSize="24sp"
+            android:textAlignment="center"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/checked_indicator"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +58,7 @@
             android:gravity="center"
             android:layout_marginStart="8dp"
             android:text="@string/not_agree"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <RadioGroup
             android:id="@+id/answers_radio_group"
@@ -67,32 +70,27 @@
             <RadioButton
                 android:id="@+id/answer_1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"/>
+                android:layout_height="wrap_content" />
 
             <RadioButton
                 android:id="@+id/answer_2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2"/>
+                android:layout_height="wrap_content" />
 
             <RadioButton
                 android:id="@+id/answer_3"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3"/>
+                android:layout_height="wrap_content"/>
 
             <RadioButton
                 android:id="@+id/answer_4"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4"/>
+                android:layout_height="wrap_content" />
 
             <RadioButton
                 android:id="@+id/answer_5"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="5"/>
+                android:layout_height="wrap_content" />
 
         </RadioGroup>
 
@@ -102,7 +100,7 @@
             android:gravity="center"
             android:layout_marginEnd="8dp"
             android:text="@string/agree"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 

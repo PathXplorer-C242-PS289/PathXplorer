@@ -134,10 +134,10 @@ interface ApiService {
     @POST("api/riasec/save-results")
     @Headers("Content-Type: application/json")
     suspend fun saveResultTest(
-        @Body request: saveTestRequest
+        @Body request: SaveTestRequest
     ): SaveRiasecTestResponse
 
-    data class saveTestRequest(
+    data class SaveTestRequest(
         val testId: Int,
         val userId: Int,
         val category: String
