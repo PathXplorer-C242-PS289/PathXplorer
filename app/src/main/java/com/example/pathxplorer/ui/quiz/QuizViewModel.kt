@@ -3,10 +3,9 @@ package com.example.pathxplorer.ui.quiz
 import androidx.lifecycle.*
 import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.data.UserRepository
-import com.example.pathxplorer.data.models.Answer
-import com.example.pathxplorer.data.models.Question
-import com.example.pathxplorer.data.models.UserModel
+import com.example.pathxplorer.data.models.*
 import com.example.pathxplorer.ui.utils.getQuestion
+
 class QuizViewModel(private val repository: UserRepository) : ViewModel() {
     private var _indexedValue = MutableLiveData<Int>().apply { value = 0 }
     val indexedValue: LiveData<Int> = _indexedValue
@@ -97,16 +96,6 @@ class QuizViewModel(private val repository: UserRepository) : ViewModel() {
             emit(repository.getTestResults().value ?: Result.Error("Failed to load test results"))
         } catch (e: Exception) {
             emit(Result.Error(e.message ?: "Unknown error occurred"))
-        }
-    }
-
-    fun getTestDetailById(testId: Int) = liveData {
-        emit(null)
-        try {
-            val detail = repository.findTestResultById(testId)
-            emit(detail)
-        } catch (e: Exception) {
-            emit(null)
         }
     }
 }

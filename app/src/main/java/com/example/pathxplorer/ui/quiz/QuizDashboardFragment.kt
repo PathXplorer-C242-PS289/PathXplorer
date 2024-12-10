@@ -2,7 +2,6 @@ package com.example.pathxplorer.ui.quiz
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.data.remote.response.ProfileWithTestResponse
-import com.example.pathxplorer.data.remote.response.TestResultsItem
 import com.example.pathxplorer.databinding.FragmentQuizDashboardBinding
-import com.example.pathxplorer.ui.quiz.test.DetailTestResultActivity
 import com.example.pathxplorer.ui.quiz.test.QuizActivity
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import kotlinx.coroutines.launch
@@ -29,8 +26,6 @@ class QuizDashboardFragment : Fragment() {
         UserViewModelFactory.getInstance(requireActivity())
     }
 
-    private lateinit var testResultAdapter: TestResultAdapter
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,10 +38,6 @@ class QuizDashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        testResultAdapter = TestResultAdapter { selectedItem: TestResultsItem ->
-            showDetail(selectedItem)
-        }
-
         setupInitialState()
         setupActionButtons()
         loadTestResults()
@@ -55,7 +46,7 @@ class QuizDashboardFragment : Fragment() {
     private fun setupInitialState() {
         binding.rvResults.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = testResultAdapter
+            adapter = TestResultAdapter()
         }
         showLoading(true)
         showEmptyState(false)
@@ -68,12 +59,7 @@ class QuizDashboardFragment : Fragment() {
     }
 
     private fun loadTestResults() {
-        viewModel.getSession().observe(viewLifecycleOwner) { session ->
-            if (session != null) {
-                Log.d("QuizDashboardFragment", "Session: ${session.token}")
-            }
-        }
-
+        // Use viewLifecycleOwner for observing LiveData
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 viewModel.getTestResults().observe(viewLifecycleOwner) { result ->
@@ -104,7 +90,7 @@ class QuizDashboardFragment : Fragment() {
             showEmptyState(true)
         } else {
             showEmptyState(false)
-            testResultAdapter.submitList(data.data.testResults)
+            (binding.rvResults.adapter as? TestResultAdapter)?.submitList(data.data.testResults)
         }
     }
 
@@ -125,17 +111,6 @@ class QuizDashboardFragment : Fragment() {
         if (isAdded && context != null) {
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun showDetail(item: TestResultsItem) {
-        val intent = Intent(requireContext(), DetailTestResultActivity::class.java)
-        intent.putExtra(DetailTestResultActivity.EXTRA_TEST_ID, item.testId)
-        startActivity(intent)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        loadTestResults()
     }
 
     override fun onDestroyView() {
