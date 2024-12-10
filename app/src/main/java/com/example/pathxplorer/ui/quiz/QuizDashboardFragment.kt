@@ -2,15 +2,16 @@ package com.example.pathxplorer.ui.quiz
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pathxplorer.data.Result
+import com.example.pathxplorer.data.remote.response.ProfileWithTestResponse
 import com.example.pathxplorer.databinding.FragmentQuizDashboardBinding
 import com.example.pathxplorer.ui.quiz.test.QuizActivity
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
@@ -19,7 +20,6 @@ import kotlinx.coroutines.launch
 class QuizDashboardFragment : Fragment() {
 
     private var _binding: FragmentQuizDashboardBinding? = null
-
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<QuizViewModel> {
@@ -31,62 +31,85 @@ class QuizDashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentQuizDashboardBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        binding.startTestButton.setOnClickListener {
-            val intent = Intent(activity, QuizActivity::class.java)
-            startActivity(intent)
-        }
-
-        lifecycleScope.launch {
-            setupAction()
-        }
-
-        return root
+        return binding.root
     }
 
-    private suspend fun setupAction() {
-        viewModel.getTestResults().observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is Result.Loading -> {
-                    isLoading(true)
-                }
-                is Result.Success -> {
-                    isLoading(false)
-                    if (result.data.data.testResults.isEmpty()) {
-                        binding.rvResults.visibility = View.GONE
-                        binding.emptyLayout.visibility = View.VISIBLE
-                    } else {
-                        binding.rvResults.visibility = View.VISIBLE
-                        binding.emptyLayout.visibility = View.GONE
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-                        val adapter = TestResultAdapter()
+        setupInitialState()
+        setupActionButtons()
+        loadTestResults()
+    }
 
-                        val linearLayoutManager = LinearLayoutManager(requireContext())
-                        binding.rvResults.layoutManager = linearLayoutManager
+    private fun setupInitialState() {
+        binding.rvResults.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = TestResultAdapter()
+        }
+        showLoading(true)
+        showEmptyState(false)
+    }
 
-                        adapter.submitList(result.data.data.testResults)
-                        binding.rvResults.adapter = adapter
+    private fun setupActionButtons() {
+        binding.startTestButton.setOnClickListener {
+            startActivity(Intent(requireContext(), QuizActivity::class.java))
+        }
+    }
+
+    private fun loadTestResults() {
+        // Use viewLifecycleOwner for observing LiveData
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                viewModel.getTestResults().observe(viewLifecycleOwner) { result ->
+                    when (result) {
+                        is Result.Loading -> {
+                            showLoading(true)
+                            showEmptyState(false)
+                        }
+                        is Result.Success -> {
+                            showLoading(false)
+                            handleTestResults(result.data)
+                        }
+                        is Result.Error -> {
+                            showLoading(false)
+                            showError(result.error ?: "Unknown error occurred")
+                        }
                     }
-                    viewModel.getSession().observe(viewLifecycleOwner) { user ->
-                        Log.d("QuizDashboardFragment", "User: ${user.token}")
-                    }
                 }
-                is Result.Error -> {
-                    isLoading(false)
-                    Log.e("QuizDashboardFragment", "Error: ${result.error}")
-                }
+            } catch (e: Exception) {
+                showLoading(false)
+                showError(e.message ?: "Unknown error occurred")
             }
         }
     }
 
-    private fun isLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressIndicator.visibility = View.VISIBLE
+    private fun handleTestResults(data: ProfileWithTestResponse) {
+        if (data.data.testResults.isEmpty()) {
+            showEmptyState(true)
         } else {
-            binding.progressIndicator.visibility = View.GONE
+            showEmptyState(false)
+            (binding.rvResults.adapter as? TestResultAdapter)?.submitList(data.data.testResults)
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (_binding != null) {
+            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun showEmptyState(isEmpty: Boolean) {
+        if (_binding != null) {
+            binding.rvResults.visibility = if (isEmpty) View.GONE else View.VISIBLE
+            binding.emptyLayout.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun showError(message: String) {
+        if (isAdded && context != null) {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
     }
 
