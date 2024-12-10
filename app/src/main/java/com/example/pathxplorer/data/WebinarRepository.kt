@@ -39,7 +39,6 @@ class WebinarRepository private constructor() {
     }
 
     companion object {
-        @Volatile
         private var instance: WebinarRepository? = null
 
         fun getInstance(): WebinarRepository {
