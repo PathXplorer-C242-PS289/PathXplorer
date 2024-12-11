@@ -51,7 +51,7 @@
             android:name=".ui.main.ProfileSettingsActivity"
             android:exported="false"
             android:theme="@style/Theme.PathXplorer.NoActionBar" />
-        <activity android:name=".ui.quiz.test.DetailTestResultActivity"
+        <activity android:name=".ui.quiz.DetailTestResultActivity"
             android:theme="@style/Theme.PathXplorer.NoActionBar"
             android:exported="false"/>
         <activity

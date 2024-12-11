@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pathxplorer.R
 import com.example.pathxplorer.data.remote.response.TestResultsItem
 import com.example.pathxplorer.databinding.TestsItemBinding
 
@@ -27,14 +28,13 @@ class TestResultAdapter(
     inner class TestViewHolder(private val binding: TestsItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(test: TestResultsItem) {
 
+            // Set the test details
             binding.testTitle.text = test.riasecType
             binding.testDescription.text = test.interestDescription
             binding.careerRecommendation.text = test.exampleCareers
             binding.tvKeySkills.text = test.keySkills
 
-            binding.root.setOnClickListener {
-                onItemClick(test)
-
+            // Set the appropriate image based on riasec Type
             val imageResource = when(test.riasecType) {
                 "R" -> R.drawable.r_type
                 "I" -> R.drawable.i_type
@@ -42,14 +42,13 @@ class TestResultAdapter(
                 "S" -> R.drawable.s_type
                 "E" -> R.drawable.e_type
                 "C" -> R.drawable.c_type
-                else -> R.drawable.r_type
+                else -> R.drawable.r_type // Default image
             }
+            binding.testImage.setImageResource(imageResource)
 
-            with(binding) {
-                testImage.setImageResource(imageResource)
-                testDescription.text = test.interestDescription
-                careerRecommendation.text = test.exampleCareers
-                tvKeySkills.text = test.keySkills
+            // Set the click listener
+            binding.root.setOnClickListener {
+                onItemClick(test)
             }
         }
     }

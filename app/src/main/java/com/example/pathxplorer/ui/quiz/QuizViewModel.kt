@@ -120,12 +120,4 @@ class QuizViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    fun getTestResults() = liveData {
-        emit(Result.Loading)
-        try {
-            emit(repository.getTestResults().value ?: Result.Error("Failed to load test results"))
-        } catch (e: Exception) {
-            emit(Result.Error(e.message ?: "Unknown error occurred"))
-        }
-    }
 }
