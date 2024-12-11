@@ -197,11 +197,12 @@ class SignupActivity : AppCompatActivity() {
                         }
                     }
                     is Result.Success -> {
+                        Log.d(TAG, "updateUI: $result")
                         val intent = Intent(this@SignupActivity, MainActivity::class.java)
                         val user = UserModel(
                             email = result.data.user.email,
                             name = result.data.user.username,
-                            token = currentUser.getIdToken(false).result?.token ?: "",
+                            token = result.data.token,
                             userId = result.data.user.id,
                             provider = "google",
                         )

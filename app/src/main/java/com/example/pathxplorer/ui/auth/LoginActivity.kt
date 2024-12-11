@@ -17,7 +17,6 @@ import androidx.lifecycle.lifecycleScope
 import com.example.pathxplorer.MainActivity
 import com.example.pathxplorer.R
 import com.example.pathxplorer.data.Result
-import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.example.pathxplorer.data.models.UserModel
 import com.example.pathxplorer.databinding.ActivityLoginBinding
 import com.example.pathxplorer.ui.utils.AuthViewModelFactory
@@ -173,6 +172,7 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null) {
             val token = currentUser.getIdToken(false).result?.token ?: ""
+            Log.d(TAG, "updateUI: $token")
 
             viewModel.loginWithGoogle(token).observe(this) { result ->
                 when (result) {
@@ -180,10 +180,11 @@ class LoginActivity : AppCompatActivity() {
                         isLoading(true)
                     }
                     is Result.Success -> {
+                        Log.d(TAG, "loginWithGoogle: $result")
                         val user = UserModel(
                             email = result.data.user.email,
                             name = result.data.user.username,
-                            token = currentUser.getIdToken(false).result?.token ?: "",
+                            token = result.data.token,
                             userId = result.data.user.id,
                             provider = "google",
                         )

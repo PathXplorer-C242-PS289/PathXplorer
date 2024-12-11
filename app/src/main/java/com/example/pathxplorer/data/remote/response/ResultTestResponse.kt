@@ -6,4 +6,3 @@ data class ResultTestResponse(
 	val testId: Int,
 	val timestamp: String
 )
-

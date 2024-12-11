@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/blue_700"
     android:padding="16dp">
 
+    <!-- Loading indicator centered -->
     <ProgressBar
         android:id="@+id/widget_loading"
         android:layout_width="wrap_content"
@@ -13,6 +14,7 @@
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
+    <!-- Content layout -->
     <LinearLayout
         android:id="@+id/widget_content"
         android:layout_width="match_parent"
@@ -55,22 +57,35 @@
                     android:layout_height="wrap_content"
                     android:textColor="#B3FFFFFF"
                     android:textSize="12sp" />
+
+                <!-- Latest Test Type -->
+                <TextView
+                    android:id="@+id/widget_latest_test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp" />
             </LinearLayout>
 
+            <!-- Refresh button -->
             <ImageButton
                 android:id="@+id/widget_refresh"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_back" />
+                android:src="@drawable/ic_refresh"
+                android:contentDescription="refresh" />
 
+            <!-- Edit button -->
             <ImageButton
                 android:id="@+id/widget_edit"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="8dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_edit" />
+                android:src="@drawable/ic_edit"
+                android:contentDescription="edit_profile" />
         </LinearLayout>
 
         <!-- Stats Grid -->
@@ -78,9 +93,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="4">
 
-            <!-- Stats content... -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -174,14 +189,14 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Take Test Button -->
         <Button
             android:id="@+id/widget_take_test_button"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="16dp"
             android:text="Take Test"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/black"
+            android:background="@color/white"
             android:textSize="14sp" />
 
     </LinearLayout>

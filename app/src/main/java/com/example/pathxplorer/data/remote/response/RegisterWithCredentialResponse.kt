@@ -4,4 +4,3 @@ data class RegisterWithCredentialResponse(
 	val message: String,
 	val token: String
 )
-

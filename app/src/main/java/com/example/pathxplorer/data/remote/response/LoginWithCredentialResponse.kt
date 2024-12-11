@@ -12,4 +12,3 @@ data class UserCredential(
 	val email: String,
 	val username: String?
 )
-

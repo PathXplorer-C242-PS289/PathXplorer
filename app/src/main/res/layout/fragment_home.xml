@@ -24,62 +24,51 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="4dp"
+            android:layout_margin="16dp"
             android:gravity="center"
-            android:orientation="horizontal"
+            app:strokeWidth="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_user_name">
 
-<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_margin="10dp"-->
-<!--                android:contentDescription="@string/psikotes"-->
-<!--                app:tint="@color/white"-->
-<!--                app:backgroundTint="@color/yellow_500"-->
-<!--                android:src="@drawable/ic_launcher_foreground"-->
-<!--                app:elevation="6dp"-->
-<!--                app:fabSize="normal" />-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:orientation="vertical">
 
-<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_margin="10dp"-->
-<!--                android:contentDescription="@string/article"-->
-<!--                app:tint="@color/white"-->
-<!--                app:backgroundTint="@color/blue_700"-->
-<!--                android:src="@drawable/ic_launcher_foreground"-->
-<!--                app:elevation="6dp"-->
-<!--                app:fabSize="normal" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Daily Quiz"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_margin="10dp"-->
-<!--                android:contentDescription="@string/campus"-->
-<!--                app:tint="@color/white"-->
-<!--                app:backgroundTint="@color/purple_300"-->
-<!--                android:src="@drawable/ic_launcher_foreground"-->
-<!--                app:elevation="6dp"-->
-<!--                app:fabSize="normal" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:text="Test your knowledge"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_margin="10dp"-->
-<!--                android:contentDescription="@string/major"-->
-<!--                app:tint="@color/white"-->
-<!--                app:backgroundTint="@color/red_500"-->
-<!--                android:src="@drawable/ic_launcher_foreground"-->
-<!--                app:elevation="6dp"-->
-<!--                app:fabSize="normal" />-->
+            </LinearLayout>
 
-        </LinearLayout>
+            <Button
+                android:id="@+id/btn_to_daily_quest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_gravity="end|bottom"
+                android:drawableEnd="@drawable/ic_go"
+                android:text="@string/let_s_start"/>
+
+        </com.google.android.material.card.MaterialCardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/remimnder_scope"
@@ -97,8 +86,10 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/reminder_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:background="@color/blue_200">
 
                 <TextView
@@ -116,7 +107,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/button_start_test"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -144,9 +135,9 @@
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:textColor="@color/blue_700"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/button"
-                    app:layout_constraintStart_toStartOf="@+id/button"
-                    app:layout_constraintTop_toBottomOf="@+id/button"
+                    app:layout_constraintEnd_toEndOf="@+id/button_start_test"
+                    app:layout_constraintStart_toStartOf="@+id/button_start_test"
+                    app:layout_constraintTop_toBottomOf="@+id/button_start_test"
                     app:layout_constraintVertical_bias="1.0" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -158,7 +149,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:orientation="horizontal"
             android:padding="8dp"
@@ -243,7 +234,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/webinar_scope" />
