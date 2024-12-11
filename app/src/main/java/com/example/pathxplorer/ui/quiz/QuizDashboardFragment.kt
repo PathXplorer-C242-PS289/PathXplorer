@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.data.remote.response.ProfileWithTestResponse
+import com.example.pathxplorer.data.remote.response.TestResultsItem
 import com.example.pathxplorer.databinding.FragmentQuizDashboardBinding
 import com.example.pathxplorer.ui.quiz.test.QuizActivity
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
@@ -35,6 +36,8 @@ class QuizDashboardFragment : Fragment() {
         UserViewModelFactory.getInstance(requireActivity())
     }
 
+    private lateinit var testResultAdapter: TestResultAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,8 +50,12 @@ class QuizDashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        auth = Firebase.auth
+        // Initialize the adapter with a click listener
+        testResultAdapter = TestResultAdapter { selectedItem: TestResultsItem ->
+            showDetail(selectedItem)
+        }
 
+        auth = Firebase.auth
         setupInitialState()
         setupActionButtons()
         loadTestResults()
@@ -57,7 +64,7 @@ class QuizDashboardFragment : Fragment() {
     private fun setupInitialState() {
         binding.rvResults.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = TestResultAdapter()
+            adapter = testResultAdapter // Use the initialized adapter
         }
         showLoading(true)
         showEmptyState(false)
@@ -70,52 +77,54 @@ class QuizDashboardFragment : Fragment() {
     }
 
     private fun loadTestResults() {
-        // Use viewLifecycleOwner for observing LiveData
+        // Observe the user session
+        viewModel.getSession().observe(viewLifecycleOwner) { session ->
+            if (session != null) {
+                Log.d("QuizDashboardFragment", "Session: ${session.token}")
+            }
+        }
+
+        // Observe test results
         viewLifecycleOwner.lifecycleScope.launch {
-            try {
-                viewModel.getTestResults().observe(viewLifecycleOwner) { result ->
-                    when (result) {
-                        is Result.Loading -> {
-                            showLoading(true)
-                            showEmptyState(false)
-                        }
-                        is Result.Success -> {
-                            showLoading(false)
-                            handleTestResults(result.data)
-                        }
-                        is Result.Error -> {
-                            showLoading(false)
-                            showError(result.error ?: "Unknown error occurred")
-                        }
+            viewModel.getTestResults().observe(viewLifecycleOwner) { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        showLoading(true)
+                        showEmptyState(false)
+                    }
+                    is Result.Success -> {
+                        showLoading(false)
+                        handleTestResults(result.data)
+                    }
+                    is Result.Error -> {
+                        showLoading(false)
+                        showError(result.error ?: "Unknown error occurred")
                     }
                 }
-            } catch (e: Exception) {
-                showLoading(false)
-                showError(e.message ?: "Unknown error occurred")
             }
         }
     }
 
     private fun handleTestResults(data: ProfileWithTestResponse) {
-        if (data.data.testResults.isEmpty()) {
+        val testResults = data.data.testResults
+        Log.d("QuizDashboardFragment", "Handling test results: ${testResults.size}")
+
+        if (testResults.isEmpty()) {
             showEmptyState(true)
         } else {
             showEmptyState(false)
-            (binding.rvResults.adapter as? TestResultAdapter)?.submitList(data.data.testResults)
+            testResultAdapter.submitList(testResults)
+            // Removed redundant submitList call
         }
     }
 
     private fun showLoading(isLoading: Boolean) {
-        if (_binding != null) {
-            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
-        }
+        binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun showEmptyState(isEmpty: Boolean) {
-        if (_binding != null) {
-            binding.rvResults.visibility = if (isEmpty) View.GONE else View.VISIBLE
-            binding.emptyLayout.visibility = if (isEmpty) View.VISIBLE else View.GONE
-        }
+        binding.rvResults.visibility = if (isEmpty) View.GONE else View.VISIBLE
+        binding.emptyLayout.visibility = if (isEmpty) View.VISIBLE else View.GONE
     }
 
     private fun showError(message: String) {
@@ -137,7 +146,15 @@ class QuizDashboardFragment : Fragment() {
         }
     }
 
+    private fun showDetail(item: TestResultsItem) {
+        val intent = Intent(requireContext(), DetailTestResultActivity::class.java)
+        intent.putExtra(DetailTestResultActivity.EXTRA_TEST_ID, item.testId)
+        startActivity(intent)
+    } // Added closing brace
+
     private fun logout() {
+        // Observe the session once and perform logout accordingly
+        viewModel.getSession().removeObservers(viewLifecycleOwner)
         viewModel.getSession().observe(viewLifecycleOwner) { user ->
             if (user.provider != "credentials") {
                 signOutGoogle()

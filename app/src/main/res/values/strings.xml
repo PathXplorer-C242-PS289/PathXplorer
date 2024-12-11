@@ -134,6 +134,9 @@ By using our app, you consent to the terms of this Privacy Policy.
     <string name="new_password_confirm">Konfirmasi Kata Sandi</string>
     <string name="change_password">Ganti Kata Sandi</string>
     <string name="email_destination">Masukkan kode OTP yang dikirim pada email %1$s</string>
+    <string name="result_description"><strong>What is meanns of your type</strong> \n %1$s</string>
+    <string name="result_skill"><strong>Your key skills :</strong> %1$s</string>
+    <string name="result_career"><strong>What you can be :</strong> %1$s</string>
     <string name="result_type">Your a \'%1$s\' type of person</string>
     <string name="error_loading_test_results">Error loading test results</string>
     <string name="let_s_start">Let\'s Start</string>

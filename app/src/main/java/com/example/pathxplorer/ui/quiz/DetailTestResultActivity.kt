@@ -1,11 +1,10 @@
-package com.example.pathxplorer.ui.quiz.test
+package com.example.pathxplorer.ui.quiz
 
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pathxplorer.data.remote.response.TestResultsItem
 import com.example.pathxplorer.databinding.ActivityDetailTestResultBinding
-import com.example.pathxplorer.ui.quiz.QuizViewModel
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 
 class DetailTestResultActivity : AppCompatActivity() {
