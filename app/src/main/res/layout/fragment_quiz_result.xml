@@ -1,85 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.quiz.test.QuizResultFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.Material3.AppBarLayout">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_back"
-            style="@style/navColor"
-            app:title="Quiz Result"/>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/rv_result_quiz"-->
-<!--        android:layout_width="200dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:layout_marginBottom="16dp" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/tv_result"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="RIASEC code"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:textSize="24sp"-->
-<!--        android:textStyle="bold" />-->
-
     <LinearLayout
-        android:id="@+id/ll_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            style="@style/Widget.Material3.AppBarLayout">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_back"
+                style="@style/navColor"
+                app:title="Quiz Result"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!--    <androidx.recyclerview.widget.RecyclerView-->
+        <!--        android:id="@+id/rv_result_quiz"-->
+        <!--        android:layout_width="200dp"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:layout_gravity="center"-->
+        <!--        android:layout_marginTop="16dp"-->
+        <!--        android:layout_marginBottom="16dp" />-->
+
+        <!--    <TextView-->
+        <!--        android:id="@+id/tv_result"-->
+        <!--        android:layout_width="wrap_content"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:text="RIASEC code"-->
+        <!--        android:layout_gravity="center"-->
+        <!--        android:layout_marginTop="16dp"-->
+        <!--        android:textSize="24sp"-->
+        <!--        android:textStyle="bold" />-->
+
+        <ImageView
+            android:id="@+id/type_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
-            android:text="Your type : "/>
+            android:src="@drawable/r_type"
+            android:layout_marginTop="16dp"/>
 
-        <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_result"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:textSize="20sp"
-            android:text="Description : "/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_key_skill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:textSize="20sp"
-            android:text="Key Skill :"/>
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:text="Your type : "/>
 
-        <TextView
-            android:id="@+id/tv_example_career"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:textSize="20sp"
-            android:text="Example Career"/>
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="16sp"
+                android:text="Description : "/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="Key Skill :"/>
+
+            <TextView
+                android:id="@+id/tv_key_skill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="16sp"
+                android:text="Key Skill desc"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="20sp"
+                android:text="Your Career Recomendation"/>
+
+            <TextView
+                android:id="@+id/tv_example_career"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="16sp"
+                android:text="Example Career"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>
