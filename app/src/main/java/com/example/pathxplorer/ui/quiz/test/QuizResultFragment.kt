@@ -135,15 +135,12 @@ class QuizResultFragment : Fragment() {
                         .setTitle("Share Your Result and Exit")
                         .setMessage("Do you happy with your result?, Do you want to share your result?")
                         .setPositiveButton("Yes") { dialog, which ->
-                            requireActivity().finish()
-                            val postRef = db.reference.child(POST_REF)
-                            postRef.push().setValue(post) { error, _ ->
-                                if (error != null) {
-                                    Toast.makeText(requireActivity(), "Error" + error.message, Toast.LENGTH_SHORT).show()
-                                } else {
-                                    Toast.makeText(requireActivity(), "Success", Toast.LENGTH_SHORT).show()
-                                }
-                            }
+                            val bundle = Bundle()
+                            bundle.putParcelable("post", post)
+                            val fragmentPost = PostFragment()
+                            fragmentPost.arguments = bundle
+                            val fragmentManager = parentFragmentManager
+                            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragmentPost, PostFragment::class.java.simpleName).commit()
                         }
                         .setNegativeButton("No") { dialog, which ->
                             requireActivity().finish()

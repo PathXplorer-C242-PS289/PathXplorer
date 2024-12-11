@@ -17,6 +17,7 @@ import com.example.pathxplorer.R
 import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.data.WebinarRepository
 import com.example.pathxplorer.data.models.Kampus
+import com.example.pathxplorer.data.models.TestResultPost
 import com.example.pathxplorer.data.models.WebinarModel
 import com.example.pathxplorer.databinding.FragmentHomeBinding
 import com.example.pathxplorer.ui.main.adapter.CarouselAdapter
@@ -24,9 +25,12 @@ import com.example.pathxplorer.ui.main.adapter.ListAdapterWebinar
 import com.example.pathxplorer.ui.quiz.dailyquest.DailyQuestActivity
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.example.pathxplorer.ui.utils.generateListKampus
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
@@ -35,6 +39,8 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseDatabase
+    private lateinit var adapter: PostingTestAdapter
 
     private val mainViewModel by viewModels<MainViewModel> {
         UserViewModelFactory.getInstance(requireContext())
@@ -42,6 +48,10 @@ class HomeFragment : Fragment() {
 
     private val webinarViewModel by viewModels<WebinarViewModel> {
         WebinarViewModelFactory(WebinarRepository.getInstance())
+    }
+
+    companion object {
+        const val POST_REF = "posts"
     }
 
     private lateinit var webinarAdapter: ListAdapterWebinar
@@ -58,6 +68,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         auth = Firebase.auth
+        db = Firebase.database
         binding.buttonStartTest.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Confirmation")
@@ -71,8 +82,20 @@ class HomeFragment : Fragment() {
                 .show()
         }
 
+        val manager = LinearLayoutManager(context)
+        manager.stackFromEnd = true
+        binding.rvPosting.layoutManager = manager
+
+        val postingRef = db.getReference(POST_REF)
+        val options = FirebaseRecyclerOptions.Builder<TestResultPost>()
+            .setQuery(postingRef, TestResultPost::class.java)
+            .build()
+        adapter = PostingTestAdapter(options)
+        binding.rvPosting.adapter = adapter
+
         setupUserInfo()
         setupRecommendedCampus()
+//        setupPostingResultTest()
         setupWebinars()
         observeWebinars()
         setupClickListeners()
@@ -120,23 +143,36 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun setupPostingResultTest() {
+        val manager = LinearLayoutManager(requireActivity())
+        manager.stackFromEnd = true
+        binding.rvPosting.layoutManager = manager
+
+        val postingRef = db.getReference(POST_REF)
+        val options = FirebaseRecyclerOptions.Builder<TestResultPost>()
+            .setQuery(postingRef, TestResultPost::class.java)
+            .build()
+        adapter = PostingTestAdapter(options)
+        binding.rvPosting.adapter = adapter
+    }
+
     private fun setupRecommendedCampus() {
         val listKampus = generateListKampus()
-        binding.rvRecommendedCampus.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = CarouselAdapter(listKampus) { kampus ->
-                val campus = Kampus(
-                    kampus.name,
-                    kampus.location,
-                    kampus.image,
-                    listOf("Arsitektur", "Kedokteran", "Statistika")
-                )
-                val intent = Intent(requireContext(), DetailKampusActivity::class.java).apply {
-                    putExtra(DetailKampusActivity.EXTRA_CAMPUS, campus)
-                }
-                startActivity(intent)
-            }
-        }
+//        binding.rvRecommendedCampus.apply {
+//            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//            adapter = CarouselAdapter(listKampus) { kampus ->
+//                val campus = Kampus(
+//                    kampus.name,
+//                    kampus.location,
+//                    kampus.image,
+//                    listOf("Arsitektur", "Kedokteran", "Statistika")
+//                )
+//                val intent = Intent(requireContext(), DetailKampusActivity::class.java).apply {
+//                    putExtra(DetailKampusActivity.EXTRA_CAMPUS, campus)
+//                }
+//                startActivity(intent)
+//            }
+//        }
     }
 
     private fun setupWebinars() {
@@ -192,9 +228,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-        binding.tvSeeAllCampus.setOnClickListener {
-            startActivity(Intent(context, ListCampusOrMajorActivity::class.java))
-        }
+//        binding.tvSeeAllCampus.setOnClickListener {
+//            startActivity(Intent(context, ListCampusOrMajorActivity::class.java))
+//        }
 
         binding.tvSeeAllWebinar.setOnClickListener {
             // Use Navigation component to navigate
@@ -223,6 +259,15 @@ class HomeFragment : Fragment() {
             credentialManager.clearCredentialState(ClearCredentialStateRequest())
             mainViewModel.logout()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapter.startListening()
+    }
+    override fun onPause() {
+        adapter.stopListening()
+        super.onPause()
     }
 
     override fun onDestroyView() {

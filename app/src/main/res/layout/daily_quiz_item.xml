@@ -109,20 +109,7 @@
                 android:layout_height="wrap_content"
                 android:text="Option 4"/>
 
-            <!--                </LinearLayout>-->
 
-            <!--                <LinearLayout-->
-            <!--                    android:layout_weight="10"-->
-            <!--                    android:gravity="center"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:orientation="vertical">-->
-
-            <RadioButton
-                android:id="@+id/answer_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Option 5"/>
 
             <!--                </LinearLayout>-->
 

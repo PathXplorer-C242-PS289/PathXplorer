@@ -114,7 +114,7 @@ fun getQuestion(): ArrayList<MutableList<Question>> {
 }
 
 fun generateDummyDailyQuizQuestion(): ArrayList<DailyQuestQuestion> {
-    val dummyDailyQuizQuestion = ArrayList<DailyQuestQuestion>()
+    val dummyDailyQuizQuestion = arrayListOf<DailyQuestQuestion>()
     if (dummyDailyQuizQuestion.isNotEmpty()) {
         return dummyDailyQuizQuestion
     }

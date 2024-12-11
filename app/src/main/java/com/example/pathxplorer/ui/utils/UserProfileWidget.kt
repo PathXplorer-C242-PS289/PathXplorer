@@ -65,6 +65,8 @@ class UserProfileWidget : AppWidgetProvider() {
                 val dailyDao = DailyDatabase.getInstance(context).dailyDao()
                 val userRepository = UserRepository.getInstance(apiService, dailyDao, userPreference)
 
+                val dailyQuestLiveData = userRepository.getDailyQuestById(user.userId)
+
                 val testResultsLiveData = userRepository.getTestResults()
                 val result = testResultsLiveData.asFlow().first()
 
@@ -108,10 +110,10 @@ class UserProfileWidget : AppWidgetProvider() {
                         setTextViewText(R.id.widget_tests, user.testCount?.toString() ?: "0")
 
                         setTextViewText(R.id.widget_daily_quest_label, "Daily Quest")
-                        setTextViewText(R.id.widget_daily_quest, user.dailyQuestCount?.toString() ?: "0")
+                        setTextViewText(R.id.widget_daily_quest, dailyQuestLiveData.dailyQuestCount.toString())
 
                         setTextViewText(R.id.widget_score_label, "Score")
-                        setTextViewText(R.id.widget_score, user.score?.toString() ?: "0")
+                        setTextViewText(R.id.widget_score, dailyQuestLiveData.score.toString())
 
                         setTextViewText(R.id.widget_latest_test, "Latest RIASEC Type: $latestRiasecType")
 

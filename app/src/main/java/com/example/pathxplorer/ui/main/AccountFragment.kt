@@ -94,6 +94,12 @@ class AccountFragment : Fragment() {
                 tvUserName.startAnimation(fadeAnimation)
                 tvUserEmail.startAnimation(fadeAnimation)
 
+                viewModel.getDailyQuestById(user.userId)
+                viewModel.dailyQuest.observe(viewLifecycleOwner) { dailyQuest ->
+                    dailyQuestValue.text = dailyQuest?.dailyQuestCount.toString()
+                    scoreValue.text = dailyQuest?.score.toString()
+                }
+
                 tvUserName.text = user.name
                 tvUserEmail.text = user.email
 

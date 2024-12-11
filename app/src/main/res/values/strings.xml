@@ -153,4 +153,10 @@ By using our app, you consent to the terms of this Privacy Policy.
         3. Your daily will not reset while you not taking the test\n
     </string>
     <string name="daily_quest_greeting">Hi, %1$s</string>
+    <string name="fire">fire</string>
+    <string name="congratulation_for_your_result">Congratulation for your result</string>
+    <string name="back_home">Back home</string>
+    <string name="share_result">Share result</string>
+    <string name="title_post">Title Post</string>
+    <string name="body_post">Body Post</string>
 </resources>

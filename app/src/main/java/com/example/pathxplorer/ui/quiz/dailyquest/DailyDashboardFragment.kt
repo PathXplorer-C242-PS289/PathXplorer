@@ -8,21 +8,25 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.pathxplorer.R
+import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.data.local.entity.DailyQuestEntity
 import com.example.pathxplorer.data.models.DailyQuestQuestion
 import com.example.pathxplorer.databinding.FragmentDailyDashboardBinding
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
+import com.example.pathxplorer.ui.utils.generateDummyDailyQuizQuestion
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 class DailyDashboardFragment : Fragment() {
 
     private var _binding: FragmentDailyDashboardBinding? = null
     private val binding get() = _binding!!
     private lateinit var db: FirebaseDatabase
-    private lateinit var question: List<DailyQuestQuestion>
+    private lateinit var question: ArrayList<DailyQuestQuestion>
 
     private val viewModel by viewModels<DailyViewModel> {
         UserViewModelFactory.getInstance(requireActivity())
@@ -46,45 +50,69 @@ class DailyDashboardFragment : Fragment() {
             if (user != null) {
                 binding.apply {
                     greetingText.text = getString(R.string.daily_quest_greeting, user.name)
-                    pointsText.text = user.score.toString()
                 }
             }
 
-            viewModel.checkDaily(user.userId).let {
-                if (it == 1) {
-                    Toast.makeText(context, "Daily quest added", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, "Daily quest already added", Toast.LENGTH_SHORT).show()
-                    val dailyEntity = DailyQuestEntity(
-                        user.userId,
-                        user.email,
-                        Date().toString(),
-                        0,
-                        0
+            viewModel.dailyQuest.observe(viewLifecycleOwner) { dailyQuest ->
+                if (dailyQuest == null) {
+                    val dailyQuestEntity = DailyQuestEntity(
+                        idUser =  user.userId,
+                        emailUser = user.email,
+                        lastCheck = Date().toString(),
+                        dailyQuestCount = 0,
+                        score = 0,
                     )
-                    viewModel.insertDaily(dailyEntity)
+                    viewModel.insertDaily(dailyQuestEntity)
+                } else {
+                    setDaily(user.userId)
                 }
             }
-        }
 
-        val questionRef = db.getReference("daily_quest_question")
+            setDaily(user.userId)
 
-        questionRef.get().addOnSuccessListener {
-            question = it.children.map { snapshot ->
-                snapshot.getValue(DailyQuestQuestion::class.java)!!
+            if (isDateGreaterThanNow(binding.lastChecked.text.toString())) {
+                viewModel.updateDailyQuestCount(user.userId)
+                setAction()
+            } else {
+                Toast.makeText(context, "You have checked today", Toast.LENGTH_SHORT).show()
             }
-        }.addOnFailureListener {
-            Toast.makeText(context, "Failed to get questions", Toast.LENGTH_SHORT).show()
         }
 
         setAction()
     }
 
+    fun isDateGreaterThanNow(dateString: String): Boolean {
+        val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+        val date = dateFormat.parse(dateString)
+        val currentDate = Date()
+        return date.after(currentDate)
+    }
+
+    private fun setDaily(userId: Int) {
+        viewModel.getDailyQuestById(userId)
+        viewModel.dailyQuest.observe(viewLifecycleOwner) { dailyQuest ->
+            with(binding) {
+                dailyQuest.score.toString().also { pointsText.text = it }
+                lastChecked.text = formatDate(dailyQuest.lastCheck)
+                dailyQuest.dailyQuestCount.toString().also { strikes.text = it }
+            }
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun formatDate(date: String): String {
+        val dateResult = Date(date)
+        val format = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+        return format.format(dateResult)
+    }
+
     private fun setAction() {
         binding.startButton.setOnClickListener {
+            val bundle = Bundle()
+//            bundle.putParcelableArrayList(DailyQuizFragment.EXTRA_QUESTION_DAILY, questions)
             val dailyQuizFragment = DailyQuizFragment()
             val fragmentManager = parentFragmentManager
-            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, dailyQuizFragment, DailyQuizFragment::class.java.simpleName).commit()
+            fragmentManager.beginTransaction().replace(R.id.container_daily, dailyQuizFragment, DailyQuizFragment::class.java.simpleName).commit()
         }
     }
 }

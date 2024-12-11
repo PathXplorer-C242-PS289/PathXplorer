@@ -1,6 +1,7 @@
 package com.example.pathxplorer.data
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import com.example.pathxplorer.data.models.UserModel
 import com.example.pathxplorer.data.local.datapreference.UserPreference
 import com.example.pathxplorer.data.local.entity.DailyQuestEntity
@@ -102,14 +103,20 @@ class UserRepository private constructor(
         dailyDao.insertDailyQuest(dailyQuestEntity)
     }
 
-    // insert if not exist, update if exist
     suspend fun checkDaily(idUser: Int): Int  {
-//        dailyDao.checkDailyQuest(idUser).let {
-//            if (it == 0) {
-//                dailyDao.insertDailyQuest(DailyQuest)
-//            }
-//        }
         return dailyDao.checkDailyQuest(idUser)
+    }
+
+    suspend fun getDailyQuestById(idUser: Int): DailyQuestEntity {
+        return dailyDao.getDailyQuest(idUser)
+    }
+
+    suspend fun updateDailyQuestCount(idUser: Int) {
+        dailyDao.updateDailyQuestCount(idUser)
+    }
+
+    suspend fun updateScore(idUser: Int, score: Int) {
+        dailyDao.updateScore(idUser, score)
     }
 
     companion object {

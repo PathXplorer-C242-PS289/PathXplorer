@@ -52,16 +52,6 @@ class QuizFragment : Fragment() {
             context = requireActivity(),
             onResult = { resultPredict ->
 
-//                val result = viewModel.resultAnswer()
-//                val bundle = Bundle()
-//                bundle.putIntegerArrayList(QuizResultFragment.RESULT_VALUE, result)
-//                bundle.putString(QuizResultFragment.RIASEC_CODE, resultPredict)
-//
-//                val fragmentResult = QuizResultFragment()
-//                fragmentResult.arguments = bundle
-//                val fragmentManager = parentFragmentManager
-//                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragmentResult, QuizResultFragment::class.java.simpleName).commit()
-
                 viewModel.getSession().observe(viewLifecycleOwner) { user ->
                     lifecycleScope.launch {
                         viewModel.saveTest(Timestamp.now().seconds.toInt(), user.userId, resultPredict).observe(viewLifecycleOwner) { resultSave ->
