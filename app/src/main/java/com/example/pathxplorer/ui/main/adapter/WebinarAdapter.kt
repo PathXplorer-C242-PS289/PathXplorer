@@ -1,6 +1,7 @@
 package com.example.pathxplorer.ui.main.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -11,7 +12,7 @@ import com.example.pathxplorer.data.models.WebinarModel
 import com.example.pathxplorer.databinding.CardWebinarBinding
 
 class WebinarAdapter(
-    private val onWebinarClick: (WebinarModel) -> Unit
+    private val onItemClick: (WebinarModel, View) -> Unit
 ) : ListAdapter<WebinarModel, WebinarAdapter.WebinarViewHolder>(WebinarDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WebinarViewHolder {
@@ -43,7 +44,9 @@ class WebinarAdapter(
                     .error(R.drawable.webinar)
                     .into(ivWebinarImage)
 
-                root.setOnClickListener { onWebinarClick(webinar) }
+                root.setOnClickListener { view ->
+                    onItemClick(webinar, view)
+                }
             }
         }
     }

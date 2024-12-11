@@ -3,21 +3,25 @@ package com.example.pathxplorer.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.DecelerateInterpolator
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.children
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.pathxplorer.R
-import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.example.pathxplorer.databinding.FragmentAccountBinding
+import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
@@ -30,11 +34,16 @@ class AccountFragment : Fragment() {
 
     private var _binding: FragmentAccountBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var auth: FirebaseAuth
 
+    // Animation properties
+    private lateinit var fadeInAnimation: Animation
+    private lateinit var slideUpAnimation: Animation
+    private lateinit var slideRightAnimation: Animation
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAccountBinding.inflate(inflater, container, false)
@@ -45,18 +54,49 @@ class AccountFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
+        initializeAnimations()
         setupUserInfo()
         setupClickListeners()
+        startEntryAnimations()
+    }
+
+    private fun initializeAnimations() {
+        fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
+        slideUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_up)
+        slideRightAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_right)
+    }
+
+    private fun startEntryAnimations() {
+        binding.apply {
+            // Initial setup
+            userProfileCard.alpha = 0f
+            userProfileCard.translationY = 100f
+
+            // Animate profile card entry
+            userProfileCard.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(500)
+                .setInterpolator(DecelerateInterpolator())
+                .start()
+        }
     }
 
     private fun setupUserInfo() {
         viewModel.getSession().observe(viewLifecycleOwner) { user ->
             binding.apply {
-                // Update user basic info
+                // Animate user info updates
+                val fadeAnimation = AlphaAnimation(0f, 1f).apply {
+                    duration = 300
+                    interpolator = DecelerateInterpolator()
+                }
+
+                tvUserName.startAnimation(fadeAnimation)
+                tvUserEmail.startAnimation(fadeAnimation)
+
                 tvUserName.text = user.name
                 tvUserEmail.text = user.email
 
-                // Calculate level based on score
                 val level = when (user.score) {
                     null, 0 -> "Pemula"
                     in 1..30 -> "Junior"
@@ -78,60 +118,108 @@ class AccountFragment : Fragment() {
                     }.id
                 )
 
-                // Update statistics
                 statsLayout?.let { layout ->
-                    // Level
-                    layout.getChildAt(0)?.findViewById<TextView>(R.id.level_value)?.text = level
-
-                    // Tests count
-                    layout.getChildAt(1)?.findViewById<TextView>(R.id.tests_value)?.text =
-                        (user.testCount ?: 0).toString()
-
-                    // Daily Quest count
-                    layout.getChildAt(2)?.findViewById<TextView>(R.id.daily_quest_value)?.text =
-                        (user.dailyQuestCount ?: 0).toString()
-
-                    // Score
-                    layout.getChildAt(3)?.findViewById<TextView>(R.id.score_value)?.text =
-                        (user.score ?: 0).toString()
-
-                    // Add animation for updates
-                    layout.children.forEach { view ->
+                    // Animate each stat with sequential delay
+                    layout.children.forEachIndexed { index, view ->
                         view.alpha = 0f
                         view.animate()
                             .alpha(1f)
+                            .setStartDelay((index * 100).toLong())
                             .setDuration(500)
+                            .setInterpolator(DecelerateInterpolator())
                             .start()
+                    }
+
+                    // Update stats with animations
+                    layout.getChildAt(0)?.findViewById<TextView>(R.id.level_value)?.apply {
+                        animateTextChange(level)
+                    }
+                    layout.getChildAt(1)?.findViewById<TextView>(R.id.tests_value)?.apply {
+                        animateTextChange((user.testCount ?: 0).toString())
+                    }
+                    layout.getChildAt(2)?.findViewById<TextView>(R.id.daily_quest_value)?.apply {
+                        animateTextChange((user.dailyQuestCount ?: 0).toString())
+                    }
+                    layout.getChildAt(3)?.findViewById<TextView>(R.id.score_value)?.apply {
+                        animateTextChange((user.score ?: 0).toString())
                     }
                 }
             }
         }
     }
 
+    private fun TextView.animateTextChange(newText: String) {
+        animate()
+            .alpha(0f)
+            .setDuration(150)
+            .withEndAction {
+                text = newText
+                animate()
+                    .alpha(1f)
+                    .setDuration(150)
+                    .start()
+            }
+            .start()
+    }
+
     private fun setupClickListeners() {
         binding.apply {
-            userProfileCard.setOnClickListener {
-                navigateToProfileSettings()
+            // Profile card click animation
+            userProfileCard.setOnClickListener { view ->
+                view.animate()
+                    .scaleX(0.95f)
+                    .scaleY(0.95f)
+                    .setDuration(100)
+                    .withEndAction {
+                        view.animate()
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .setDuration(100)
+                            .withEndAction {
+                                navigateToProfileSettings()
+                            }
+                            .start()
+                    }
+                    .start()
             }
 
-            tentangAplikasiLayout.setOnClickListener {
-                showAboutApp()
+            // Menu items animations
+            val menuItems = listOf(
+                tentangAplikasiLayout,
+                syaratKetentuanLayout,
+                kebijakanPrivasiLayout,
+                settingLayout
+            )
+
+            menuItems.forEach { layout ->
+                layout.setOnClickListener { view ->
+                    view.startAnimation(slideRightAnimation)
+                    when (view) {
+                        tentangAplikasiLayout -> showAboutApp()
+                        syaratKetentuanLayout -> showTermsAndConditions()
+                        kebijakanPrivasiLayout -> showPrivacyPolicy()
+                        settingLayout -> showToast("Settings - Coming Soon")
+                    }
+                }
             }
 
-            syaratKetentuanLayout.setOnClickListener {
-                showTermsAndConditions()
-            }
-
-            kebijakanPrivasiLayout.setOnClickListener {
-                showPrivacyPolicy()
-            }
-
-            settingLayout.setOnClickListener {
-                showToast("Settings - Coming Soon")
-            }
-
-            btnLogout.setOnClickListener {
-                showLogoutConfirmation()
+            // Logout button animation
+            btnLogout.setOnClickListener { view ->
+                view.animate()
+                    .scaleX(0.95f)
+                    .scaleY(0.95f)
+                    .setDuration(100)
+                    .withEndAction {
+                        view.animate()
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .setDuration(100)
+                            .withEndAction {
+                                showLogoutConfirmation()
+                            }
+                            .start()
+                    }
+                    .start()
             }
         }
     }
@@ -256,11 +344,10 @@ class AccountFragment : Fragment() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.apply {
-            if (isLoading) {
-                userProfileCard.alpha = 0.5f
-            } else {
-                userProfileCard.alpha = 1.0f
-            }
+            userProfileCard.animate()
+                .alpha(if (isLoading) 0.5f else 1f)
+                .setDuration(300)
+                .start()
         }
     }
 
