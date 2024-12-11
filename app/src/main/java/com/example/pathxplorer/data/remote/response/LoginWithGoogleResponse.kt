@@ -12,4 +12,3 @@ data class UserGoogle(
 	val email: String,
 	val username: String
 )
-

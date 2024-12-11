@@ -18,4 +18,3 @@ data class RecommendationRiasecResponse(
 	@field:SerializedName("example_careers")
 	val exampleCareers: String? = null
 )
-

@@ -92,11 +92,13 @@ class QuizResultFragment : Fragment() {
             else -> R.drawable.r_type
         }
         with(binding) {
+
             typeImage.setImageResource(imageResource)
             tvTitle.text = getString(R.string.result_type, resultTest.riasecType)
             tvDescription.text = resultTest.interestDescription
             tvKeySkill.text = resultTest.keySkills
             tvExampleCareer.text = resultTest.exampleCareers
+
         }
     }
 

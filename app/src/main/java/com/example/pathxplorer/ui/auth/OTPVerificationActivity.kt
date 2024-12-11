@@ -61,8 +61,14 @@ class OTPVerificationActivity : AppCompatActivity() {
             viewModel.resendOtp(email).observe(this) { result ->
                 when (result) {
                     is Result.Loading -> showLoading(true)
-                    is Result.Success -> Toast.makeText(this, "OTP Sukses Terkirim", Toast.LENGTH_SHORT).show()
-                    is Result.Error -> handleFailedVerification(result.error)
+                    is Result.Success -> {
+                        showLoading(false)
+                        Toast.makeText(this, "OTP Sukses Terkirim", Toast.LENGTH_SHORT).show()
+                    }
+                    is Result.Error -> {
+                        showLoading(false)
+                        handleFailedVerification(result.error)
+                    }
                 }
             }
         }
