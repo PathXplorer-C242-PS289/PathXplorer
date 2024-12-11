@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.example.pathxplorer.R
 import com.example.pathxplorer.databinding.FragmentDailyDashboardBinding
+import com.example.pathxplorer.ui.quiz.QuizViewModel
+import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -17,6 +20,10 @@ class DailyDashboardFragment : Fragment() {
     private var _binding: FragmentDailyDashboardBinding? = null
     private val binding get() = _binding!!
     private lateinit var db: FirebaseDatabase
+
+    private val viewModel by viewModels<QuizViewModel> {
+        UserViewModelFactory.getInstance(requireActivity())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +50,10 @@ class DailyDashboardFragment : Fragment() {
                     Toast.makeText(requireActivity(), "succes", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+
+        viewModel.getSession().observe(viewLifecycleOwner) { user ->
+
         }
 
         binding.startButton.setOnClickListener {
