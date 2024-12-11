@@ -64,7 +64,7 @@ class QuizDashboardFragment : Fragment() {
     private fun setupInitialState() {
         binding.rvResults.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = testResultAdapter // Use the initialized adapter
+            adapter = testResultAdapter
         }
         showLoading(true)
         showEmptyState(false)
@@ -114,7 +114,6 @@ class QuizDashboardFragment : Fragment() {
         } else {
             showEmptyState(false)
             testResultAdapter.submitList(testResults)
-            // Removed redundant submitList call
         }
     }
 
@@ -150,10 +149,9 @@ class QuizDashboardFragment : Fragment() {
         val intent = Intent(requireContext(), DetailTestResultActivity::class.java)
         intent.putExtra(DetailTestResultActivity.EXTRA_TEST_ID, item.testId)
         startActivity(intent)
-    } // Added closing brace
+    }
 
     private fun logout() {
-        // Observe the session once and perform logout accordingly
         viewModel.getSession().removeObservers(viewLifecycleOwner)
         viewModel.getSession().observe(viewLifecycleOwner) { user ->
             if (user.provider != "credentials") {

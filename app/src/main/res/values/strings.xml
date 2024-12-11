@@ -140,4 +140,11 @@ By using our app, you consent to the terms of this Privacy Policy.
     <string name="result_type">Your a \'%1$s\' type of person</string>
     <string name="error_loading_test_results">Error loading test results</string>
     <string name="let_s_start">Let\'s Start</string>
+    <string name="test_result_detail">Test Result Detail</string>
+    <string name="no_data">No Data</string>
+    <string name="riasec_type_image">RIASEC Type Image</string>
+    <string name="interest_description">Interest Description</string>
+    <string name="key_skills">Key Skills</string>
+    <string name="example_careers">Example Careers</string>
+
 </resources>

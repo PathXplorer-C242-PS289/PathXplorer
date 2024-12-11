@@ -52,13 +52,13 @@
             android:orientation="vertical"
             android:paddingHorizontal="16dp">
 
+            <!-- Empty State -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_results"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/tests_item"/>
+                tools:listitem="@layout/tests_item" />
 
-            <!-- Empty State -->
             <LinearLayout
                 android:id="@+id/empty_layout"
                 android:layout_width="match_parent"

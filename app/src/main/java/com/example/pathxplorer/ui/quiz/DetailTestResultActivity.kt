@@ -3,6 +3,7 @@ package com.example.pathxplorer.ui.quiz
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.pathxplorer.R
 import com.example.pathxplorer.data.remote.response.TestResultsItem
 import com.example.pathxplorer.databinding.ActivityDetailTestResultBinding
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
@@ -24,7 +25,23 @@ class DetailTestResultActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupToolbar()
+        loadTestResult()
+    }
 
+    private fun setupToolbar() {
+        binding.toolbar.title = "Test Result Detail"
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowTitleEnabled(true)
+        }
+
+        binding.toolbar.setNavigationOnClickListener {
+            finish()
+        }
+    }
+
+    private fun loadTestResult() {
         val testId = intent.getIntExtra(EXTRA_TEST_ID, -1)
         if (testId != -1) {
             viewModel.getSession().observe(this) { _ ->
@@ -41,28 +58,47 @@ class DetailTestResultActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupToolbar() {
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    private fun showTestResultDetail(testItem: TestResultsItem) {
+        val imageResource = when(testItem.riasecType?.uppercase()) {
+            "R" -> R.drawable.r_type
+            "I" -> R.drawable.i_type
+            "A" -> R.drawable.a_type
+            "S" -> R.drawable.s_type
+            "E" -> R.drawable.e_type
+            "C" -> R.drawable.c_type
+            else -> R.drawable.r_type
+        }
+        binding.ivRiasecType.setImageResource(imageResource)
 
-        binding.toolbar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+        val riasecFullName = when(testItem.riasecType?.uppercase()) {
+            "R" -> "Realistic"
+            "I" -> "Investigative"
+            "A" -> "Artistic"
+            "S" -> "Social"
+            "E" -> "Enterprising"
+            "C" -> "Conventional"
+            else -> "Unknown Type"
         }
 
-    }
-
-    private fun showTestResultDetail(testItem: TestResultsItem) {
-        binding.tvRiasecType.text = testItem.riasecType ?: "-"
-
-        binding.tvInterestDescription.text = testItem.interestDescription ?: "-"
-        binding.tvKeySkills.text = testItem.keySkills ?: "-"
-        binding.tvExampleCareers.text = testItem.exampleCareers ?: "-"
+        with(binding) {
+            tvRiasecType.text = riasecFullName
+            tvInterestDescription.text = testItem.interestDescription ?: "-"
+            tvKeySkills.text = testItem.keySkills ?: "-"
+            tvExampleCareers.text = testItem.exampleCareers ?: "-"
+            tvTestDate.text = testItem.timestamp ?: "-"
+            tvScore.text = "10% Accuracy"
+        }
     }
 
     private fun showErrorState() {
-        binding.tvRiasecType.text = "No Data"
-        binding.tvInterestDescription.text = "No Data"
-        binding.tvKeySkills.text = "No Data"
-        binding.tvExampleCareers.text = "No Data"
+        with(binding) {
+            ivRiasecType.setImageResource(R.drawable.r_type)
+            tvRiasecType.text = getString(R.string.no_data)
+            tvInterestDescription.text = getString(R.string.no_data)
+            tvKeySkills.text = getString(R.string.no_data)
+            tvExampleCareers.text = getString(R.string.no_data)
+            tvTestDate.text = getString(R.string.no_data)
+            tvScore.text = "-"
+        }
     }
 }

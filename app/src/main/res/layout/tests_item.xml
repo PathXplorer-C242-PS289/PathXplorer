@@ -23,18 +23,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/test_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Type"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/test_image"
-            app:layout_constraintStart_toEndOf="@+id/test_image"
-            app:layout_constraintTop_toTopOf="@+id/test_image" />
-
-        <TextView
             android:id="@+id/test_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

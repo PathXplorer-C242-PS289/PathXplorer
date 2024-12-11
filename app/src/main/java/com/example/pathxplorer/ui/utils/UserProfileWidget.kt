@@ -111,7 +111,7 @@ class UserProfileWidget : AppWidgetProvider() {
                         setTextViewText(R.id.widget_score_label, "Score")
                         setTextViewText(R.id.widget_score, user.score?.toString() ?: "0")
 
-                        setTextViewText(R.id.widget_latest_test, "Latest: $latestRiasecType")
+                        setTextViewText(R.id.widget_latest_test, "Latest RIASEC Type: $latestRiasecType")
 
                         setViewVisibility(R.id.widget_loading, View.GONE)
                         setViewVisibility(R.id.widget_content, View.VISIBLE)
