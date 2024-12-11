@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.credentials.ClearCredentialStateRequest
+import androidx.credentials.CredentialManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,12 +18,18 @@ import com.example.pathxplorer.data.remote.response.ProfileWithTestResponse
 import com.example.pathxplorer.databinding.FragmentQuizDashboardBinding
 import com.example.pathxplorer.ui.quiz.test.QuizActivity
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 class QuizDashboardFragment : Fragment() {
 
     private var _binding: FragmentQuizDashboardBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var auth: FirebaseAuth
 
     private val viewModel by viewModels<QuizViewModel> {
         UserViewModelFactory.getInstance(requireActivity())
@@ -38,6 +46,8 @@ class QuizDashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        auth = Firebase.auth
 
         setupInitialState()
         setupActionButtons()
@@ -61,11 +71,6 @@ class QuizDashboardFragment : Fragment() {
 
     private fun loadTestResults() {
         // Use viewLifecycleOwner for observing LiveData
-        viewModel.getSession().observe(viewLifecycleOwner) { session ->
-            if (session != null) {
-                Log.d("QuizDashboardFragment", "Session: ${session.token}")
-            }
-        }
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 viewModel.getTestResults().observe(viewLifecycleOwner) { result ->
@@ -115,7 +120,39 @@ class QuizDashboardFragment : Fragment() {
 
     private fun showError(message: String) {
         if (isAdded && context != null) {
+            Log.e("QuizDashboardFragment", message)
+            val invalidToken = "HTTP 401"
+            if (message.contains(invalidToken)) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Session Expired")
+                    .setMessage("Your session has expired. Please login again for security reasons.")
+                    .setPositiveButton("OK") { _, _ ->
+                        logout()
+                    }
+                    .setCancelable(false)
+                    .show()
+                return
+            }
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun logout() {
+        viewModel.getSession().observe(viewLifecycleOwner) { user ->
+            if (user.provider != "credentials") {
+                signOutGoogle()
+            } else {
+                viewModel.logout()
+            }
+        }
+    }
+
+    private fun signOutGoogle() {
+        lifecycleScope.launch {
+            val credentialManager = CredentialManager.create(requireActivity())
+            auth.signOut()
+            credentialManager.clearCredentialState(ClearCredentialStateRequest())
+            viewModel.logout()
         }
     }
 
