@@ -28,13 +28,10 @@ class TestResultAdapter(
     inner class TestViewHolder(private val binding: TestsItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(test: TestResultsItem) {
 
-            // Set the test details
-            binding.testTitle.text = test.riasecType
             binding.testDescription.text = test.interestDescription
             binding.careerRecommendation.text = test.exampleCareers
             binding.tvKeySkills.text = test.keySkills
 
-            // Set the appropriate image based on riasec Type
             val imageResource = when(test.riasecType) {
                 "R" -> R.drawable.r_type
                 "I" -> R.drawable.i_type
