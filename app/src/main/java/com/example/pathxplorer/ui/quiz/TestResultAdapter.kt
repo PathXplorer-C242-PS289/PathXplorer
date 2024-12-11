@@ -33,8 +33,19 @@ class TestResultAdapter: ListAdapter<TestResultsItem, TestResultAdapter.TestView
         private var binding = TestsItemBinding.bind(itemView)
 
         fun bind(test: TestResultsItem) {
+
+            val imageResource = when(test.riasecType) {
+                "R" -> R.drawable.r_type
+                "I" -> R.drawable.i_type
+                "A" -> R.drawable.a_type
+                "S" -> R.drawable.s_type
+                "E" -> R.drawable.e_type
+                "C" -> R.drawable.c_type
+                else -> R.drawable.r_type
+            }
+
             with(binding) {
-                testTitle.text = test.riasecType
+                testImage.setImageResource(imageResource)
                 testDescription.text = test.interestDescription
                 careerRecommendation.text = test.exampleCareers
                 tvKeySkills.text = test.keySkills
