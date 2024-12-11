@@ -57,9 +57,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         auth = Firebase.auth
-
         binding.buttonStartTest.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Confirmation")
@@ -104,7 +102,6 @@ class HomeFragment : Fragment() {
                             result.error ?: getString(R.string.error_loading_test_results),
                             Toast.LENGTH_SHORT
                         ).show()
-
                         if (result.error!!.contains("HTTP 401")) {
                             MaterialAlertDialogBuilder(requireContext())
                                 .setTitle("Session Expired")
@@ -117,7 +114,6 @@ class HomeFragment : Fragment() {
                         }
                     }
                     is Result.Loading -> {
-                        // Handle loading
                     }
                 }
             }

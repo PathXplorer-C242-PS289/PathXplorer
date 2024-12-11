@@ -28,4 +28,11 @@
     <color name="background_day">#FFFFFF</color>
     <color name="background_night">#121212</color>
 
+    <color name="surfaceContainer">#F5F5F5</color>
+    <color name="surfaceVariant">#E7E3FC</color>
+    <color name="onSurface">#1C1B1F</color>
+    <color name="primaryContainer">#D0BCFF</color>
+    <color name="onPrimaryContainer">#1C1B1F</color>
+
+
 </resources>

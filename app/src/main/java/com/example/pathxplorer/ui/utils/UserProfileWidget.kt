@@ -5,19 +5,21 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
 import com.example.pathxplorer.R
+import com.example.pathxplorer.data.Result
+import com.example.pathxplorer.data.UserRepository
 import com.example.pathxplorer.data.local.datapreference.UserPreference
 import com.example.pathxplorer.data.local.datapreference.dataStore
+import com.example.pathxplorer.data.remote.response.ProfileWithTestResponse
+import com.example.pathxplorer.data.remote.retrofit.ApiConfig
 import com.example.pathxplorer.ui.main.ProfileSettingsActivity
 import com.example.pathxplorer.ui.quiz.test.QuizActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
+import androidx.lifecycle.asFlow
 
 class UserProfileWidget : AppWidgetProvider() {
 
@@ -41,7 +43,7 @@ class UserProfileWidget : AppWidgetProvider() {
     ) {
         val views = RemoteViews(context.packageName, R.layout.widget_utils)
 
-        // Set initial loading state
+        // Show loading initially
         views.setViewVisibility(R.id.widget_content, View.GONE)
         views.setViewVisibility(R.id.widget_loading, View.VISIBLE)
         appWidgetManager.updateAppWidget(appWidgetId, views)
@@ -50,9 +52,38 @@ class UserProfileWidget : AppWidgetProvider() {
         setupClickListeners(context, views, appWidgetId)
 
         scope.launch {
+            var latestRiasecType = "No recent test"
+            var levelText = "-"
             try {
                 val userPreference = UserPreference.getInstance(context.dataStore)
                 val user = userPreference.getSession().first()
+
+                Log.d("UserProfileWidget", "User: ${user.name}, Token: ${user.token}")
+
+                val apiService = ApiConfig.getApiService(user.token)
+                val userRepository = UserRepository.getInstance(apiService, userPreference)
+
+                val testResultsLiveData = userRepository.getTestResults()
+                val result = testResultsLiveData.asFlow().first()
+
+                if (result is Result.Success<ProfileWithTestResponse>) {
+                    val tests = result.data.data.testResults
+                    Log.d("UserProfileWidget", "Tests received: ${tests.size}")
+                    tests.forEach { test ->
+                        Log.d("UserProfileWidget", "TestID: ${test.testId}, Riasec: ${test.riasecType}, Timestamp: ${test.timestamp}")
+                    }
+
+                    // The logs show newest test is the first one returned, so take tests.first()
+                    if (tests.isNotEmpty()) {
+                        val latestTest = tests.first()
+                        latestRiasecType = latestTest.riasecType ?: "No recent test"
+                        Log.d("UserProfileWidget", "Latest RIASEC Type: $latestRiasecType")
+                    } else {
+                        Log.d("UserProfileWidget", "No tests available")
+                    }
+                } else {
+                    Log.d("UserProfileWidget", "Result not success or no tests found")
+                }
 
                 val level = when (user.score) {
                     null, 0 -> "Pemula"
@@ -61,42 +92,47 @@ class UserProfileWidget : AppWidgetProvider() {
                     in 61..90 -> "Advanced"
                     else -> "Expert"
                 }
+                levelText = level
 
-                views.apply {
-                    // Update user info
-                    setTextViewText(R.id.widget_name, user.name)
-                    setTextViewText(R.id.widget_email, user.email)
+                withContext(Dispatchers.Main) {
+                    views.apply {
+                        setTextViewText(R.id.widget_name, user.name)
+                        setTextViewText(R.id.widget_email, user.email)
 
-                    // Update stats
-                    setTextViewText(R.id.widget_level_label, "Level")
-                    setTextViewText(R.id.widget_level, level)
+                        setTextViewText(R.id.widget_level_label, "Level")
+                        setTextViewText(R.id.widget_level, levelText)
 
-                    setTextViewText(R.id.widget_tests_label, "Tests")
-                    setTextViewText(R.id.widget_tests, user.testCount?.toString() ?: "0")
+                        setTextViewText(R.id.widget_tests_label, "Tests")
+                        setTextViewText(R.id.widget_tests, user.testCount?.toString() ?: "0")
 
-                    setTextViewText(R.id.widget_daily_quest_label, "Daily Quest")
-                    setTextViewText(R.id.widget_daily_quest, user.dailyQuestCount?.toString() ?: "0")
+                        setTextViewText(R.id.widget_daily_quest_label, "Daily Quest")
+                        setTextViewText(R.id.widget_daily_quest, user.dailyQuestCount?.toString() ?: "0")
 
-                    setTextViewText(R.id.widget_score_label, "Score")
-                    setTextViewText(R.id.widget_score, user.score?.toString() ?: "0")
+                        setTextViewText(R.id.widget_score_label, "Score")
+                        setTextViewText(R.id.widget_score, user.score?.toString() ?: "0")
 
-                    setViewVisibility(R.id.widget_loading, View.GONE)
-                    setViewVisibility(R.id.widget_content, View.VISIBLE)
+                        setTextViewText(R.id.widget_latest_test, "Latest: $latestRiasecType")
+
+                        setViewVisibility(R.id.widget_loading, View.GONE)
+                        setViewVisibility(R.id.widget_content, View.VISIBLE)
+                    }
+                    appWidgetManager.updateAppWidget(appWidgetId, views)
                 }
-
-                appWidgetManager.updateAppWidget(appWidgetId, views)
             } catch (e: Exception) {
-                views.apply {
-                    setViewVisibility(R.id.widget_loading, View.GONE)
-                    setViewVisibility(R.id.widget_content, View.VISIBLE)
+                Log.e("UserProfileWidget", "Error loading widget data", e)
+                withContext(Dispatchers.Main) {
+                    views.apply {
+                        setTextViewText(R.id.widget_latest_test, "No recent test")
+                        setViewVisibility(R.id.widget_loading, View.GONE)
+                        setViewVisibility(R.id.widget_content, View.VISIBLE)
+                    }
+                    appWidgetManager.updateAppWidget(appWidgetId, views)
                 }
-                appWidgetManager.updateAppWidget(appWidgetId, views)
             }
         }
     }
 
     private fun setupClickListeners(context: Context, views: RemoteViews, appWidgetId: Int) {
-        // Profile edit click
         val editIntent = Intent(context, ProfileSettingsActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
@@ -108,7 +144,6 @@ class UserProfileWidget : AppWidgetProvider() {
         )
         views.setOnClickPendingIntent(R.id.widget_edit, editPendingIntent)
 
-        // Refresh click
         val refreshIntent = Intent(context, UserProfileWidget::class.java).apply {
             action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
             putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
@@ -121,7 +156,6 @@ class UserProfileWidget : AppWidgetProvider() {
         )
         views.setOnClickPendingIntent(R.id.widget_refresh, refreshPendingIntent)
 
-        // Take Test button click
         val testIntent = Intent(context, QuizActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
