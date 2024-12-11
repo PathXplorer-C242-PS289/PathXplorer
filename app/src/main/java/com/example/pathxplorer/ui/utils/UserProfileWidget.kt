@@ -20,6 +20,7 @@ import com.example.pathxplorer.ui.quiz.test.QuizActivity
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import androidx.lifecycle.asFlow
+import com.example.pathxplorer.data.local.room.DailyDatabase
 
 class UserProfileWidget : AppWidgetProvider() {
 
@@ -61,7 +62,8 @@ class UserProfileWidget : AppWidgetProvider() {
                 Log.d("UserProfileWidget", "User: ${user.name}, Token: ${user.token}")
 
                 val apiService = ApiConfig.getApiService(user.token)
-                val userRepository = UserRepository.getInstance(apiService, userPreference)
+                val dailyDao = DailyDatabase.getInstance(context).dailyDao()
+                val userRepository = UserRepository.getInstance(apiService, dailyDao, userPreference)
 
                 val testResultsLiveData = userRepository.getTestResults()
                 val result = testResultsLiveData.asFlow().first()

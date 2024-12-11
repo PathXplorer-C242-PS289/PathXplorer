@@ -147,4 +147,10 @@ By using our app, you consent to the terms of this Privacy Policy.
     <string name="key_skills">Key Skills</string>
     <string name="example_careers">Example Careers</string>
 
+    <string name="daily_quest_rules">
+        1. This daily test had 2 Questions\n
+        2. Complete the daily quest to earn points\n
+        3. Your daily will not reset while you not taking the test\n
+    </string>
+    <string name="daily_quest_greeting">Hi, %1$s</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.pathxplorer.ui.quiz
+package com.example.pathxplorer.ui.quiz.test
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -12,7 +12,9 @@ import com.example.pathxplorer.data.models.Question
 import com.example.pathxplorer.databinding.QuestionItemBinding
 
 
-class QuizQuestionAdapter: ListAdapter<Question, QuizQuestionAdapter.QuizAdapterViewHolder>(DIFF_CALLBACK) {
+class QuizQuestionAdapter: ListAdapter<Question, QuizQuestionAdapter.QuizAdapterViewHolder>(
+    DIFF_CALLBACK
+) {
 
     private lateinit var onAnswerClickCallback: OnItemClickCallback
 

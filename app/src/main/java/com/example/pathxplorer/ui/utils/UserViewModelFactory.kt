@@ -8,6 +8,7 @@ import com.example.pathxplorer.service.Injection
 import com.example.pathxplorer.ui.auth.AuthViewModel
 import com.example.pathxplorer.ui.main.MainViewModel
 import com.example.pathxplorer.ui.quiz.QuizViewModel
+import com.example.pathxplorer.ui.quiz.dailyquest.DailyViewModel
 
 class UserViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
@@ -18,6 +19,9 @@ class UserViewModelFactory(private val repository: UserRepository) : ViewModelPr
             }
             modelClass.isAssignableFrom(QuizViewModel::class.java) -> {
                 QuizViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(DailyViewModel::class.java) -> {
+                DailyViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

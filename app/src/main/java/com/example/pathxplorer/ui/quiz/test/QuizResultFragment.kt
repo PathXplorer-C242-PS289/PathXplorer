@@ -5,25 +5,31 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pathxplorer.R
 import com.example.pathxplorer.data.Result
+import com.example.pathxplorer.data.models.TestResultPost
 import com.example.pathxplorer.data.remote.response.RecommendationRiasecResponse
 import com.example.pathxplorer.databinding.FragmentQuizResultBinding
-import com.example.pathxplorer.service.riasec.RiasecHelper
 import com.example.pathxplorer.ui.quiz.QuizViewModel
-import com.example.pathxplorer.ui.quiz.ResultAdapter
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.Timestamp
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 class QuizResultFragment : Fragment() {
 
     private var _binding: FragmentQuizResultBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var db: FirebaseDatabase
 
     private val viewModel by viewModels<QuizViewModel> {
         UserViewModelFactory.getInstance(requireActivity())
@@ -32,6 +38,7 @@ class QuizResultFragment : Fragment() {
     companion object {
         const val RESULT_VALUE = "result_value"
         const val RIASEC_CODE = "riasec_code"
+        const val POST_REF = "posts"
     }
 
     override fun onCreateView(
@@ -50,6 +57,8 @@ class QuizResultFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().finish()
         }
+
+        db = Firebase.database
 
         val resultVal = arguments?.getIntegerArrayList(RESULT_VALUE)
         val riasecCode =  arguments?.getString(RIASEC_CODE)
@@ -75,7 +84,7 @@ class QuizResultFragment : Fragment() {
 
         val result = setResultKey(resultVal!!)
 
-        onBackPressedCallback()
+        onBackPressedCallback(riasecCode!!)
 
         // view
 //        setupResult(result)
@@ -109,10 +118,38 @@ class QuizResultFragment : Fragment() {
 //        binding.rvResultQuiz.adapter = adapter
 //    }
 
-    private fun onBackPressedCallback() {
+    private fun onBackPressedCallback(riasecType: String) {
         requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                requireActivity().finish()
+
+                viewModel.getSession().observe(viewLifecycleOwner) { user ->
+                    val post = TestResultPost(
+                        user.userId,
+                        Timestamp.now().seconds.toInt()+user.userId,
+                        riasecType,
+                        user.name,
+                        "Happy to share my result, I got $riasecType, what about you?"
+                    )
+
+                    MaterialAlertDialogBuilder(requireActivity())
+                        .setTitle("Share Your Result and Exit")
+                        .setMessage("Do you happy with your result?, Do you want to share your result?")
+                        .setPositiveButton("Yes") { dialog, which ->
+                            requireActivity().finish()
+                            val postRef = db.reference.child(POST_REF)
+                            postRef.push().setValue(post) { error, _ ->
+                                if (error != null) {
+                                    Toast.makeText(requireActivity(), "Error" + error.message, Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(requireActivity(), "Success", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                        .setNegativeButton("No") { dialog, which ->
+                            requireActivity().finish()
+                        }
+                        .show()
+                }
             }
         })
     }

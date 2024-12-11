@@ -16,7 +16,6 @@ import com.example.pathxplorer.data.models.Answer
 import com.example.pathxplorer.data.models.Question
 import com.example.pathxplorer.databinding.FragmentQuizBinding
 import com.example.pathxplorer.service.riasec.RiasecHelper
-import com.example.pathxplorer.ui.quiz.QuizQuestionAdapter
 import com.example.pathxplorer.ui.quiz.QuizViewModel
 import com.example.pathxplorer.ui.utils.CustomDialog
 import com.example.pathxplorer.ui.utils.UserViewModelFactory

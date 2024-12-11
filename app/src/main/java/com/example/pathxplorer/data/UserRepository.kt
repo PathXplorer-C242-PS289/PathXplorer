@@ -3,6 +3,8 @@ package com.example.pathxplorer.data
 import androidx.lifecycle.MutableLiveData
 import com.example.pathxplorer.data.models.UserModel
 import com.example.pathxplorer.data.local.datapreference.UserPreference
+import com.example.pathxplorer.data.local.entity.DailyQuestEntity
+import com.example.pathxplorer.data.local.room.DailyDao
 import com.example.pathxplorer.data.remote.response.ProfileWithTestResponse
 import com.example.pathxplorer.data.remote.response.RecommendationRiasecResponse
 import com.example.pathxplorer.data.remote.response.SaveRiasecTestResponse
@@ -14,6 +16,7 @@ import kotlinx.coroutines.withContext
 
 class UserRepository private constructor(
     private val apiService: ApiService,
+    private val dailyDao: DailyDao,
     private val userPreference: UserPreference
 ) {
     suspend fun saveSession(user: UserModel) {
@@ -95,9 +98,23 @@ class UserRepository private constructor(
         }
     }
 
+    suspend fun insertDailyQuest(dailyQuestEntity: DailyQuestEntity) {
+        dailyDao.insertDailyQuest(dailyQuestEntity)
+    }
+
+    // insert if not exist, update if exist
+    suspend fun checkDaily(idUser: Int): Int  {
+//        dailyDao.checkDailyQuest(idUser).let {
+//            if (it == 0) {
+//                dailyDao.insertDailyQuest(DailyQuest)
+//            }
+//        }
+        return dailyDao.checkDailyQuest(idUser)
+    }
+
     companion object {
-        fun getInstance(apiService: ApiService, userPreference: UserPreference): UserRepository {
-            return UserRepository(apiService, userPreference)
+        fun getInstance(apiService: ApiService, dailyDao: DailyDao, userPreference: UserPreference): UserRepository {
+            return UserRepository(apiService, dailyDao, userPreference)
         }
     }
 }
