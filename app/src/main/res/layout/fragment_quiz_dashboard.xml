@@ -35,7 +35,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- NestedScrollView to allow scrolling of card content -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_container"
         android:layout_width="0dp"
@@ -43,6 +42,12 @@
         android:padding="16dp"
         app:layout_constraintTop_toBottomOf="@id/welcome_text"
         app:layout_constraintBottom_toTopOf="@id/start_test_button"
+    <LinearLayout
+        android:id="@+id/quiz_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -55,6 +60,10 @@
             app:cardBackgroundColor="@color/cardview_light_background"
             android:animateLayoutChanges="true"
             android:padding="16dp">
+            android:layout_marginBottom="24dp"
+            tools:listitem="@layout/tests_item"
+            android:layout_gravity="center" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"

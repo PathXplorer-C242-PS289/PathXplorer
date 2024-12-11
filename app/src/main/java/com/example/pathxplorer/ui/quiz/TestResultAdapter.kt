@@ -26,6 +26,7 @@ class TestResultAdapter(
 
     inner class TestViewHolder(private val binding: TestsItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(test: TestResultsItem) {
+
             binding.testTitle.text = test.riasecType
             binding.testDescription.text = test.interestDescription
             binding.careerRecommendation.text = test.exampleCareers
@@ -33,6 +34,22 @@ class TestResultAdapter(
 
             binding.root.setOnClickListener {
                 onItemClick(test)
+
+            val imageResource = when(test.riasecType) {
+                "R" -> R.drawable.r_type
+                "I" -> R.drawable.i_type
+                "A" -> R.drawable.a_type
+                "S" -> R.drawable.s_type
+                "E" -> R.drawable.e_type
+                "C" -> R.drawable.c_type
+                else -> R.drawable.r_type
+            }
+
+            with(binding) {
+                testImage.setImageResource(imageResource)
+                testDescription.text = test.interestDescription
+                careerRecommendation.text = test.exampleCareers
+                tvKeySkills.text = test.keySkills
             }
         }
     }

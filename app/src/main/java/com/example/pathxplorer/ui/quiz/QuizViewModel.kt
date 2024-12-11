@@ -7,6 +7,10 @@ import com.example.pathxplorer.data.models.Answer
 import com.example.pathxplorer.data.models.Question
 import com.example.pathxplorer.data.models.UserModel
 import com.example.pathxplorer.ui.utils.getQuestion
+import com.example.pathxplorer.data.models.*
+import com.example.pathxplorer.ui.utils.getQuestion
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
 class QuizViewModel(private val repository: UserRepository) : ViewModel() {
     private var _indexedValue = MutableLiveData<Int>().apply { value = 0 }
     val indexedValue: LiveData<Int> = _indexedValue
@@ -72,7 +76,7 @@ class QuizViewModel(private val repository: UserRepository) : ViewModel() {
     }
 
     fun getSession(): LiveData<UserModel> = repository.getSession().asLiveData()
-
+    
     fun getRecommendation(code: String) = liveData {
         emit(Result.Loading)
         try {
@@ -90,7 +94,13 @@ class QuizViewModel(private val repository: UserRepository) : ViewModel() {
             emit(Result.Error(e.message ?: "Unknown error occurred"))
         }
     }
-
+    
+    fun logout() {
+        viewModelScope.launch {
+            repository.logout()
+        }
+    }
+    
     fun getTestResults() = liveData {
         emit(Result.Loading)
         try {
@@ -99,7 +109,7 @@ class QuizViewModel(private val repository: UserRepository) : ViewModel() {
             emit(Result.Error(e.message ?: "Unknown error occurred"))
         }
     }
-
+    
     fun getTestDetailById(testId: Int) = liveData {
         emit(null)
         try {
@@ -107,6 +117,15 @@ class QuizViewModel(private val repository: UserRepository) : ViewModel() {
             emit(detail)
         } catch (e: Exception) {
             emit(null)
+        }
+    }
+
+    fun getTestResults() = liveData {
+        emit(Result.Loading)
+        try {
+            emit(repository.getTestResults().value ?: Result.Error("Failed to load test results"))
+        } catch (e: Exception) {
+            emit(Result.Error(e.message ?: "Unknown error occurred"))
         }
     }
 }

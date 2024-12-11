@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.credentials.ClearCredentialStateRequest
+import androidx.credentials.CredentialManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -18,12 +20,18 @@ import com.example.pathxplorer.databinding.FragmentQuizDashboardBinding
 import com.example.pathxplorer.ui.quiz.test.DetailTestResultActivity
 import com.example.pathxplorer.ui.quiz.test.QuizActivity
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 class QuizDashboardFragment : Fragment() {
 
     private var _binding: FragmentQuizDashboardBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var auth: FirebaseAuth
 
     private val viewModel by viewModels<QuizViewModel> {
         UserViewModelFactory.getInstance(requireActivity())
@@ -47,6 +55,7 @@ class QuizDashboardFragment : Fragment() {
             showDetail(selectedItem)
         }
 
+        auth = Firebase.auth
         setupInitialState()
         setupActionButtons()
         loadTestResults()
@@ -55,7 +64,8 @@ class QuizDashboardFragment : Fragment() {
     private fun setupInitialState() {
         binding.rvResults.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = testResultAdapter
+            adapter = TestResultAdapter()
+
         }
         showLoading(true)
         showEmptyState(false)
@@ -73,7 +83,6 @@ class QuizDashboardFragment : Fragment() {
                 Log.d("QuizDashboardFragment", "Session: ${session.token}")
             }
         }
-
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 viewModel.getTestResults().observe(viewLifecycleOwner) { result ->
@@ -105,6 +114,7 @@ class QuizDashboardFragment : Fragment() {
         } else {
             showEmptyState(false)
             testResultAdapter.submitList(data.data.testResults)
+            (binding.rvResults.adapter as? TestResultAdapter)?.submitList(data.data.testResults)
         }
     }
 
@@ -123,6 +133,19 @@ class QuizDashboardFragment : Fragment() {
 
     private fun showError(message: String) {
         if (isAdded && context != null) {
+            Log.e("QuizDashboardFragment", message)
+            val invalidToken = "HTTP 401"
+            if (message.contains(invalidToken)) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Session Expired")
+                    .setMessage("Your session has expired. Please login again for security reasons.")
+                    .setPositiveButton("OK") { _, _ ->
+                        logout()
+                    }
+                    .setCancelable(false)
+                    .show()
+                return
+            }
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
     }
@@ -131,6 +154,24 @@ class QuizDashboardFragment : Fragment() {
         val intent = Intent(requireContext(), DetailTestResultActivity::class.java)
         intent.putExtra(DetailTestResultActivity.EXTRA_TEST_ID, item.testId)
         startActivity(intent)
+        
+    private fun logout() {
+        viewModel.getSession().observe(viewLifecycleOwner) { user ->
+            if (user.provider != "credentials") {
+                signOutGoogle()
+            } else {
+                viewModel.logout()
+            }
+        }
+    }
+
+    private fun signOutGoogle() {
+        lifecycleScope.launch {
+            val credentialManager = CredentialManager.create(requireActivity())
+            auth.signOut()
+            credentialManager.clearCredentialState(ClearCredentialStateRequest())
+            viewModel.logout()
+        }
     }
 
     override fun onResume() {

@@ -82,12 +82,23 @@ class QuizResultFragment : Fragment() {
     }
 
     private fun setupResult(resultTest: RecommendationRiasecResponse) {
+        val imageResource = when(resultTest.riasecType) {
+            "R" -> R.drawable.r_type
+            "I" -> R.drawable.i_type
+            "A" -> R.drawable.a_type
+            "S" -> R.drawable.s_type
+            "E" -> R.drawable.e_type
+            "C" -> R.drawable.c_type
+            else -> R.drawable.r_type
+        }
         with(binding) {
+
+            typeImage.setImageResource(imageResource)
             tvTitle.text = getString(R.string.result_type, resultTest.riasecType)
-            tvDescription.text =
-                getString(R.string.result_description, resultTest.interestDescription)
-            tvKeySkill.text = getString(R.string.result_skill, resultTest.keySkills)
-            tvExampleCareer.text = getString(R.string.result_career, resultTest.exampleCareers)
+            tvDescription.text = resultTest.interestDescription
+            tvKeySkill.text = resultTest.keySkills
+            tvExampleCareer.text = resultTest.exampleCareers
+
         }
     }
 
