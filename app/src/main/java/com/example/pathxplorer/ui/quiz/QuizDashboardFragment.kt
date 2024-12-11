@@ -50,7 +50,6 @@ class QuizDashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize the adapter with a click listener
         testResultAdapter = TestResultAdapter { selectedItem: TestResultsItem ->
             showDetail(selectedItem)
         }
@@ -77,14 +76,12 @@ class QuizDashboardFragment : Fragment() {
     }
 
     private fun loadTestResults() {
-        // Observe the user session
         viewModel.getSession().observe(viewLifecycleOwner) { session ->
             if (session != null) {
                 Log.d("QuizDashboardFragment", "Session: ${session.token}")
             }
         }
 
-        // Observe test results
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.getTestResults().observe(viewLifecycleOwner) { result ->
                 when (result) {

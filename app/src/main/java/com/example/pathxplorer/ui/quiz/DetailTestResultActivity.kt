@@ -29,15 +29,9 @@ class DetailTestResultActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        binding.toolbar.title = "Test Result Detail"
-        setSupportActionBar(binding.toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(true)
-        }
-
-        binding.toolbar.setNavigationOnClickListener {
-            finish()
         }
     }
 
@@ -86,7 +80,7 @@ class DetailTestResultActivity : AppCompatActivity() {
             tvKeySkills.text = testItem.keySkills ?: "-"
             tvExampleCareers.text = testItem.exampleCareers ?: "-"
             tvTestDate.text = testItem.timestamp ?: "-"
-            tvScore.text = "10% Accuracy"
+            tvScore.text = "??% Accuracy"
         }
     }
 

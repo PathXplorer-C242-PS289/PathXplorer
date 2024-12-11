@@ -39,11 +39,10 @@ class TestResultAdapter(
                 "S" -> R.drawable.s_type
                 "E" -> R.drawable.e_type
                 "C" -> R.drawable.c_type
-                else -> R.drawable.r_type // Default image
+                else -> R.drawable.r_type
             }
             binding.testImage.setImageResource(imageResource)
 
-            // Set the click listener
             binding.root.setOnClickListener {
                 onItemClick(test)
             }
