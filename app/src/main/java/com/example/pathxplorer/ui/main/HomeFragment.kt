@@ -22,6 +22,7 @@ import com.example.pathxplorer.databinding.FragmentHomeBinding
 import com.example.pathxplorer.ui.main.adapter.ListAdapterWebinar
 import com.example.pathxplorer.ui.main.adapter.PostingTestAdapter
 import com.example.pathxplorer.ui.quiz.dailyquest.DailyQuestActivity
+import com.example.pathxplorer.ui.quiz.test.QuizActivity
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -74,6 +75,7 @@ class HomeFragment : Fragment() {
                 .setMessage("Are you sure?")
                 .setPositiveButton("Yes") { _, _ ->
                     Toast.makeText(requireContext(), "Yes", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(requireActivity(), QuizActivity::class.java))
                 }
                 .setNegativeButton("No") { _, _ ->
                     Toast.makeText(requireContext(), "No", Toast.LENGTH_SHORT).show()

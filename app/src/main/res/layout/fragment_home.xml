@@ -263,16 +263,6 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_see_all_posting"
-                style="@style/BlueAnchor.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/plus_jakarta_sans"
-                android:gravity="center_vertical"
-                android:text="@string/see_all" />
-
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

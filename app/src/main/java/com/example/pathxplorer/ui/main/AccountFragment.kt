@@ -21,11 +21,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.pathxplorer.R
 import com.example.pathxplorer.data.Result
+import com.example.pathxplorer.data.local.entity.DailyQuestEntity
 import com.example.pathxplorer.databinding.FragmentAccountBinding
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class AccountFragment : Fragment() {
 
@@ -97,14 +99,25 @@ class AccountFragment : Fragment() {
 
                 viewModel.getDailyQuestById(user.userId)
                 viewModel.dailyQuest.observe(viewLifecycleOwner) { dailyQuest ->
-                    dailyQuestValue.text = dailyQuest?.dailyQuestCount.toString()
-                    scoreValue.text = dailyQuest?.score.toString()
-                    levelValue.text = when (dailyQuest.score) {
-                        null, 0 -> "Pemula"
-                        in 1..30 -> "Junior"
-                        in 31..60 -> "Intermediate"
-                        in 61..90 -> "Advanced"
-                        else -> "Expert"
+                    if (dailyQuest == null) {
+                        val dailyQuestEntity = DailyQuestEntity(
+                            idUser = user.userId,
+                            emailUser = user.email,
+                            lastCheck = Date().toString(),
+                            dailyQuestCount = 1,
+                            score = 0,
+                        )
+                        viewModel.insertDaily(dailyQuestEntity)
+                    } else {
+                        dailyQuest.dailyQuestCount.toString().also { dailyQuestValue.text = it }
+                        dailyQuest.score.toString().also { scoreValue.text = it }
+                        levelValue.text = when (dailyQuest.score) {
+                            null, 0 -> "Pemula"
+                            in 1..30 -> "Junior"
+                            in 31..60 -> "Intermediate"
+                            in 61..90 -> "Advanced"
+                            else -> "Expert"
+                        }
                     }
                 }
 
