@@ -26,7 +26,6 @@ class DailyDashboardFragment : Fragment() {
     private var _binding: FragmentDailyDashboardBinding? = null
     private val binding get() = _binding!!
     private lateinit var db: FirebaseDatabase
-    private lateinit var question: ArrayList<DailyQuestQuestion>
 
     private val viewModel by viewModels<DailyViewModel> {
         UserViewModelFactory.getInstance(requireActivity())
@@ -59,7 +58,7 @@ class DailyDashboardFragment : Fragment() {
                         idUser =  user.userId,
                         emailUser = user.email,
                         lastCheck = Date().toString(),
-                        dailyQuestCount = 0,
+                        dailyQuestCount = 1,
                         score = 0,
                     )
                     viewModel.insertDaily(dailyQuestEntity)

@@ -46,3 +46,13 @@ to get the web client id, follow the steps below:
 - enable google sign-in method
 - click on web SDK configuration
 - copy the web client id
+
+## Setup Firebase Database Realtime
+
+- Go to Firebase Console or open tools -> firebase -> Realtime Database
+- Click on Connect to Firebase
+- Follow the steps to connect the project to firebase
+- Add dependencies to build.gradle project level and app level
+- Create a new database
+- Go to setting project in firebase console
+- Then download the `google-services.json` file and add to the project /app folder if you have just replace the file
