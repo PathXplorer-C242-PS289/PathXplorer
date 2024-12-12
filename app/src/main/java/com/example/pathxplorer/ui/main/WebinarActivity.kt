@@ -3,49 +3,55 @@ package com.example.pathxplorer.ui.main
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pathxplorer.R
 import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.data.WebinarRepository
-import com.example.pathxplorer.databinding.FragmentWebinarBinding
+import com.example.pathxplorer.databinding.ActivityWebinarBinding
 import com.example.pathxplorer.ui.main.adapter.WebinarAdapter
 import com.example.pathxplorer.ui.utils.AnimationUtils
 
-class WebinarFragment : Fragment() {
-    private var _binding: FragmentWebinarBinding? = null
-    private val binding get() = _binding!!
+class WebinarActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityWebinarBinding
+    private lateinit var webinarAdapter: WebinarAdapter
 
     private val viewModel: WebinarViewModel by viewModels {
         WebinarViewModelFactory(WebinarRepository.getInstance())
     }
 
-    private lateinit var webinarAdapter: WebinarAdapter
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentWebinarBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+        binding = ActivityWebinarBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         observeWebinars()
         viewModel.fetchWebinars()
 
+        supportActionBar?.title = "Webinar"
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         binding.rvWebinars.alpha = 0f
         binding.rvWebinars.translationY = 100f
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setupRecyclerView() {
@@ -53,7 +59,7 @@ class WebinarFragment : Fragment() {
             onItemClick = { webinar, itemView ->
                 webinar.id?.let { id ->
                     AnimationUtils.buttonPress(itemView)
-                    startActivity(DetailWebinarActivity.createIntent(requireContext(), id))
+                    startActivity(DetailWebinarActivity.createIntent(this, id))
                 }
             }
         )
@@ -101,7 +107,7 @@ class WebinarFragment : Fragment() {
     }
 
     private fun observeWebinars() {
-        viewModel.webinars.observe(viewLifecycleOwner) { result ->
+        viewModel.webinars.observe(this) { result ->
             when (result) {
                 is Result.Success -> {
                     showLoading(false)
@@ -135,11 +141,6 @@ class WebinarFragment : Fragment() {
     }
 
     private fun showError(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

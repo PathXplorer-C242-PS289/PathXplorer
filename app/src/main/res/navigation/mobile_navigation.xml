@@ -23,14 +23,5 @@
         android:name="com.example.pathxplorer.ui.main.HomeFragment"
         tools:layout="@layout/fragment_home"
         android:label="@string/title_home">
-
-        <action
-            android:id="@+id/action_navigation_home_to_webinarFragment"
-            app:destination="@id/webinarFragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/webinarFragment"
-        android:name="com.example.pathxplorer.ui.main.WebinarFragment"
-        android:label="WebinarFragment" />
 </navigation>

@@ -8,14 +8,17 @@
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:enableOnBackInvokedCallback="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PathXplorer"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.main.WebinarActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.quiz.dailyquest.DailyQuestActivity"
             android:exported="false" />
@@ -42,15 +45,16 @@
             android:exported="false" />
         <activity
             android:name=".ui.main.DetailWebinarActivity"
-            android:theme="@style/Theme.PathXplorer.NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.PathXplorer.NoActionBar" />
         <activity
             android:name=".ui.main.ProfileSettingsActivity"
             android:exported="false"
             android:theme="@style/Theme.PathXplorer.NoActionBar" />
-        <activity android:name=".ui.quiz.DetailTestResultActivity"
-            android:theme="@style/Theme.PathXplorer.NoActionBar"
-            android:exported="false"/>
+        <activity
+            android:name=".ui.quiz.DetailTestResultActivity"
+            android:exported="false"
+            android:theme="@style/Theme.PathXplorer.NoActionBar" />
         <activity
             android:name=".ui.main.SplashActivity"
             android:exported="true"
@@ -65,11 +69,14 @@
             android:name=".MainActivity"
             android:exported="false"
             android:theme="@style/Theme.PathXplorer.NoActionBar" />
-        <receiver android:name=".ui.utils.UserProfileWidget"
+
+        <receiver
+            android:name=".ui.utils.UserProfileWidget"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/user_profile_widget" />
