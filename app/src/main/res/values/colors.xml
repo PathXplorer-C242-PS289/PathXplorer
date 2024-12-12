@@ -22,7 +22,8 @@
     <color name="green_500">#3EE745</color>
     <color name="yellow_500">#FFC107</color>
     <color name="blue_700_18">#2F145FBC</color>
-    <color name="blue_700_50">#2F145FBC</color>
+    <color name="blue_700_50">#80145FBC</color>
+    <color name="blue_700_80">#CC145FBC</color>
 
     <color name="background_day">#FFFFFF</color>
     <color name="background_night">#121212</color>
