@@ -84,8 +84,7 @@ class HomeFragment : Fragment() {
         }
 
         val manager = LinearLayoutManager(context)
-        manager.reverseLayout = true
-        manager.stackFromEnd = true
+        manager.stackFromEnd = false
         binding.rvPosting.layoutManager = manager
 
         val postingRef = db.getReference(POST_REF)
