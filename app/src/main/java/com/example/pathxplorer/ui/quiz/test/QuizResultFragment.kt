@@ -54,13 +54,8 @@ class QuizResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.toolbar.setNavigationOnClickListener {
-            requireActivity().finish()
-        }
-
         db = Firebase.database
 
-        val resultVal = arguments?.getIntegerArrayList(RESULT_VALUE)
         val riasecCode =  arguments?.getString(RIASEC_CODE)
 
         lifecycleScope.launch {
@@ -82,12 +77,12 @@ class QuizResultFragment : Fragment() {
                     }
         }
 
-        val result = setResultKey(resultVal!!)
+        binding.toolbar.setNavigationOnClickListener {
+            gotoPostFragment(riasecCode!!)
+        }
 
         onBackPressedCallback(riasecCode!!)
 
-        // view
-//        setupResult(result)
     }
 
     private fun setupResult(resultTest: RecommendationRiasecResponse) {
@@ -111,44 +106,56 @@ class QuizResultFragment : Fragment() {
         }
     }
 
-//    private fun setupResult(list: MutableMap<Int, Int>) {
-//        binding.rvResultQuiz.layoutManager = LinearLayoutManager(requireActivity())
-//        binding.rvResultQuiz.setHasFixedSize(true)
-//        val adapter = ResultAdapter(list)
-//        binding.rvResultQuiz.adapter = adapter
-//    }
 
     private fun onBackPressedCallback(riasecType: String) {
         requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-
-                viewModel.getSession().observe(viewLifecycleOwner) { user ->
-                    val post = TestResultPost(
-                        user.userId,
-                        Timestamp.now().seconds.toInt()+user.userId,
-                        riasecType,
-                        user.name,
-                        "Happy to share my result, I got $riasecType, what about you?"
-                    )
-
-                    MaterialAlertDialogBuilder(requireActivity())
-                        .setTitle("Share Your Result and Exit")
-                        .setMessage("Do you happy with your result?, Do you want to share your result?")
-                        .setPositiveButton("Yes") { dialog, which ->
-                            val bundle = Bundle()
-                            bundle.putParcelable("post", post)
-                            val fragmentPost = PostFragment()
-                            fragmentPost.arguments = bundle
-                            val fragmentManager = parentFragmentManager
-                            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragmentPost, PostFragment::class.java.simpleName).commit()
-                        }
-                        .setNegativeButton("No") { dialog, which ->
-                            requireActivity().finish()
-                        }
-                        .show()
-                }
+                gotoPostFragment(riasecType)
             }
         })
+    }
+
+    private fun gotoPostFragment(riasecType: String) {
+
+        viewModel.getSession().observe(viewLifecycleOwner) { user ->
+            val title = generateTitle()
+            val post = TestResultPost(
+                userId = user.userId,
+                id = Timestamp.now().seconds.toInt()+user.userId,
+                riasecType = riasecType,
+                title = title,
+                body = "Happy to share my result, I got $riasecType, what about you?",
+                nameOwner = user.name,
+                timestamp = Timestamp.now().toDate().toString()
+            )
+
+            MaterialAlertDialogBuilder(requireActivity())
+                .setTitle("Share Your Result and Exit")
+                .setMessage("Do you happy with your result?, Do you want to share your result?")
+                .setPositiveButton("Yes") { dialog, which ->
+                    val bundle = Bundle()
+                    bundle.putParcelable("post", post)
+                    val fragmentPost = PostFragment()
+                    fragmentPost.arguments = bundle
+                    val fragmentManager = parentFragmentManager
+                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragmentPost, PostFragment::class.java.simpleName).commit()
+                }
+                .setNegativeButton("No") { dialog, which ->
+                    requireActivity().finish()
+                }
+                .show()
+        }
+    }
+
+    private fun generateTitle(): String {
+        val listTitle = listOf(
+            "Hey this my result",
+            "I got my result",
+            "My result is here",
+            "My result is ready",
+            "I got my result"
+        )
+        return listTitle.random()
     }
 
     private fun setResultKey(result: ArrayList<Int>): MutableMap<Int, Int> {

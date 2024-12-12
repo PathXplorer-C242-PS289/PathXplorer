@@ -1,6 +1,7 @@
 package com.example.pathxplorer.ui.main
 
 import android.content.Intent
+import android.graphics.Path.Direction
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,12 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pathxplorer.R
 import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.data.WebinarRepository
-import com.example.pathxplorer.data.models.Kampus
 import com.example.pathxplorer.data.models.TestResultPost
 import com.example.pathxplorer.data.models.WebinarModel
 import com.example.pathxplorer.databinding.FragmentHomeBinding
-import com.example.pathxplorer.ui.main.adapter.CarouselAdapter
 import com.example.pathxplorer.ui.main.adapter.ListAdapterWebinar
+import com.example.pathxplorer.ui.main.adapter.PostingTestAdapter
 import com.example.pathxplorer.ui.quiz.dailyquest.DailyQuestActivity
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.example.pathxplorer.ui.utils.generateListKampus
@@ -30,6 +30,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Query
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
@@ -83,10 +84,12 @@ class HomeFragment : Fragment() {
         }
 
         val manager = LinearLayoutManager(context)
+        manager.reverseLayout = true
         manager.stackFromEnd = true
         binding.rvPosting.layoutManager = manager
 
         val postingRef = db.getReference(POST_REF)
+        val query: Query = postingRef.orderByChild("timestamp")
         val options = FirebaseRecyclerOptions.Builder<TestResultPost>()
             .setQuery(postingRef, TestResultPost::class.java)
             .build()
@@ -143,18 +146,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupPostingResultTest() {
-        val manager = LinearLayoutManager(requireActivity())
-        manager.stackFromEnd = true
-        binding.rvPosting.layoutManager = manager
-
-        val postingRef = db.getReference(POST_REF)
-        val options = FirebaseRecyclerOptions.Builder<TestResultPost>()
-            .setQuery(postingRef, TestResultPost::class.java)
-            .build()
-        adapter = PostingTestAdapter(options)
-        binding.rvPosting.adapter = adapter
-    }
 
     private fun setupRecommendedCampus() {
         val listKampus = generateListKampus()
@@ -264,10 +255,6 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         adapter.startListening()
-    }
-    override fun onPause() {
-        adapter.stopListening()
-        super.onPause()
     }
 
     override fun onDestroyView() {

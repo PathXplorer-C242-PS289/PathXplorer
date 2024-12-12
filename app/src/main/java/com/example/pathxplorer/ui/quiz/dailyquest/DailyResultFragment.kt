@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import com.example.pathxplorer.R
 import com.example.pathxplorer.databinding.FragmentDailyResultBinding
@@ -42,6 +43,7 @@ class DailyResultFragment : Fragment() {
         }
 
         setView(score?.toInt()!!, result)
+        onBackPress()
     }
 
     private fun setView(score: Int, result: ArrayList<Int>) {
@@ -49,6 +51,15 @@ class DailyResultFragment : Fragment() {
             "You got $score points".also { pointPlus.text = it }
             "Your result is ${result[0]} out of ${result[1]}".also { resultDescriptionTextView.text = it }
         }
+    }
+
+    private fun onBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.d(TAG, "onBackPressed")
+                requireActivity().finish()
+            }
+        })
     }
 
     companion object {

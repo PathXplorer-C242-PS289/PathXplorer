@@ -159,4 +159,8 @@ By using our app, you consent to the terms of this Privacy Policy.
     <string name="share_result">Share result</string>
     <string name="title_post">Title Post</string>
     <string name="body_post">Body Post</string>
+    <string name="riasec_type">RIASEC TYPE</string>
+    <string name="owner_email">owner email</string>
+    <string name="overview">Overview</string>
+    <string name="title">title</string>
 </resources>

@@ -259,7 +259,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/plus_jakarta_sans"
-                android:text="@string/webinar_information"
+                android:text="What they got from the test"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 

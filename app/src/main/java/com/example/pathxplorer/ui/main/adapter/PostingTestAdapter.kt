@@ -1,4 +1,4 @@
-package com.example.pathxplorer.ui.main
+package com.example.pathxplorer.ui.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -17,6 +17,8 @@ class PostingTestAdapter(
         fun bind(post: TestResultPost) {
             binding.title.text = post.title
             binding.body.text = post.body
+            binding.timestamp.text = post.timestamp
+            binding.ownerName.text = post.nameOwner
             when(post.riasecType) {
                 "R" -> binding.ivPostingTestResult.setImageResource(R.drawable.r_type)
                 "I" -> binding.ivPostingTestResult.setImageResource(R.drawable.i_type)
