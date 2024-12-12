@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -158,25 +157,9 @@ class QuizResultFragment : Fragment() {
         return listTitle.random()
     }
 
-    private fun setResultKey(result: ArrayList<Int>): MutableMap<Int, Int> {
-        val map = mutableMapOf<Int, Int>()
-        for (i in 0..<result.size) {
-            for (j in 1..5) {
-                if (result[i] == j) {
-                    if (map[j]==null) {
-                        map[j] = 1
-                    } else {
-                        map[j] = map[j]!! + 1
-                    }
-                } else {
-                    if (map[j]==null) {
-                        map[j] = 0
-                    }
-                }
-            }
-        }
-        Log.d("Result", map.toString())
-        return map
+    override fun onResume() {
+        super.onResume()
+        viewModel.getTestResults()
     }
 
     override fun onDestroyView() {

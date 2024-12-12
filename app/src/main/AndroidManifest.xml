@@ -26,9 +26,6 @@
             android:name=".ui.auth.NewPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.ListCampusOrMajorActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.auth.ForgotPasswordActivity"
             android:exported="false" />
         <activity

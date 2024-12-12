@@ -76,6 +76,12 @@ class UserProfileWidget : AppWidgetProvider() {
                     tests.forEach { test ->
                         Log.d("UserProfileWidget", "TestID: ${test.testId}, Riasec: ${test.riasecType}, Timestamp: ${test.timestamp}")
                     }
+                    withContext(Dispatchers.Main) {
+                        views.apply {
+                            setTextViewText(R.id.widget_tests_label, "Tests")
+                            setTextViewText(R.id.widget_tests, result.data.data.testResults.size.toString())
+                        }
+                    }
 
                     // The logs show newest test is the first one returned, so take tests.first()
                     if (tests.isNotEmpty()) {
@@ -89,7 +95,7 @@ class UserProfileWidget : AppWidgetProvider() {
                     Log.d("UserProfileWidget", "Result not success or no tests found")
                 }
 
-                val level = when (user.score) {
+                val level = when (dailyDao.getDailyQuest(user.userId).score) {
                     null, 0 -> "Pemula"
                     in 1..30 -> "Junior"
                     in 31..60 -> "Intermediate"
@@ -105,9 +111,6 @@ class UserProfileWidget : AppWidgetProvider() {
 
                         setTextViewText(R.id.widget_level_label, "Level")
                         setTextViewText(R.id.widget_level, levelText)
-
-                        setTextViewText(R.id.widget_tests_label, "Tests")
-                        setTextViewText(R.id.widget_tests, user.testCount?.toString() ?: "0")
 
                         setTextViewText(R.id.widget_daily_quest_label, "Daily Quest")
                         setTextViewText(R.id.widget_daily_quest, dailyQuestLiveData.dailyQuestCount.toString())

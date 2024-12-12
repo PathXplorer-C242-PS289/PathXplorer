@@ -45,7 +45,6 @@ class DetailTestResultActivity : AppCompatActivity() {
             cards.forEach { it.alpha = 0f }
 
             tvTestDate.alpha = 0f
-            tvScore.alpha = 0f
         }
     }
 
@@ -101,7 +100,6 @@ class DetailTestResultActivity : AppCompatActivity() {
             tvKeySkills.text = testItem.keySkills ?: "-"
             tvExampleCareers.text = testItem.exampleCareers ?: "-"
             tvTestDate.text = testItem.timestamp ?: "-"
-            tvScore.text = "??% Accuracy"
 
             AnimationUtils.fadeIn(ivRiasecType)
             AnimationUtils.slideUp(tvRiasecType)
@@ -117,7 +115,6 @@ class DetailTestResultActivity : AppCompatActivity() {
             }
 
             AnimationUtils.fadeIn(tvTestDate, 800)
-            AnimationUtils.fadeIn(tvScore, 900)
         }
     }
 
@@ -129,7 +126,6 @@ class DetailTestResultActivity : AppCompatActivity() {
             tvKeySkills.text = getString(R.string.no_data)
             tvExampleCareers.text = getString(R.string.no_data)
             tvTestDate.text = getString(R.string.no_data)
-            tvScore.text = "-"
 
             val views = listOf(
                 ivRiasecType,
@@ -137,8 +133,7 @@ class DetailTestResultActivity : AppCompatActivity() {
                 tvInterestDescription.parent.parent as View,
                 tvKeySkills.parent.parent as View,
                 tvExampleCareers.parent.parent as View,
-                tvTestDate,
-                tvScore
+                tvTestDate
             )
 
             AnimationUtils.staggeredFadeIn(views, 300, 100)
@@ -153,8 +148,7 @@ class DetailTestResultActivity : AppCompatActivity() {
                 tvInterestDescription.parent.parent as View,
                 tvKeySkills.parent.parent as View,
                 tvExampleCareers.parent.parent as View,
-                tvTestDate,
-                tvScore
+                tvTestDate
             )
 
             views.forEachIndexed { index, view ->

@@ -15,7 +15,6 @@ import com.example.pathxplorer.R
 import com.example.pathxplorer.data.models.DailyQuestQuestion
 import com.example.pathxplorer.databinding.FragmentDailyQuizBinding
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
-import com.example.pathxplorer.ui.utils.generateDummyDailyQuizQuestion
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

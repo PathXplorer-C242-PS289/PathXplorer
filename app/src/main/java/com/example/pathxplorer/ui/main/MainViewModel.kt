@@ -41,6 +41,12 @@ class MainViewModel(private val repository: UserRepository): ViewModel() {
         }
     }
 
+    fun insertDaily(dailyQuestEntity: DailyQuestEntity) {
+        viewModelScope.launch {
+            repository.insertDailyQuest(dailyQuestEntity)
+        }
+    }
+
     fun saveSession(user: UserModel) {
         viewModelScope.launch {
             repository.saveSession(user)

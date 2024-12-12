@@ -6,11 +6,9 @@ import com.example.pathxplorer.data.UserRepository
 import com.example.pathxplorer.data.models.Answer
 import com.example.pathxplorer.data.models.Question
 import com.example.pathxplorer.data.models.UserModel
-import com.example.pathxplorer.ui.utils.getQuestion
-import com.example.pathxplorer.data.models.*
-import com.example.pathxplorer.ui.utils.getQuestion
+import com.example.pathxplorer.ui.utils.customview.getQuestion
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
+
 class QuizViewModel(private val repository: UserRepository) : ViewModel() {
     private var _indexedValue = MutableLiveData<Int>().apply { value = 0 }
     val indexedValue: LiveData<Int> = _indexedValue

@@ -8,6 +8,9 @@ import com.example.pathxplorer.data.models.TestResultPost
 import com.example.pathxplorer.databinding.PostingTestResultBinding
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class PostingTestAdapter(
     options: FirebaseRecyclerOptions<TestResultPost>
@@ -17,7 +20,7 @@ class PostingTestAdapter(
         fun bind(post: TestResultPost) {
             binding.title.text = post.title
             binding.body.text = post.body
-            binding.timestamp.text = post.timestamp
+            binding.timestamp.text = formatDate(post.timestamp!!)
             binding.ownerName.text = post.nameOwner
             when(post.riasecType) {
                 "R" -> binding.ivPostingTestResult.setImageResource(R.drawable.r_type)
@@ -29,7 +32,15 @@ class PostingTestAdapter(
             }
         }
 
+        @Suppress("DEPRECATION")
+        private fun formatDate(date: String): String {
+            val dateResult = Date(date)
+            val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            return format.format(dateResult)
+        }
+
     }
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

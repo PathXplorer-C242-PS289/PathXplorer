@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.pathxplorer.R
+import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.databinding.FragmentAccountBinding
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -98,18 +99,33 @@ class AccountFragment : Fragment() {
                 viewModel.dailyQuest.observe(viewLifecycleOwner) { dailyQuest ->
                     dailyQuestValue.text = dailyQuest?.dailyQuestCount.toString()
                     scoreValue.text = dailyQuest?.score.toString()
+                    levelValue.text = when (dailyQuest.score) {
+                        null, 0 -> "Pemula"
+                        in 1..30 -> "Junior"
+                        in 31..60 -> "Intermediate"
+                        in 61..90 -> "Advanced"
+                        else -> "Expert"
+                    }
+                }
+
+                viewModel.getTestResults().observe(viewLifecycleOwner) { result ->
+                    when (result) {
+                        is Result.Loading -> {
+                            showLoading(true)
+                        }
+                        is Result.Error -> {
+                            showLoading(false)
+                            showError(result.error.toString())
+                        }
+                        is Result.Success -> {
+                            showLoading(false)
+                            testsValue.text = result.data.data.testResults.size.toString()
+                        }
+                    }
                 }
 
                 tvUserName.text = user.name
                 tvUserEmail.text = user.email
-
-                val level = when (user.score) {
-                    null, 0 -> "Pemula"
-                    in 1..30 -> "Junior"
-                    in 31..60 -> "Intermediate"
-                    in 61..90 -> "Advanced"
-                    else -> "Expert"
-                }
 
                 val statsLayout = userProfileCard.findViewById<LinearLayout>(
                     LinearLayout(requireContext()).apply {
@@ -137,12 +153,7 @@ class AccountFragment : Fragment() {
                     }
 
                     // Update stats with animations
-                    layout.getChildAt(0)?.findViewById<TextView>(R.id.level_value)?.apply {
-                        animateTextChange(level)
-                    }
-                    layout.getChildAt(1)?.findViewById<TextView>(R.id.tests_value)?.apply {
-                        animateTextChange((user.testCount ?: 0).toString())
-                    }
+
                     layout.getChildAt(2)?.findViewById<TextView>(R.id.daily_quest_value)?.apply {
                         animateTextChange((user.dailyQuestCount ?: 0).toString())
                     }

@@ -8,12 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.pathxplorer.R
-import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.data.local.entity.DailyQuestEntity
-import com.example.pathxplorer.data.models.DailyQuestQuestion
 import com.example.pathxplorer.databinding.FragmentDailyDashboardBinding
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
-import com.example.pathxplorer.ui.utils.generateDummyDailyQuizQuestion
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -80,21 +77,33 @@ class DailyDashboardFragment : Fragment() {
         setAction()
     }
 
-    fun isDateGreaterThanNow(dateString: String): Boolean {
+    private fun isDateGreaterThanNow(dateString: String): Boolean {
+        if (dateString.isEmpty()) return true
         val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
         val date = dateFormat.parse(dateString)
         val currentDate = Date()
-        return date.after(currentDate)
+        return date?.after(currentDate) ?: false
     }
 
     private fun setDaily(userId: Int) {
         viewModel.getDailyQuestById(userId)
         viewModel.dailyQuest.observe(viewLifecycleOwner) { dailyQuest ->
-            with(binding) {
+            if (dailyQuest == null) {
+                val dailyQuestEntity = DailyQuestEntity(
+                    idUser = userId,
+                    emailUser = "",
+                    lastCheck = Date().toString(),
+                    dailyQuestCount = 1,
+                    score = 0,
+                )
+                viewModel.insertDaily(dailyQuestEntity)
+            } else {
+                with(binding) {
 //                dailyQuest.score.toString().also { pointsText.text = it }
-                pointsText.text = dailyQuest?.score.toString()
-                lastChecked.text = formatDate(dailyQuest.lastCheck)
-                dailyQuest.dailyQuestCount.toString().also { strikes.text = it }
+                    pointsText.text = dailyQuest?.score.toString()
+                    lastChecked.text = formatDate(dailyQuest.lastCheck)
+                    dailyQuest.dailyQuestCount.toString().also { strikes.text = it }
+                }
             }
         }
     }

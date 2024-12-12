@@ -11,10 +11,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.pathxplorer.data.local.entity.DailyQuestEntity
 import com.example.pathxplorer.databinding.ActivityMainBinding
 import com.example.pathxplorer.ui.main.MainViewModel
 import com.example.pathxplorer.ui.main.SplashActivity
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,6 +41,19 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, SplashActivity::class.java))
                 finish()
                 return@observe
+            }
+
+            viewModel.dailyQuest.observe(this) { dailyQuest ->
+                if (dailyQuest == null) {
+                    val dailyQuestEntity = DailyQuestEntity(
+                        idUser = user.userId,
+                        emailUser = user.email,
+                        lastCheck = Date().toString(),
+                        dailyQuestCount = 1,
+                        score = 0
+                    )
+                    viewModel.insertDaily(dailyQuestEntity)
+                }
             }
         }
 

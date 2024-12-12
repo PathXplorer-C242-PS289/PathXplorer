@@ -1,7 +1,6 @@
 package com.example.pathxplorer.ui.main
 
 import android.content.Intent
-import android.graphics.Path.Direction
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pathxplorer.R
 import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.data.WebinarRepository
-import com.example.pathxplorer.data.models.DailyQuestQuestion
 import com.example.pathxplorer.data.models.TestResultPost
 import com.example.pathxplorer.data.models.WebinarModel
 import com.example.pathxplorer.databinding.FragmentHomeBinding
@@ -25,7 +23,6 @@ import com.example.pathxplorer.ui.main.adapter.ListAdapterWebinar
 import com.example.pathxplorer.ui.main.adapter.PostingTestAdapter
 import com.example.pathxplorer.ui.quiz.dailyquest.DailyQuestActivity
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
-import com.example.pathxplorer.ui.utils.generateListKampus
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
@@ -75,10 +72,10 @@ class HomeFragment : Fragment() {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Confirmation")
                 .setMessage("Are you sure?")
-                .setPositiveButton("Yes") { dialog, which ->
+                .setPositiveButton("Yes") { _, _ ->
                     Toast.makeText(requireContext(), "Yes", Toast.LENGTH_SHORT).show()
                 }
-                .setNegativeButton("No") { dialog, which ->
+                .setNegativeButton("No") { _, _ ->
                     Toast.makeText(requireContext(), "No", Toast.LENGTH_SHORT).show()
                 }
                 .show()
@@ -92,7 +89,7 @@ class HomeFragment : Fragment() {
         val postingRef = db.getReference(POST_REF)
         val query: Query = postingRef.orderByChild("timestamp")
         val options = FirebaseRecyclerOptions.Builder<TestResultPost>()
-            .setQuery(postingRef, TestResultPost::class.java)
+            .setQuery(query, TestResultPost::class.java)
             .build()
         adapter = PostingTestAdapter(options)
         binding.rvPosting.adapter = adapter
@@ -149,7 +146,6 @@ class HomeFragment : Fragment() {
 
 
     private fun setupRecommendedCampus() {
-        val listKampus = generateListKampus()
 //        binding.rvRecommendedCampus.apply {
 //            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 //            adapter = CarouselAdapter(listKampus) { kampus ->
