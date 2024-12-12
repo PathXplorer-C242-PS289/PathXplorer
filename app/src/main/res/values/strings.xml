@@ -164,4 +164,6 @@ By using our app, you consent to the terms of this Privacy Policy.
     <string name="overview">Overview</string>
     <string name="title">title</string>
     <string name="no_quiz_result">No Quiz Result</string>
+    <string name="r1">Menguji kualitas Komponen barang sebelum dikirim.</string>
+    <string name="null_resource">-</string>
 </resources>

@@ -20,7 +20,7 @@
             android:layout_weight="1.9"
             android:layout_margin="16dp"
             android:text="Question"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/checked_indicator"
             app:layout_constraintStart_toStartOf="parent"
