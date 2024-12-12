@@ -56,3 +56,6 @@ to get the web client id, follow the steps below:
 - Create a new database
 - Go to setting project in firebase console
 - Then download the `google-services.json` file and add to the project /app folder if you have just replace the file
+
+The App is finalize in 13/12/2024 for update V1
+V2 Myabe????
