@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pathxplorer.R
 import com.example.pathxplorer.data.remote.response.TestResultsItem
 import com.example.pathxplorer.databinding.TestsItemBinding
+import com.example.pathxplorer.ui.utils.AnimationUtils
 
 class TestResultAdapter(
     private val onItemClick: (TestResultsItem) -> Unit
@@ -56,5 +57,6 @@ class TestResultAdapter(
 
     override fun onBindViewHolder(holder: TestViewHolder, position: Int) {
         holder.bind(getItem(position))
+        AnimationUtils.listItemEnter(holder.itemView, position)
     }
 }
