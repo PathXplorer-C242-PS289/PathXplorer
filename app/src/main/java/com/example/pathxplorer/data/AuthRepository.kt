@@ -36,7 +36,10 @@ class AuthRepository private constructor(
             when (e) {
                 is HttpException -> {
                     Log.d(TAG, "registerUser: ${e.message}")
-                    emit(Result.Error(e.message()))
+                    when(e.code()) {
+                        400 -> emit(Result.Error("Email already registered"))
+                        else -> emit(Result.Error(e.message()))
+                    }
                 }
                 is SocketTimeoutException -> emit(Result.Error("Connection timed out"))
                 is IOException -> emit(Result.Error("Network error occurred"))
@@ -99,7 +102,12 @@ class AuthRepository private constructor(
         } catch (e: Exception) {
             _error.postValue(true)
             when (e) {
-                is HttpException -> emit(Result.Error(e.message()))
+                is HttpException -> {
+                    when(e.code()) {
+                        400 -> emit(Result.Error("Incorect email or password"))
+                        else -> emit(Result.Error("Some thing went wrong, ${e.message()}"))
+                    }
+                }
                 is SocketTimeoutException -> emit(Result.Error("Connection timed out"))
                 is IOException -> emit(Result.Error("Network error occurred"))
                 else -> emit(Result.Error("An unexpected error occurred"))

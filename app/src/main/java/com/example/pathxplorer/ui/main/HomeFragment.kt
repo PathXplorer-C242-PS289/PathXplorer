@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pathxplorer.R
 import com.example.pathxplorer.data.Result
 import com.example.pathxplorer.data.WebinarRepository
+import com.example.pathxplorer.data.models.DailyQuestQuestion
 import com.example.pathxplorer.data.models.TestResultPost
 import com.example.pathxplorer.data.models.WebinarModel
 import com.example.pathxplorer.databinding.FragmentHomeBinding
@@ -251,6 +252,38 @@ class HomeFragment : Fragment() {
             mainViewModel.logout()
         }
     }
+
+//    private fun addQuestion() {
+//        val questionDailyRef = db.getReference("question_daily")
+//        val questions = listOf(
+//            DailyQuestQuestion(
+//                question = "Lima sekawan Sano, Joko, Adi, Rimba, dan Ratu selalu semangat berangkat bersama menuju sekolah. Joko selalu menjemput Sano, setelah ia dijemput oleh Adi. Rimba menjadi anak terakhir yang dijemput. Sementara rumah Ratu terletak di antara rumah Joko dan rumah Adi. Berikut ini pernyataan yang BENAR adalah …",
+//                option1 = "Rumah Ratu terletak paling jauh",
+//                option2 = "Rumah Adi terletak paling jauh",
+//                option3 = "Rumah Rimba terletak paling jauh",
+//                option4 = "Rumah Sano terletak paling dekat",
+//                reference = "Ruang Guru, https://www.ruangguru.com/blog/contoh-soal-tes-skolastik",
+//                correctAnswer = 1
+//            ),
+//            DailyQuestQuestion(
+//                question = "Jika bahagia itu sederhana, hal-hal sepel akan mendatangkan kebahagiaan. Jika hal-hal sepele mendatangkan kebahagiaan, orang-orang tidak perlu susah payah untuk mendapatkannya. Banyak orang yang mendapatkan kebahagiaan dengan susah payah. Simpulan yang tepat adalah...",
+//                option1 = "Bahagia itu tidak sederhana",
+//                option2 = "Bahagia itu sederhana",
+//                option3 = "Bahagia itu butuh perjuangan yang tidak sepele",
+//                option4 = "Jika hal-hal sepele mendatangkan kebahagiaan, orang-orang selalu bahagia dalam hidupnya.",
+//                reference = "Kumparan",
+//                correctAnswer = 0
+//            )
+//        )
+//
+//        questions.forEach {
+//            questionDailyRef.push().setValue(it).addOnCompleteListener {
+//                Toast.makeText(requireContext(), "Question added", Toast.LENGTH_SHORT).show()
+//            }.addOnFailureListener {
+//                Toast.makeText(requireContext(), "Failed to add question", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
 
     override fun onResume() {
         super.onResume()

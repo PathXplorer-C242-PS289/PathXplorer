@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@color/white"
     tools:context=".ui.quiz.dailyquest.DailyDashboardFragment">
 
     <!-- Decorative Background -->
@@ -14,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/univ"
+        android:src="@drawable/ic_background"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -55,8 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Last checked:"
-                android:textSize="18sp"
-                android:textColor="@color/black" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/last_checked"
@@ -65,8 +63,7 @@
                 android:layout_marginStart="8dp"
                 android:text="12 Oct 2021"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
+                android:textStyle="bold" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -99,8 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Score"
-                    android:textSize="16sp"
-                    android:textColor="@color/black" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/points_text"
@@ -109,8 +105,7 @@
                     android:layout_marginTop="4dp"
                     android:text="0"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <View
@@ -129,8 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Strikes"
-                    android:textSize="16sp"
-                    android:textColor="@color/black" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/strikes"
@@ -139,8 +133,7 @@
                     android:layout_marginTop="4dp"
                     android:text="0"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -169,8 +162,7 @@
                 android:layout_height="wrap_content"
                 android:text="Daily Quest Rules"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/quest_rules"
@@ -178,8 +170,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/daily_quest_rules"
-                android:textSize="16sp"
-                android:textColor="@color/black" />
+                android:textSize="16sp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

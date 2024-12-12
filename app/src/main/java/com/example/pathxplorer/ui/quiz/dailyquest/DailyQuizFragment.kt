@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,12 +17,20 @@ import com.example.pathxplorer.databinding.FragmentDailyQuizBinding
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 import com.example.pathxplorer.ui.utils.generateDummyDailyQuizQuestion
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class DailyQuizFragment : Fragment() {
 
     private var _binding: FragmentDailyQuizBinding? = null
     private val binding get() = _binding!!
     private lateinit var question: ArrayList<DailyQuestQuestion>
+
+    private lateinit var db: FirebaseDatabase
 
     private val viewModel by viewModels<DailyViewModel> {
         UserViewModelFactory.getInstance(requireActivity())
@@ -30,6 +39,7 @@ class DailyQuizFragment : Fragment() {
     companion object {
         const val TAG = "DailyQuizFragment"
         const val EXTRA_QUESTION_DAILY = "extra_question_daily"
+        const val QUESTION_REF = "question_daily"
     }
 
     override fun onCreateView(
@@ -51,11 +61,31 @@ class DailyQuizFragment : Fragment() {
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
 
-        question = generateDummyDailyQuizQuestion()
+        db = Firebase.database
 
-        adapter.submitList(question.take(5))
+//        adapter.submitList(question.take(5))
 
         binding.submitButton.isEnabled = false
+
+        val questionRef = db.getReference(QUESTION_REF)
+        questionRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    question = arrayListOf()
+                    for (data in snapshot.children) {
+                        val item = data.getValue(DailyQuestQuestion::class.java)
+                        item?.let { question.add(it) }
+                    }
+                    question = question.shuffled().take(3) as ArrayList<DailyQuestQuestion>
+                    adapter.submitList(question)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Error Ocurated : ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+
+        })
 
         adapter.setOnClickCallback(object : DailyQuestAdapter.OnItemClickCallback {
             @SuppressLint("UseCompatLoadingForDrawables")
@@ -92,7 +122,7 @@ class DailyQuizFragment : Fragment() {
 
     private fun setResultDailyTest(questions: ArrayList<DailyQuestQuestion>): ArrayList<Int>{
 
-        val correctAnswer = questions.filter { it.isCorrect }
+        val correctAnswer = questions.filter { it.isCorrect == true }
         val result = arrayListOf(
             correctAnswer.size,
             questions.size

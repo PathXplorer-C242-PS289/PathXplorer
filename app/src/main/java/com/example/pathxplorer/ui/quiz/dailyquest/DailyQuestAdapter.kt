@@ -45,6 +45,12 @@ class DailyQuestAdapter: ListAdapter<DailyQuestQuestion, DailyQuestAdapter.ViewH
 
         fun bind(question: DailyQuestQuestion) {
             this.question.text = question.question
+            this.radioGroup.apply {
+                findViewById<RadioButton>(R.id.answer_1).text = question.option1
+                findViewById<RadioButton>(R.id.answer_2).text = question.option2
+                findViewById<RadioButton>(R.id.answer_3).text = question.option3
+                findViewById<RadioButton>(R.id.answer_4).text = question.option4
+            }
         }
 
     }
@@ -57,7 +63,7 @@ class DailyQuestAdapter: ListAdapter<DailyQuestQuestion, DailyQuestAdapter.ViewH
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
 
-        if (getItem(position).isChecked) {
+        if (getItem(position).isChecked == true) {
             holder.radioGroup.check(
                 when (getItem(position).value) {
                     0 -> R.id.answer_1

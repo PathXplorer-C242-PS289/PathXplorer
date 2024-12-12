@@ -56,7 +56,7 @@ class DailyViewModel(private val repository: UserRepository): ViewModel() {
         viewModelScope.launch {
             var count = 0
             questions.forEach {
-                if (it.isChecked) {
+                if (it.isChecked == true) {
                     count++
                 }
             }

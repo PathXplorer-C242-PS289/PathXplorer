@@ -127,6 +127,7 @@ fun generateDummyDailyQuizQuestion(): ArrayList<DailyQuestQuestion> {
                 "Option 3",
                 "Option 4",
                 1,
+                reference = "Reference $i"
             )
         )
     }

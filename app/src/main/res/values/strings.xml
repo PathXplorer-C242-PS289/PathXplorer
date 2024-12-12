@@ -163,4 +163,5 @@ By using our app, you consent to the terms of this Privacy Policy.
     <string name="owner_email">owner email</string>
     <string name="overview">Overview</string>
     <string name="title">title</string>
+    <string name="no_quiz_result">No Quiz Result</string>
 </resources>

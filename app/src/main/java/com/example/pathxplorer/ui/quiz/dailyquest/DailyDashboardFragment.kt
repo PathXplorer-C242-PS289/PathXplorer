@@ -92,7 +92,8 @@ class DailyDashboardFragment : Fragment() {
         viewModel.getDailyQuestById(userId)
         viewModel.dailyQuest.observe(viewLifecycleOwner) { dailyQuest ->
             with(binding) {
-                dailyQuest.score.toString().also { pointsText.text = it }
+//                dailyQuest.score.toString().also { pointsText.text = it }
+                pointsText.text = dailyQuest?.score.toString()
                 lastChecked.text = formatDate(dailyQuest.lastCheck)
                 dailyQuest.dailyQuestCount.toString().also { strikes.text = it }
             }

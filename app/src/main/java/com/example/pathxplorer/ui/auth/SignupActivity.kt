@@ -78,7 +78,7 @@ class SignupActivity : AppCompatActivity() {
                         is Result.Error -> {
                             AlertDialog.Builder(this@SignupActivity).apply {
                                 setTitle("Oops!")
-                                setMessage("${result.error} $email $password")
+                                setMessage("${result.error}")
                                 setPositiveButton("OK") { dialog, _ ->
                                     dialog.dismiss()
                                 }

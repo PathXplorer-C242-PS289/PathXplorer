@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
@@ -23,6 +24,7 @@ import com.example.pathxplorer.ui.utils.AuthViewModelFactory
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -90,6 +92,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                     is Result.Error -> {
                         showModal("Oops!", result.error!!)
+                        Log.e("Error", result.error)
                     }
                 }
             }
@@ -219,7 +222,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showModal(title: String, message: String) {
-        AlertDialog.Builder(this).apply {
+        MaterialAlertDialogBuilder(this).apply {
             setTitle(title)
             setMessage(message)
             setPositiveButton("OK") { dialog, _ ->
