@@ -51,52 +51,50 @@
     <string name="close_button">Close Button</string>
     <string name="privacy_policy_title">Privacy Policy</string>
     <string name="privacy_policy_content">
-        Privacy Policy\n\n
+        Kebijakan Privasi\n\n
 
-1. Introduction\n
-Thank you for using [Nama Aplikasi]. This privacy policy explains how we collect, use, and protect your information when you use our application.\n\n
+1. Pendahuluan\n
+Terima kasih telah menggunakan PathXplorer. Kebijakan privasi ini menjelaskan cara kami mengumpulkan, menggunakan, dan melindungi informasi Anda saat Anda menggunakan aplikasi kami.\n\n
 
-2. Information Collection and Use\n
-We may collect the following types of information:\n
-  - Personal Information: [e.g., Name, Email Address] when you voluntarily provide it to us.\n
-  - Usage Data: Information about how you use the app, such as interactions and navigation patterns.\n\n
+2. Pengumpulan dan Penggunaan Informasi\n
+Kami dapat mengumpulkan jenis informasi berikut:\n
+- Informasi Pribadi: pathxplorer@gmail.com saat Anda secara sukarela memberikannya kepada kami.\n
+- Data Penggunaan: Informasi tentang cara Anda menggunakan aplikasi, seperti interaksi dan pola navigasi.\n\n
 
-3. How We Use Your Information\n
-We use the information we collect for various purposes, including:\n
-  - To provide and maintain our application\n
-  - To improve user experience\n
-  - To communicate with you about updates, promotions, or support\n\n
+3. Cara Kami Menggunakan Informasi Anda\n
+Kami menggunakan informasi yang kami kumpulkan untuk berbagai tujuan, termasuk:\n
+- Untuk menyediakan dan memelihara aplikasi kami\n
+- Untuk meningkatkan pengalaman pengguna\n
+- Untuk berkomunikasi dengan Anda tentang pembaruan, promosi, atau dukungan\n\n
 
-4. Sharing and Disclosure\n
-We do not share or disclose your personal information with third parties, except as necessary to comply with legal obligations or to protect our rights.\n\n
+4. Berbagi dan Pengungkapan\n
+Kami tidak membagikan atau mengungkapkan informasi pribadi Anda kepada pihak ketiga, kecuali sebagaimana diperlukan untuk mematuhi kewajiban hukum atau untuk melindungi hak-hak kami.\n\n
 
-5. Security\n
-We value your trust in providing us your Personal Information. We strive to use commercially acceptable means to protect it. However, no method of transmission over the internet or electronic storage is 100% secure.\n\n
+5. Keamanan\n
+Kami menghargai kepercayaan Anda dalam memberikan Informasi Pribadi Anda kepada kami. Kami berusaha untuk menggunakan cara yang dapat diterima secara komersial untuk melindunginya. Namun, tidak ada metode transmisi melalui internet atau penyimpanan elektronik yang 100% aman.\n\n
 
-6. Links to Other Sites\n
-Our app may contain links to other sites. If you click on a third-party link, you will be directed to that site. We strongly advise you to review the Privacy Policy of these websites, as we are not responsible for their practices.\n\n
+6. Tautan ke Situs Lain\n
+Aplikasi kami mungkin berisi tautan ke situs lain. Jika Anda mengeklik tautan pihak ketiga, Anda akan diarahkan ke situs tersebut. Kami sangat menyarankan Anda untuk meninjau Kebijakan Privasi situs web ini, karena kami tidak bertanggung jawab atas praktik mereka.\n\n
+7. Perubahan pada Kebijakan Privasi Ini\n
+Kami dapat memperbarui Kebijakan Privasi kami dari waktu ke waktu. Kami akan memberi tahu Anda tentang perubahan apa pun dengan mengeposkan Kebijakan Privasi baru di halaman ini.\n\n
 
-7. Changes to This Privacy Policy\n
-We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.\n\n
+8. Hubungi Kami\n
+Jika Anda memiliki pertanyaan tentang Kebijakan Privasi kami, silakan hubungi kami di [email/info kontak].\n\n
 
-8. Contact Us\n
-If you have any questions about our Privacy Policy, please contact us at [email/contact info].\n\n
-
-By using our app, you consent to the terms of this Privacy Policy.
-
+Dengan menggunakan aplikasi kami, Anda menyetujui ketentuan Kebijakan Privasi ini.
     </string>
-    <string name="quiz_rules">
-        1. Tes ini terdiri dari 2 bagian : \n
-        \t\t a. Tes mengenali minat (10soal) \n
-        \t\t b. Tes Mengenali kepribadian (10 soal) \n\n
+    <string name="quiz_rules" translatable="false">
+        1. Tes ini terdiri dari 6 bagian, tiap bagian terdiri dari 8 soal. Sehingga total soal yang akan dijawab adalah 48 soal \n\n
         2. Pastikan kamu berada dalam lingkungan yang tenang dan kondusif \n\n
         3. Jawablan setiap Pertanyaan dengan jujur berdasarkan preferensi dan pengalamanmu \n\n
         4. Pertimbangkan baik-baik jawabanmu dan jangan terburu-buru \n\n
         5. Hindari menjawab netral untuk mendapatkan hasil yang optimal \n\n
         6. Ingatlah bahwa tidak ada jawaban yang salah \n\n
+        7. Dimohon untuk tidak keluar dari tes ketika sedang mengerjakan, dikarenakan hasil tes tidak akan tersimpan sebelum kamu menyelesaikan tes \n\n
+        8. Selamat mengerjakan dan semoga hasilnya dapat membantu kamu mengetahui potensi diri kamu 😁
     </string>
     <string name="send">Kirim</string>
-    <string name="article">Article</string>
+    <string name="article">Artikel</string>
     <string name="kebijakan_privasi">Kebijakan Privasi</string>
     <string name="hidepass">******</string>
     <string name="next">Next</string>
@@ -116,9 +114,9 @@ By using our app, you consent to the terms of this Privacy Policy.
     <string name="welcome_user">Welcome, %1$s</string>
     <string name="webinar_details">Webinar Details</string>
     <string name="no_webinars_available">No webinars available at the moment</string>
-    <string name="error_loading_webinars">Failed to load webinars</string>
-    <string name="email_not_found">Email address not found</string>
-    <string name="invalid_otp_length">OTP code must be 6 digits</string>
+    <string name="error_loading_webinars">Gagal memuat webinar</string>
+    <string name="email_not_found">Email tidak ditemukan</string>
+    <string name="invalid_otp_length">kode OTP harus berjumlah 6 digit</string>
     <string name="error_title">Error</string>
     <string name="ok">OK</string>
     <string name="otp_verification_success">OTP verification successful</string>
@@ -148,9 +146,9 @@ By using our app, you consent to the terms of this Privacy Policy.
     <string name="example_careers">Example Careers</string>
 
     <string name="daily_quest_rules">
-        1. This daily test had 2 Questions\n
-        2. Complete the daily quest to earn points\n
-        3. Your daily will not reset while you not taking the test\n
+        1. Daily tes ini mencakup 3 soal\n
+        2. Selesaikan daily tes untuk mendapatkan points\n
+        3. Daily strikemu tidak akan berkurang walau kamu tidak mengambil tes\n
     </string>
     <string name="daily_quest_greeting">Hi, %1$s</string>
     <string name="fire">fire</string>

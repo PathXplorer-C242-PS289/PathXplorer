@@ -78,7 +78,7 @@ class DailyDashboardFragment : Fragment() {
     }
 
     private fun isDateGreaterThanNow(dateString: String): Boolean {
-        if (dateString.isEmpty()) return true
+        if (dateString.isEmpty()) return false
         val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
         val date = dateFormat.parse(dateString)
         val currentDate = Date()
