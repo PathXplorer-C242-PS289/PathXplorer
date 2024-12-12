@@ -1,11 +1,13 @@
 package com.example.pathxplorer.ui.quiz
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pathxplorer.R
 import com.example.pathxplorer.data.remote.response.TestResultsItem
 import com.example.pathxplorer.databinding.ActivityDetailTestResultBinding
+import com.example.pathxplorer.ui.utils.AnimationUtils
 import com.example.pathxplorer.ui.utils.UserViewModelFactory
 
 class DetailTestResultActivity : AppCompatActivity() {
@@ -24,8 +26,27 @@ class DetailTestResultActivity : AppCompatActivity() {
         binding = ActivityDetailTestResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupInitialState()
         setupToolbar()
         loadTestResult()
+    }
+
+    private fun setupInitialState() {
+        with(binding) {
+            ivRiasecType.alpha = 0f
+            tvRiasecType.alpha = 0f
+
+            val cards = listOf(
+                tvInterestDescription.parent.parent as View,
+                tvKeySkills.parent.parent as View,
+                tvExampleCareers.parent.parent as View
+            )
+
+            cards.forEach { it.alpha = 0f }
+
+            tvTestDate.alpha = 0f
+            tvScore.alpha = 0f
+        }
     }
 
     private fun setupToolbar() {
@@ -62,7 +83,6 @@ class DetailTestResultActivity : AppCompatActivity() {
             "C" -> R.drawable.c_type
             else -> R.drawable.r_type
         }
-        binding.ivRiasecType.setImageResource(imageResource)
 
         val riasecFullName = when(testItem.riasecType?.uppercase()) {
             "R" -> "Realistic"
@@ -75,12 +95,29 @@ class DetailTestResultActivity : AppCompatActivity() {
         }
 
         with(binding) {
+            ivRiasecType.setImageResource(imageResource)
             tvRiasecType.text = riasecFullName
             tvInterestDescription.text = testItem.interestDescription ?: "-"
             tvKeySkills.text = testItem.keySkills ?: "-"
             tvExampleCareers.text = testItem.exampleCareers ?: "-"
             tvTestDate.text = testItem.timestamp ?: "-"
             tvScore.text = "??% Accuracy"
+
+            AnimationUtils.fadeIn(ivRiasecType)
+            AnimationUtils.slideUp(tvRiasecType)
+
+            val cards = listOf(
+                tvInterestDescription.parent.parent as View,
+                tvKeySkills.parent.parent as View,
+                tvExampleCareers.parent.parent as View
+            )
+
+            cards.forEachIndexed { index, card ->
+                AnimationUtils.animateCard(card, index)
+            }
+
+            AnimationUtils.fadeIn(tvTestDate, 800)
+            AnimationUtils.fadeIn(tvScore, 900)
         }
     }
 
@@ -93,6 +130,46 @@ class DetailTestResultActivity : AppCompatActivity() {
             tvExampleCareers.text = getString(R.string.no_data)
             tvTestDate.text = getString(R.string.no_data)
             tvScore.text = "-"
+
+            val views = listOf(
+                ivRiasecType,
+                tvRiasecType,
+                tvInterestDescription.parent.parent as View,
+                tvKeySkills.parent.parent as View,
+                tvExampleCareers.parent.parent as View,
+                tvTestDate,
+                tvScore
+            )
+
+            AnimationUtils.staggeredFadeIn(views, 300, 100)
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        with(binding) {
+            val views = listOf(
+                ivRiasecType,
+                tvRiasecType,
+                tvInterestDescription.parent.parent as View,
+                tvKeySkills.parent.parent as View,
+                tvExampleCareers.parent.parent as View,
+                tvTestDate,
+                tvScore
+            )
+
+            views.forEachIndexed { index, view ->
+                view.animate()
+                    .alpha(0f)
+                    .translationX(100f)
+                    .setDuration(200)
+                    .setStartDelay(index * 50L)
+                    .start()
+            }
+        }
+        binding.root.postDelayed({
+            finish()
+        }, 500)
+
+        return true
     }
 }
